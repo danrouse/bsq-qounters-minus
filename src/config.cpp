@@ -30,24 +30,36 @@ bool QountersMinus::LoadConfig() {
     // Qounter-specific settings [ALL-QOUNTERS]
     if (getConfig().config.HasMember("cutQounter") && getConfig().config["cutQounter"].IsObject()) {
         auto qounterConfig = getConfig().config["cutQounter"].GetObject();
-        LoadConfigVar(qounterConfig, "enabled", config.cutQounterConfig.enabled, Bool);
         int tmpQounterPosition;
         LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
         config.cutQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+
+        LoadConfigVar(qounterConfig, "enabled", config.cutQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "separateSaberCounts", config.cutQounterConfig.separateSaberCounts, Bool);
         LoadConfigVar(qounterConfig, "separateCutValues", config.cutQounterConfig.separateCutValues, Bool);
         LoadConfigVar(qounterConfig, "averagePrecision", config.cutQounterConfig.averagePrecision, Int);
     }
     if (getConfig().config.HasMember("missQounter") && getConfig().config["missQounter"].IsObject()) {
         auto qounterConfig = getConfig().config["missQounter"].GetObject();
-        LoadConfigVar(qounterConfig, "enabled", config.missQounterConfig.enabled, Bool);
         int tmpQounterPosition;
         LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
         config.missQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+
+        LoadConfigVar(qounterConfig, "enabled", config.missQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "countBadCuts", config.missQounterConfig.countBadCuts, Bool);
     }
+    if (getConfig().config.HasMember("notesQounter") && getConfig().config["notesQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["notesQounter"].GetObject();
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.notesQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
 
-    LOG_DEBUG("Everything found? %d", foundEverything);
+        LoadConfigVar(qounterConfig, "enabled", config.notesQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "showPercentage", config.notesQounterConfig.showPercentage, Bool);
+        LoadConfigVar(qounterConfig, "decimalPrecision", config.notesQounterConfig.decimalPrecision, Int);
+    }
+
+    // LOG_DEBUG("Everything found? %d", foundEverything);
     return foundEverything;
 }
 
@@ -75,6 +87,13 @@ void QountersMinus::SaveConfig() {
     missQounterConfig.AddMember("position", (int)config.missQounterConfig.position, allocator);
     missQounterConfig.AddMember("countBadCuts", config.missQounterConfig.countBadCuts, allocator);
     getConfig().config.AddMember("missQounter", missQounterConfig, allocator);
+
+    rapidjson::Value notesQounterConfig(rapidjson::kObjectType);
+    notesQounterConfig.AddMember("enabled", config.notesQounterConfig.enabled, allocator);
+    notesQounterConfig.AddMember("position", (int)config.notesQounterConfig.position, allocator);
+    notesQounterConfig.AddMember("showPercentage", config.notesQounterConfig.showPercentage, allocator);
+    notesQounterConfig.AddMember("decimalPrecision", config.notesQounterConfig.decimalPrecision, allocator);
+    getConfig().config.AddMember("notesQounter", notesQounterConfig, allocator);
     
     getConfig().Write();
 }

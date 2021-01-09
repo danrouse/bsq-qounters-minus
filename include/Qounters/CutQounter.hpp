@@ -1,9 +1,7 @@
 #pragma once
 
-#include <sstream>
-#include <iomanip>
-
 #include "logger.hpp"
+#include "format.hpp"
 #include "Qounter.hpp"
 #include "config/CutQounterConfig.hpp"
 
@@ -22,9 +20,9 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounte
     DECLARE_INSTANCE_FIELD(GlobalNamespace::NoteCutInfo*, prevNoteCutInfo);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
     
-    DECLARE_INSTANCE_FIELD_DEFAULT(bool, separateCutValues, false);
-    DECLARE_INSTANCE_FIELD_DEFAULT(bool, separateSaberCounts, false);
-    DECLARE_INSTANCE_FIELD_DEFAULT(int, averagePrecision, 1);
+    DECLARE_INSTANCE_FIELD(bool, separateCutValues);
+    DECLARE_INSTANCE_FIELD(bool, separateSaberCounts);
+    DECLARE_INSTANCE_FIELD(int, averagePrecision);
 
     DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
     DECLARE_METHOD(void, UpdateCutScores);

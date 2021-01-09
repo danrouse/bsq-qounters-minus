@@ -5,8 +5,6 @@ DEFINE_CLASS(QountersMinus::Qounters::MissQounter);
 void QountersMinus::Qounters::MissQounter::Configure(QountersMinus::MissQounterConfig config) {
     countBadCuts = config.countBadCuts;
 
-    if (!gameObject) LOG_DEBUG("no gameobjeect???");
-
     auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Misses", false);
     titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
     titleText->set_fontSize(20.0f);
@@ -23,13 +21,15 @@ void QountersMinus::Qounters::MissQounter::UpdateValue() {
 }
 
 void QountersMinus::Qounters::MissQounter::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
-    if (countBadCuts && !info->get_allIsOK()) {
+    if (countBadCuts && !info->get_allIsOK() && data->colorType != GlobalNamespace::ColorType::None) {
         misses++;
         UpdateValue();
     }
 }
 
 void QountersMinus::Qounters::MissQounter::OnNoteMiss(GlobalNamespace::NoteData* data) {
-    misses++;
-    UpdateValue();
+    if (data->colorType != GlobalNamespace::ColorType::None) {
+        misses++;
+        UpdateValue();
+    }
 }

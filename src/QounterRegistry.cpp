@@ -48,6 +48,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounter>();
     custom_types::Register::RegisterType<Qounters::CutQounter>();
     custom_types::Register::RegisterType<Qounters::MissQounter>();
+    custom_types::Register::RegisterType<Qounters::NotesQounter>();
 }
 
 
@@ -55,6 +56,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
 void QountersMinus::QounterRegistry::Initialize() {
     if (config.cutQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.cutQounterConfig);
     if (config.missQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
+    if (config.notesQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.notesQounterConfig);
 
     // qounter position debugging
 
@@ -81,16 +83,19 @@ void QountersMinus::QounterRegistry::Initialize() {
 // Define a typed initializer for all Qounter types [ALL-QOUNTERS]
 DefineQounterInitializer(Qounters::CutQounter*, CutQounterConfig, cutQounter);
 DefineQounterInitializer(Qounters::MissQounter*, MissQounterConfig, missQounter);
+DefineQounterInitializer(Qounters::NotesQounter*, NotesQounterConfig, notesQounter);
 
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
     DefineQounterEventHandler(CutQounter, OnNoteCut(data, info));
     DefineQounterEventHandler(MissQounter, OnNoteCut(data, info));
+    DefineQounterEventHandler(NotesQounter, OnNoteCut(data, info));
 }
 
 void QountersMinus::QounterRegistry::OnNoteMiss(GlobalNamespace::NoteData* data) {
     DefineQounterEventHandler(MissQounter, OnNoteMiss(data));
+    DefineQounterEventHandler(NotesQounter, OnNoteMiss(data));
 }
 
 void QountersMinus::QounterRegistry::OnScoreUpdated(int modifiedScore) {

@@ -2,12 +2,6 @@
 
 DEFINE_CLASS(QountersMinus::Qounters::CutQounter);
 
-std::string FormatNumber(float number, int precision) {
-    std::stringstream stream;
-    stream << std::fixed << std::setprecision(precision) << number;
-    return stream.str();
-}
-
 void QountersMinus::Qounters::CutQounter::Configure(QountersMinus::CutQounterConfig config) {
     averagePrecision = config.averagePrecision;
     separateCutValues = config.separateCutValues;

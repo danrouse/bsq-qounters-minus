@@ -4,15 +4,24 @@ extern QountersMinus::ModConfig config;
 
 DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
 
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
-#include "HMUI/SimpleTextDropdown.hpp"
-#include "HMUI/DropdownWithTableView.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
-#include "questui/shared/ArrayUtil.hpp"
-#include "GlobalNamespace/NoteJumpStartBeatOffsetDropdown.hpp"
-#include "UnityEngine/Resources.hpp"
-#include "UnityEngine/Transform.hpp"
-#include "System/Action_2.hpp"
+#define CreateConfigToggle(configVar, label) \
+    QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), label, configVar, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>( \
+        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) { \
+            LOG_DEBUG("SET " + #configVar + " = %d", val); \
+            configVar = val; \
+            SaveConfig(); \
+        } \
+    ));
+
+// #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+// #include "HMUI/SimpleTextDropdown.hpp"
+// #include "HMUI/DropdownWithTableView.hpp"
+// #include "TMPro/TextMeshProUGUI.hpp"
+// #include "questui/shared/ArrayUtil.hpp"
+// #include "GlobalNamespace/NoteJumpStartBeatOffsetDropdown.hpp"
+// #include "UnityEngine/Resources.hpp"
+// #include "UnityEngine/Transform.hpp"
+// #include "System/Action_2.hpp"
 
 // HMUI::SimpleTextDropdown* CreateTextDropdown(
 //     UnityEngine::Transform* parent,
@@ -64,11 +73,11 @@ DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
 void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
     if (!firstActivation || !addedToHierarchy) return;
 
-    // auto scrollContainer = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(get_transform());
-    auto layout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(get_transform());
-    layout->set_spacing(0);
-    layout->get_gameObject()->AddComponent<QuestUI::Backgroundable*>()->ApplyBackground(il2cpp_utils::createcsstr("round-rect-panel"));
-    layout->set_padding(UnityEngine::RectOffset::New_ctor(2, 2, 2, 2));
+    auto layout = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(get_transform());
+    // auto layout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(scrollContainer->get_transform());
+    // layout->set_spacing(0);
+    // layout->get_gameObject()->AddComponent<QuestUI::Backgroundable*>()->ApplyBackground(il2cpp_utils::createcsstr("round-rect-panel"));
+    // layout->set_padding(UnityEngine::RectOffset::New_ctor(4, 4, 4, 4));
 
     // bool hideCombo = false;
     // bool hideMultiplier = false;
@@ -77,30 +86,15 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     // bool italicText = false;
 
     // Qounter-specific configuration [ALL-QOUNTERS]
+    //============================================================//
+
     auto cutQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Cut Qounter");
     cutQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    cutQounterTitle->set_fontSize(8.0f);
-    auto cutQounterEnabled = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Enabled", config.cutQounterConfig.enabled, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
-        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
-            LOG_DEBUG("SET config.cutQounterConfig.enabled = %d", val);
-            config.cutQounterConfig.enabled = val;
-            SaveConfig();
-        }
-    ));
-    auto cutQounterSeparateSaberCounts = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Separate Saber Counts", config.cutQounterConfig.separateSaberCounts, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
-        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
-            LOG_DEBUG("SET config.cutQounterConfig.separateSaberCounts = %d", val);
-            config.cutQounterConfig.separateSaberCounts = val;
-            SaveConfig();
-        }
-    ));
-    auto cutQounterSeparateCutValues = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Separate Cut Values", config.cutQounterConfig.separateCutValues, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
-        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
-            LOG_DEBUG("SET config.cutQounterConfig.separateCutValues = %d", val);
-            config.cutQounterConfig.separateCutValues = val;
-            SaveConfig();
-        }
-    ));
+    cutQounterTitle->set_fontSize(6.0f);
+
+    auto cutQounterEnabled = CreateConfigToggle(config.cutQounterConfig.enabled, "Enabled");
+    auto cutQounterSeparateSaberCounts = CreateConfigToggle(config.cutQounterConfig.separateSaberCounts, "Separate Saber Counts");
+    auto cutQounterSeparateCutValues = CreateConfigToggle(config.cutQounterConfig.separateCutValues, "Separate Cut Values");
     auto cutQounterAveragePrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Average Precision", 0, 1.0f, config.cutQounterConfig.averagePrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
         classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
             LOG_DEBUG("SET config.cutQounterConfig.averagePrecision = %d", (int)val);
@@ -113,23 +107,26 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto missQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Miss Qounter");
     missQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    missQounterTitle->set_fontSize(8.0f);
-    auto missQounterEnabled = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Enabled", config.missQounterConfig.enabled, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
-        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
-            LOG_DEBUG("SET config.missQounterConfig.enabled = %d", val);
-            config.missQounterConfig.enabled = val;
-            SaveConfig();
-        }
-    ));
-    auto missQounterCountBadCuts = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Count Bad Cuts", config.missQounterConfig.countBadCuts, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
-        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
-            LOG_DEBUG("SET config.missQounterConfig.countBadCuts = %d", val);
-            config.missQounterConfig.countBadCuts = val;
-            SaveConfig();
-        }
-    ));
+    missQounterTitle->set_fontSize(6.0f);
+    
+    auto missQounterEnabled = CreateConfigToggle(config.missQounterConfig.enabled, "Enabled");
+    auto missQounterCountBadCuts = CreateConfigToggle(config.missQounterConfig.countBadCuts, "Count Bad Cuts");
 
     //============================================================//
+
+    auto notesQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Notes Qounter");
+    notesQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    notesQounterTitle->set_fontSize(6.0f);
+    
+    auto notesQounterEnabled = CreateConfigToggle(config.notesQounterConfig.enabled, "Enabled");
+    auto notesQounterShowPercentage = CreateConfigToggle(config.notesQounterConfig.showPercentage, "Show Percentage");
+    auto notesQounterDecimalPrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Decimal Precision", 0, 1.0f, config.notesQounterConfig.decimalPrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
+            LOG_DEBUG("SET config.notesQounterConfig.decimalPrecision = %d", (int)val);
+            config.notesQounterConfig.decimalPrecision = (int)val;
+            SaveConfig();
+        }
+    ));
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {

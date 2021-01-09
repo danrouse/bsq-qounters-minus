@@ -7,13 +7,14 @@
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 
+#include "GlobalNamespace/ColorType.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissQounter, QountersMinus::Qounter,
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, missText);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, misses, 0);
     
-    DECLARE_INSTANCE_FIELD_DEFAULT(bool, countBadCuts, true);
+    DECLARE_INSTANCE_FIELD(bool, countBadCuts);
 
     DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
     DECLARE_METHOD(void, OnNoteMiss, GlobalNamespace::NoteData* data);
