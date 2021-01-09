@@ -6,22 +6,21 @@
 #include "Qounter.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/register.hpp"
+#include "questui/shared/ArrayUtil.hpp"
+#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
 
+// Include all Qounter types [ALL-QOUNTERS]
 #include "Qounters/CutQounter.hpp"
+#include "Qounters/MissQounter.hpp"
 
 namespace QountersMinus {
-    namespace QounterRegistry {
-        typedef struct _registry_t {
-            // Store a reference to one of each enabled Qounter [ALL-QOUNTERS]
-            Qounters::CutQounter* cutQounter;
-        } registry_t;
-        
+    namespace QounterRegistry {        
         void RegisterTypes();
         void Initialize();
         void DestroyAll();
         
-        UnityEngine::GameObject* GetParent(QounterConfig config);
+        UnityEngine::GameObject* GetParent(QounterPosition config);
 
         void OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
         void OnNoteMiss(GlobalNamespace::NoteData* data);
@@ -30,5 +29,6 @@ namespace QountersMinus {
         
         // Typed initializer for each Qounter type [ALL-QOUNTERS]
         void Initialize(CutQounterConfig config);
+        void Initialize(MissQounterConfig config);
     };
 };

@@ -79,7 +79,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     // Qounter-specific configuration [ALL-QOUNTERS]
     auto cutQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Cut Qounter");
     cutQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    cutQounterTitle->set_fontSize(12.0f);
+    cutQounterTitle->set_fontSize(8.0f);
     auto cutQounterEnabled = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Enabled", config.cutQounterConfig.enabled, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
         classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
             LOG_DEBUG("SET config.cutQounterConfig.enabled = %d", val);
@@ -108,6 +108,28 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
             SaveConfig();
         }
     ));
+
+    //============================================================//
+
+    auto missQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Miss Qounter");
+    missQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    missQounterTitle->set_fontSize(8.0f);
+    auto missQounterEnabled = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Enabled", config.missQounterConfig.enabled, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
+        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
+            LOG_DEBUG("SET config.missQounterConfig.enabled = %d", val);
+            config.missQounterConfig.enabled = val;
+            SaveConfig();
+        }
+    ));
+    auto missQounterCountBadCuts = QuestUI::BeatSaberUI::CreateToggle(layout->get_transform(), "Count Bad Cuts", config.missQounterConfig.countBadCuts, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
+        classof(UnityEngine::Events::UnityAction_1<bool>*), this, +[](QountersMinus::QounterSettingsViewController* self, bool val) {
+            LOG_DEBUG("SET config.missQounterConfig.countBadCuts = %d", val);
+            config.missQounterConfig.countBadCuts = val;
+            SaveConfig();
+        }
+    ));
+
+    //============================================================//
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {

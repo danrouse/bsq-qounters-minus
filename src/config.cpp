@@ -38,6 +38,14 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "separateCutValues", config.cutQounterConfig.separateCutValues, Bool);
         LoadConfigVar(qounterConfig, "averagePrecision", config.cutQounterConfig.averagePrecision, Int);
     }
+    if (getConfig().config.HasMember("missQounter") && getConfig().config["missQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["missQounter"].GetObject();
+        LoadConfigVar(qounterConfig, "enabled", config.missQounterConfig.enabled, Bool);
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.missQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+        LoadConfigVar(qounterConfig, "countBadCuts", config.missQounterConfig.countBadCuts, Bool);
+    }
 
     LOG_DEBUG("Everything found? %d", foundEverything);
     return foundEverything;
@@ -61,6 +69,12 @@ void QountersMinus::SaveConfig() {
     cutQounterConfig.AddMember("separateCutValues", config.cutQounterConfig.separateCutValues, allocator);
     cutQounterConfig.AddMember("averagePrecision", config.cutQounterConfig.averagePrecision, allocator);
     getConfig().config.AddMember("cutQounter", cutQounterConfig, allocator);
+
+    rapidjson::Value missQounterConfig(rapidjson::kObjectType);
+    missQounterConfig.AddMember("enabled", config.missQounterConfig.enabled, allocator);
+    missQounterConfig.AddMember("position", (int)config.missQounterConfig.position, allocator);
+    missQounterConfig.AddMember("countBadCuts", config.missQounterConfig.countBadCuts, allocator);
+    getConfig().config.AddMember("missQounter", missQounterConfig, allocator);
     
     getConfig().Write();
 }

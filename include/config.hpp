@@ -4,6 +4,7 @@
 #include "beatsaber-hook/shared/config/config-utils.hpp"
 
 #include "config/CutQounterConfig.hpp"
+#include "config/MissQounterConfig.hpp"
 
 Configuration& getConfig();
 
@@ -15,7 +16,9 @@ namespace QountersMinus {
         float multiplierOffset = 0.4f; // ?
         bool italicText = false;
 
+        // [ALL-QOUNTERS]
         CutQounterConfig cutQounterConfig;
+        MissQounterConfig missQounterConfig;
     } ModConfig;
 
     bool LoadConfig();
