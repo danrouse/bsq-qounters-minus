@@ -14,6 +14,7 @@
 #include "Qounters/CutQounter.hpp"
 #include "Qounters/MissQounter.hpp"
 #include "Qounters/NotesQounter.hpp"
+#include "Qounters/NotesLeftQounter.hpp"
 
 namespace QountersMinus {
     namespace QounterRegistry {        
@@ -32,5 +33,6 @@ namespace QountersMinus {
         void Initialize(CutQounterConfig config);
         void Initialize(MissQounterConfig config);
         void Initialize(NotesQounterConfig config);
+        void Initialize(NotesLeftQounterConfig config);
     };
 };

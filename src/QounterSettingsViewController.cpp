@@ -127,6 +127,15 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
             SaveConfig();
         }
     ));
+
+    //============================================================//
+
+    auto notesLeftQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Notes Left Qounter");
+    notesLeftQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    notesLeftQounterTitle->set_fontSize(6.0f);
+    
+    auto notesLeftQounterEnabled = CreateConfigToggle(config.notesLeftQounterConfig.enabled, "Enabled");
+    auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.notesLeftQounterConfig.labelAboveCount, "Label Above Count");
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {

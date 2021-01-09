@@ -49,6 +49,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounters::CutQounter>();
     custom_types::Register::RegisterType<Qounters::MissQounter>();
     custom_types::Register::RegisterType<Qounters::NotesQounter>();
+    custom_types::Register::RegisterType<Qounters::NotesLeftQounter>();
 }
 
 
@@ -57,6 +58,7 @@ void QountersMinus::QounterRegistry::Initialize() {
     if (config.cutQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.cutQounterConfig);
     if (config.missQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
     if (config.notesQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.notesQounterConfig);
+     QountersMinus::QounterRegistry::Initialize(config.notesLeftQounterConfig);
 
     // qounter position debugging
 
@@ -84,6 +86,7 @@ void QountersMinus::QounterRegistry::Initialize() {
 DefineQounterInitializer(Qounters::CutQounter*, CutQounterConfig, cutQounter);
 DefineQounterInitializer(Qounters::MissQounter*, MissQounterConfig, missQounter);
 DefineQounterInitializer(Qounters::NotesQounter*, NotesQounterConfig, notesQounter);
+DefineQounterInitializer(Qounters::NotesLeftQounter*, NotesLeftQounterConfig, notesLeftQounter);
 
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
@@ -91,11 +94,13 @@ void QountersMinus::QounterRegistry::OnNoteCut(GlobalNamespace::NoteData* data, 
     DefineQounterEventHandler(CutQounter, OnNoteCut(data, info));
     DefineQounterEventHandler(MissQounter, OnNoteCut(data, info));
     DefineQounterEventHandler(NotesQounter, OnNoteCut(data, info));
+    DefineQounterEventHandler(NotesLeftQounter, OnNoteCut(data, info));
 }
 
 void QountersMinus::QounterRegistry::OnNoteMiss(GlobalNamespace::NoteData* data) {
     DefineQounterEventHandler(MissQounter, OnNoteMiss(data));
     DefineQounterEventHandler(NotesQounter, OnNoteMiss(data));
+    DefineQounterEventHandler(NotesLeftQounter, OnNoteMiss(data));
 }
 
 void QountersMinus::QounterRegistry::OnScoreUpdated(int modifiedScore) {

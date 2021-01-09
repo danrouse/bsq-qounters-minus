@@ -6,10 +6,10 @@ Cheap knockoff of Counters+ for Quest
 - Cut
 - Miss
 - Notes
+- NotesLeft
 
 ## Unimplemented Qounters
 - Fail
-- NotesLeft
 - PB
 - Progress
 - Score?

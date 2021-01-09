@@ -6,6 +6,7 @@
 #include "config/CutQounterConfig.hpp"
 #include "config/MissQounterConfig.hpp"
 #include "config/NotesQounterConfig.hpp"
+#include "config/NotesLeftQounterConfig.hpp"
 
 Configuration& getConfig();
 
@@ -21,6 +22,7 @@ namespace QountersMinus {
         CutQounterConfig cutQounterConfig;
         MissQounterConfig missQounterConfig;
         NotesQounterConfig notesQounterConfig;
+        NotesLeftQounterConfig notesLeftQounterConfig;
     } ModConfig;
 
     bool LoadConfig();

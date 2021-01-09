@@ -4,7 +4,7 @@
 
 namespace QountersMinus {
     typedef struct _MissQounterConfig : QounterConfig {
-        QounterPosition position = QounterPosition::OverHighway;
+        QounterPosition position = QounterPosition::BelowCombo;
         
         bool countBadCuts = true;
     } MissQounterConfig;
