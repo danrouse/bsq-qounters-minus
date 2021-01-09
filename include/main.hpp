@@ -6,3 +6,4 @@
 #include "logger.hpp"
 #include "config.hpp"
 #include "hooks.hpp"
+#include "QounterSettingsViewController.hpp"

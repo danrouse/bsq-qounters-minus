@@ -2,73 +2,33 @@
 
 #include <map>
 #include "logger.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
-#include "Qounters/CutQounter.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/register.hpp"
 #include "UnityEngine/Transform.hpp"
 
+#include "Qounters/CutQounter.hpp"
+
 namespace QountersMinus {
-    typedef enum _QounterType {
-        CutQounter,
-        FailQounter,
-        MissedQounter,
-        NotesQounter,
-        NotesLeftQounter,
-        PBQounter,
-        ProgressBaseGameQounter,
-        ProgressQounter,
-        ScoreQounter,
-        SpeedQounter
-    } QounterType;
-    
-    typedef enum _QounterPosition {
-        BelowCombo,
-        AboveCombo,
-        BelowMultiplier,
-        AboveMultiplier,
-        BelowEnergy,
-        OverHighway
-    } QounterPosition;
+    namespace QounterRegistry {
+        typedef struct _registry_t {
+            // Store a reference to one of each enabled Qounter [ALL-QOUNTERS]
+            Qounters::CutQounter* cutQounter;
+        } registry_t;
+        
+        void RegisterTypes();
+        void Initialize();
+        void DestroyAll();
+        
+        UnityEngine::GameObject* GetParent(QounterConfig config);
 
-    typedef struct _QounterConfig {
-        QounterType type;
-        QounterPosition position;
-    } QounterConfig;
-
-    class QounterRegistry {
-        private:
-            inline static std::vector<QountersMinus::Qounter*> registry;
-        public:
-            static void RegisterTypes();
-            static void Initialize(QounterConfig config);
-            static void DestroyAll();
-            static void OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
-            static void OnNoteMiss(GlobalNamespace::NoteData* data);
-            static void ScoreUpdated(int modifiedScore);
-            static void MaxScoreUpdated(int maxModifiedScore);
+        void OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
+        void OnNoteMiss(GlobalNamespace::NoteData* data);
+        void OnScoreUpdated(int modifiedScore);
+        void OnMaxScoreUpdated(int maxModifiedScore);
+        
+        // Typed initializer for each Qounter type [ALL-QOUNTERS]
+        void Initialize(CutQounterConfig config);
     };
 };
-
-// DECLARE_CLASS_CODEGEN(QountersMinus, QounterRegistry, Il2CppObject,
-//     DECLARE_STATIC_FIELD(::Array<QountersMinus::Qounter*>*, registry);
-//     DECLARE_METHOD(static void, DestroyAll);
-
-//     DECLARE_METHOD(static void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
-//     DECLARE_METHOD(static void, OnNoteMiss, GlobalNamespace::NoteData* data);
-//     DECLARE_METHOD(static void, ScoreUpdated, int modifiedScore);
-//     DECLARE_METHOD(static void, MaxScoreUpdated, int maxModifiedScore);
-
-//     REGISTER_FUNCTION(QounterRegistry,
-//         REGISTER_FIELD(registry);
-//         REGISTER_METHOD(DestroyAll);
-
-//         REGISTER_METHOD(OnNoteCut);
-//         REGISTER_METHOD(OnNoteMiss);
-//         REGISTER_METHOD(ScoreUpdated);
-//         REGISTER_METHOD(MaxScoreUpdated);
-//     )
-
-//     public:
-//     static void Initialize(QountersMinus::Config config);
-// )

@@ -10,6 +10,7 @@ extern "C" void load() {
 
     LOG_DEBUG("Registering types");
     QountersMinus::QounterRegistry::RegisterTypes();
+    QountersMinus::QounterSettingsViewController::Register();
 
     LOG_DEBUG("Installing hooks");
     QountersMinus::InstallHooks();

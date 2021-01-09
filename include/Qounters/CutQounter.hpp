@@ -1,17 +1,48 @@
 #pragma once
 
+#include <sstream>
+#include <iomanip>
+
+#include "logger.hpp"
 #include "Qounter.hpp"
+#include "config/CutQounterConfig.hpp"
+
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 
+#include "GlobalNamespace/ScoreModel.hpp"
+#include "GlobalNamespace/ISaberSwingRatingCounter.hpp"
+#include "GlobalNamespace/SwingSaberRatingDidFinishDelegate.hpp"
+#include "System/Collections/Generic/List_1.hpp"
+#include "TMPro/TextMeshProUGUI.hpp"
+
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounter,
-    DECLARE_OVERRIDE_METHOD(void, Awake, il2cpp_utils::FindMethodUnsafe("QountersMinus", "Qounter", "Awake", 0));
-    DECLARE_OVERRIDE_METHOD(void, OnNoteCut, il2cpp_utils::FindMethodUnsafe("QountersMinus", "Qounter", "OnNoteCut", 2), GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
-    DECLARE_OVERRIDE_METHOD(void, OnNoteMiss, il2cpp_utils::FindMethodUnsafe("QountersMinus", "Qounter", "OnNoteMiss", 1), GlobalNamespace::NoteData* data);
+    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, leftCutText);
+    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, rightCutText);
+    DECLARE_INSTANCE_FIELD(GlobalNamespace::NoteCutInfo*, prevNoteCutInfo);
+    DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
+    
+    DECLARE_INSTANCE_FIELD_DEFAULT(bool, separateCutValues, false);
+    DECLARE_INSTANCE_FIELD_DEFAULT(bool, separateSaberCounts, false);
+    DECLARE_INSTANCE_FIELD_DEFAULT(int, averagePrecision, 1);
+
+    DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
+    DECLARE_METHOD(void, UpdateCutScores);
 
     REGISTER_FUNCTION(CutQounter,
-        REGISTER_METHOD(Awake);
+        REGISTER_FIELD(leftCutText);
+        REGISTER_FIELD(rightCutText);
+        REGISTER_FIELD(prevNoteCutInfo);
+        REGISTER_FIELD(cutScores);
+
+        REGISTER_FIELD(separateCutValues);
+        REGISTER_FIELD(separateSaberCounts);
+        REGISTER_FIELD(averagePrecision);
+
         REGISTER_METHOD(OnNoteCut);
-        REGISTER_METHOD(OnNoteMiss);
+        REGISTER_METHOD(UpdateCutScores);
     )
+
+    public:
+        void Configure(QountersMinus::CutQounterConfig config);
 )

@@ -2,38 +2,31 @@
 
 using namespace il2cpp_utils;
 
-extern QountersMinus::ModConfig config;
-
-#include "GlobalNamespace/CoreGameHUDController.hpp"
 MAKE_HOOK_OFFSETLESS(CoreGameHUDController_Start, void, GlobalNamespace::CoreGameHUDController* self) {
     LOG_CALLER;
     CoreGameHUDController_Start(self);
-    for (auto qounterConfig : config.qounterConfigs) {
-        QountersMinus::QounterRegistry::Initialize(qounterConfig);
-    }
+    QountersMinus::QounterRegistry::Initialize();
 }
 
-// MAKE_HOOK_OFFSETLESS(CoreGameHUDController_OnDestroy, void, GlobalNamespace::CoreGameHUDController* self) {
-//     LOG_CALLER;
-//     QountersMinus::QounterRegistry::DestroyAll();
-//     CoreGameHUDController_OnDestroy(self);
-// }
+// TODO: Hook to destroy?
+// TODO: Score changed, max score change hooks
 
-#include "GlobalNamespace/ScoreController.hpp"
-#include "GlobalNamespace/NoteController.hpp"
-MAKE_HOOK_OFFSETLESS(ScoreController_HandleNoteWasMissed, void, GlobalNamespace::ScoreController* self, GlobalNamespace::NoteController* noteController) {
+MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreController* self) {
     LOG_CALLER;
-    QountersMinus::QounterRegistry::OnNoteMiss(noteController->noteData);
-}
-#include "GlobalNamespace/NoteCutInfo.hpp"
-MAKE_HOOK_OFFSETLESS(ScoreController_HandleNoteWasCut, void, GlobalNamespace::ScoreController* self, GlobalNamespace::NoteController* noteController, GlobalNamespace::NoteCutInfo* noteCutInfo) {
-    LOG_CALLER;
-    QountersMinus::QounterRegistry::OnNoteCut(noteController->noteData, noteCutInfo);
+    ScoreController_Start(self);
+    self->add_noteWasCutEvent(MakeDelegate<System::Action_3<GlobalNamespace::NoteData*, GlobalNamespace::NoteCutInfo*, int>*>(
+        classof(NoteCutDelegate), self, +[](GlobalNamespace::ScoreController self, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info, int unused) {
+            QountersMinus::QounterRegistry::OnNoteCut(data, info);
+        }
+    ));
+    self->add_noteWasMissedEvent(MakeDelegate<System::Action_2<GlobalNamespace::NoteData*, int>*>(
+        classof(NoteMissDelegate), self, +[](GlobalNamespace::ScoreController self, GlobalNamespace::NoteData* data, int unused) {
+            QountersMinus::QounterRegistry::OnNoteMiss(data);
+        }
+    ));
 }
 
 void QountersMinus::InstallHooks() {
     INSTALL_HOOK_OFFSETLESS(CoreGameHUDController_Start, FindMethodUnsafe("", "CoreGameHUDController", "Start", 0));
-    // INSTALL_HOOK_OFFSETLESS(CoreGameHUDController_OnDestroy, FindMethodUnsafe("", "CoreGameHUDController", "OnDestroy", 0));
-    INSTALL_HOOK_OFFSETLESS(ScoreController_HandleNoteWasMissed, il2cpp_utils::FindMethodUnsafe("", "ScoreController", "HandleNoteWasMissed", 1));
-    INSTALL_HOOK_OFFSETLESS(ScoreController_HandleNoteWasCut, il2cpp_utils::FindMethodUnsafe("", "ScoreController", "HandleNoteWasCut", 2));
+    INSTALL_HOOK_OFFSETLESS(ScoreController_Start, FindMethodUnsafe("", "ScoreController", "Start", 0));
 }

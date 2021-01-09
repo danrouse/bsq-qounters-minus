@@ -1,82 +1,71 @@
 #include "QounterRegistry.hpp"
 
+using namespace QountersMinus;
+
+#define DefineQounterInitializer(qounterType, configType, registryName) void QountersMinus::QounterRegistry::Initialize(configType config) { \
+    auto qounter = GetParent(config)->AddComponent<qounterType>(); \
+    qounter->Configure(config); \
+    registry.registryName = qounter; \
+}
+
+extern QountersMinus::ModConfig config;
+QounterRegistry::registry_t registry;
+
 struct QounterPositionData {
     std::string parentName;
     UnityEngine::Vector3 localPosition;
 };
 
-std::map<QountersMinus::QounterPosition, QounterPositionData> QounterPositionParents = {
-    {QountersMinus::QounterPosition::BelowCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, 20.0f, 0.0f)}},
-    {QountersMinus::QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, -20.0f, 0.0f)}},
-    {QountersMinus::QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, 20.0f, 0.0f)}},
-    {QountersMinus::QounterPosition::AboveMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -20.0f, 0.0f)}},
-    {QountersMinus::QounterPosition::BelowEnergy, {"BasicGameHUD/EnergyPanel", UnityEngine::Vector3(0.0f, -20.0f, 0.0f)}},
-    {QountersMinus::QounterPosition::OverHighway, {"", UnityEngine::Vector3(0.0f, 0.0f, 0.0f)}}
+std::map<QounterPosition, QounterPositionData> QounterPositionParents = {
+    {QounterPosition::BelowCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, -180.0f, 0.0f)}},
+    {QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, 100.0f, 0.0f)}},
+    {QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, 20.0f, 0.0f)}},
+    {QounterPosition::AboveMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -20.0f, 0.0f)}},
+    {QounterPosition::BelowEnergy, {"BasicGameHUD/EnergyPanel", UnityEngine::Vector3(0.0f, -20.0f, 0.0f)}},
+    {QounterPosition::OverHighway, {"", UnityEngine::Vector3(0.0f, 0.0f, 0.0f)}}
 };
 
+UnityEngine::GameObject* QountersMinus::QounterRegistry::GetParent(QounterConfig config) {
+    auto containerName = il2cpp_utils::createcsstr("QountersMinus_Container" + std::to_string((int)config.position));
+    auto containerGO = UnityEngine::GameObject::Find(containerName);
+    if (!containerGO) {
+        auto parentGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(QounterPositionParents[config.position].parentName));
+        auto layout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(parentGO->get_transform());
+        containerGO = layout->get_gameObject();
+        containerGO->get_transform()->set_localPosition(QounterPositionParents[config.position].localPosition);
+        containerGO->set_name(containerName);
+    }
+    return containerGO;
+}
 
+
+// Register all Qounter types with custom_types [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::RegisterTypes() {
-    custom_types::Register::RegisterType<QountersMinus::Qounter>();
-    custom_types::Register::RegisterType<QountersMinus::Qounters::CutQounter>();
+    custom_types::Register::RegisterType<Qounter>();
+    custom_types::Register::RegisterType<Qounters::CutQounter>();
 }
 
-void QountersMinus::QounterRegistry::Initialize(QountersMinus::QounterConfig config) {
-    LOG_CALLER;
-    UnityEngine::GameObject* parentGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(
-        QounterPositionParents[config.position].parentName
-    ));
-    if (!parentGO) {
-        LOG_DEBUG("Failed to initialize Qounter: could not find parent \"" + QounterPositionParents[config.position].parentName + "\" for position %d", config.position);
-        return;
-    }
 
-    QountersMinus::Qounter* qounter;
-    switch (config.type) {
-        case QountersMinus::QounterType::CutQounter:
-            qounter = parentGO->AddComponent<QountersMinus::Qounters::CutQounter*>();
-            break;
-        case QountersMinus::QounterType::FailQounter:
-        case QountersMinus::QounterType::MissedQounter:
-        case QountersMinus::QounterType::NotesQounter:
-        case QountersMinus::QounterType::NotesLeftQounter:
-        case QountersMinus::QounterType::PBQounter:
-        case QountersMinus::QounterType::ProgressBaseGameQounter:
-        case QountersMinus::QounterType::ProgressQounter:
-        case QountersMinus::QounterType::ScoreQounter:
-        case QountersMinus::QounterType::SpeedQounter:
-        default:
-            LOG_DEBUG("Failed to initialize Qounter with unknown type %d", config.type);
-            return;
-    }
-
-    if (!qounter->gameObject) {
-        LOG_DEBUG("Failed to initialize Qounter which did not create a GameObject (type %d)", config.type);
-        return;
-    }
-
-    qounter->gameObject->get_transform()->set_localPosition(QounterPositionParents[config.position].localPosition);
-    
-    registry.push_back(qounter);
+// Initialize all enabled Qounters [ALL-QOUNTERS]
+void QountersMinus::QounterRegistry::Initialize() {
+    if (config.cutQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.cutQounterConfig);
 }
 
-void QountersMinus::QounterRegistry::DestroyAll() {
-    LOG_CALLER;
-    for (auto qounter : registry) qounter->Destroy();
-    registry.clear();
-}
+
+// Define a typed initializer for all Qounter types [ALL-QOUNTERS]
+DefineQounterInitializer(Qounters::CutQounter*, CutQounterConfig, cutQounter);
+
+
+// Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
-    LOG_CALLER;
-    for (auto qounter : registry) qounter->OnNoteCut(data, info);
+    if (registry.cutQounter) registry.cutQounter->OnNoteCut(data, info);
 }
+
 void QountersMinus::QounterRegistry::OnNoteMiss(GlobalNamespace::NoteData* data) {
-    LOG_CALLER;
-    for (auto qounter : registry) qounter->OnNoteMiss(data);
 }
-void QountersMinus::QounterRegistry::ScoreUpdated(int modifiedScore) {
-    LOG_CALLER;
-    for (auto qounter : registry) qounter->ScoreUpdated(modifiedScore);
+
+void QountersMinus::QounterRegistry::OnScoreUpdated(int modifiedScore) {
 }
-void QountersMinus::QounterRegistry::MaxScoreUpdated(int maxModifiedScore) {
-    LOG_CALLER;
-    for (auto qounter : registry) qounter->MaxScoreUpdated(maxModifiedScore);
+
+void QountersMinus::QounterRegistry::OnMaxScoreUpdated(int maxModifiedScore) {
 }
