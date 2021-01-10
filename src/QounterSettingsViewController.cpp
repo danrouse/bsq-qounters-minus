@@ -74,13 +74,13 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     //============================================================//
 
-    auto missQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Miss Qounter");
-    missQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    missQounterTitle->set_fontSize(6.0f);
+    auto missedQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Miss Qounter");
+    missedQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    missedQounterTitle->set_fontSize(6.0f);
 
-    auto missQounterEnabled = CreateConfigToggle(config.missQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(missQounterPosition, config.missQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto missQounterCountBadCuts = CreateConfigToggle(config.missQounterConfig.countBadCuts, "Count Bad Cuts");
+    auto missedQounterEnabled = CreateConfigToggle(config.missedQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(missedQounterPosition, config.missedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto missedQounterCountBadCuts = CreateConfigToggle(config.missedQounterConfig.countBadCuts, "Count Bad Cuts");
 
     //============================================================//
 

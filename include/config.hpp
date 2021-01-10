@@ -4,7 +4,7 @@
 #include "beatsaber-hook/shared/config/config-utils.hpp"
 
 #include "config/CutQounterConfig.hpp"
-#include "config/MissQounterConfig.hpp"
+#include "config/MissedQounterConfig.hpp"
 #include "config/NotesQounterConfig.hpp"
 #include "config/NotesLeftQounterConfig.hpp"
 #include "config/SpinometerConfig.hpp"
@@ -25,7 +25,7 @@ namespace QountersMinus {
 
         // [ALL-QOUNTERS]
         CutQounterConfig cutQounterConfig;
-        MissQounterConfig missQounterConfig;
+        MissedQounterConfig missedQounterConfig;
         NotesQounterConfig notesQounterConfig;
         NotesLeftQounterConfig notesLeftQounterConfig;
         SpinometerConfig spinometerConfig;

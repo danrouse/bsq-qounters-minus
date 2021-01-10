@@ -3,9 +3,9 @@
 #include "QounterConfig.hpp"
 
 namespace QountersMinus {
-    typedef struct _MissQounterConfig : QounterConfig {
+    typedef struct _MissedQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowCombo;
-        
+
         bool countBadCuts = true;
-    } MissQounterConfig;
+    } MissedQounterConfig;
 }

@@ -62,14 +62,14 @@ bool QountersMinus::LoadConfig() {
     } else {
         foundEverything = false;
     }
-    if (getConfig().config.HasMember("missQounter") && getConfig().config["missQounter"].IsObject()) {
-        auto qounterConfig = getConfig().config["missQounter"].GetObject();
+    if (getConfig().config.HasMember("missedQounter") && getConfig().config["missedQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["missedQounter"].GetObject();
         int tmpQounterPosition;
         LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
-        config.missQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+        config.missedQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
 
-        LoadConfigVar(qounterConfig, "enabled", config.missQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "countBadCuts", config.missQounterConfig.countBadCuts, Bool);
+        LoadConfigVar(qounterConfig, "enabled", config.missedQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "countBadCuts", config.missedQounterConfig.countBadCuts, Bool);
     } else {
         foundEverything = false;
     }
@@ -186,11 +186,11 @@ void QountersMinus::SaveConfig() {
     cutQounterConfig.AddMember("averagePrecision", config.cutQounterConfig.averagePrecision, allocator);
     getConfig().config.AddMember("cutQounter", cutQounterConfig, allocator);
 
-    rapidjson::Value missQounterConfig(rapidjson::kObjectType);
-    missQounterConfig.AddMember("enabled", config.missQounterConfig.enabled, allocator);
-    missQounterConfig.AddMember("position", (int)config.missQounterConfig.position, allocator);
-    missQounterConfig.AddMember("countBadCuts", config.missQounterConfig.countBadCuts, allocator);
-    getConfig().config.AddMember("missQounter", missQounterConfig, allocator);
+    rapidjson::Value missedQounterConfig(rapidjson::kObjectType);
+    missedQounterConfig.AddMember("enabled", config.missedQounterConfig.enabled, allocator);
+    missedQounterConfig.AddMember("position", (int)config.missedQounterConfig.position, allocator);
+    missedQounterConfig.AddMember("countBadCuts", config.missedQounterConfig.countBadCuts, allocator);
+    getConfig().config.AddMember("missedQounter", missedQounterConfig, allocator);
 
     rapidjson::Value notesQounterConfig(rapidjson::kObjectType);
     notesQounterConfig.AddMember("enabled", config.notesQounterConfig.enabled, allocator);

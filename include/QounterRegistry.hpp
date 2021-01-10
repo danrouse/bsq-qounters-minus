@@ -13,7 +13,7 @@
 
 // Include all Qounter types [ALL-QOUNTERS]
 #include "Qounters/CutQounter.hpp"
-#include "Qounters/MissQounter.hpp"
+#include "Qounters/MissedQounter.hpp"
 #include "Qounters/NotesQounter.hpp"
 #include "Qounters/NotesLeftQounter.hpp"
 #include "Qounters/Spinometer.hpp"
@@ -35,7 +35,7 @@ namespace QountersMinus {
 
         // Typed initializer for each Qounter type [ALL-QOUNTERS]
         void Initialize(CutQounterConfig config);
-        void Initialize(MissQounterConfig config);
+        void Initialize(MissedQounterConfig config);
         void Initialize(NotesQounterConfig config);
         void Initialize(NotesLeftQounterConfig config);
         void Initialize(SpinometerConfig config);

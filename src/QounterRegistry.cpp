@@ -64,7 +64,7 @@ void HideChildren(std::string gameObjectName) {
 void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounter>();
     custom_types::Register::RegisterType<Qounters::CutQounter>();
-    custom_types::Register::RegisterType<Qounters::MissQounter>();
+    custom_types::Register::RegisterType<Qounters::MissedQounter>();
     custom_types::Register::RegisterType<Qounters::NotesQounter>();
     custom_types::Register::RegisterType<Qounters::NotesLeftQounter>();
     custom_types::Register::RegisterType<Qounters::Spinometer>();
@@ -85,7 +85,7 @@ void QountersMinus::QounterRegistry::Initialize() {
 
     // Initialize all enabled Qounters [ALL-QOUNTERS]
     if (config.cutQounterConfig.enabled) QounterRegistry::Initialize(config.cutQounterConfig);
-    if (config.missQounterConfig.enabled) QounterRegistry::Initialize(config.missQounterConfig);
+    if (config.missedQounterConfig.enabled) QounterRegistry::Initialize(config.missedQounterConfig);
     if (config.notesQounterConfig.enabled) QounterRegistry::Initialize(config.notesQounterConfig);
     if (config.notesLeftQounterConfig.enabled) QounterRegistry::Initialize(config.notesLeftQounterConfig);
     if (config.spinometerConfig.enabled) QounterRegistry::Initialize(config.spinometerConfig);
@@ -107,7 +107,7 @@ void QountersMinus::QounterRegistry::Initialize() {
 
 // Define a typed initializer for all Qounter types [ALL-QOUNTERS]
 DefineQounterInitializer(Qounters::CutQounter*, CutQounterConfig, cutQounter);
-DefineQounterInitializer(Qounters::MissQounter*, MissQounterConfig, missQounter);
+DefineQounterInitializer(Qounters::MissedQounter*, MissedQounterConfig, missedQounter);
 DefineQounterInitializer(Qounters::NotesQounter*, NotesQounterConfig, notesQounter);
 DefineQounterInitializer(Qounters::NotesLeftQounter*, NotesLeftQounterConfig, notesLeftQounter);
 DefineQounterInitializer(Qounters::Spinometer*, SpinometerConfig, spinometer);
@@ -120,13 +120,13 @@ DefineQounterInitializer(Qounters::FailQounter*, FailQounterConfig, failQounter)
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
     DefineQounterEventHandler(CutQounter, OnNoteCut(data, info));
-    DefineQounterEventHandler(MissQounter, OnNoteCut(data, info));
+    DefineQounterEventHandler(MissedQounter, OnNoteCut(data, info));
     DefineQounterEventHandler(NotesQounter, OnNoteCut(data, info));
     DefineQounterEventHandler(NotesLeftQounter, OnNoteCut(data, info));
 }
 
 void QountersMinus::QounterRegistry::OnNoteMiss(GlobalNamespace::NoteData* data) {
-    DefineQounterEventHandler(MissQounter, OnNoteMiss(data));
+    DefineQounterEventHandler(MissedQounter, OnNoteMiss(data));
     DefineQounterEventHandler(NotesQounter, OnNoteMiss(data));
     DefineQounterEventHandler(NotesLeftQounter, OnNoteMiss(data));
 }

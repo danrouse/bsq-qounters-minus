@@ -1,8 +1,8 @@
-#include "Qounters/MissQounter.hpp"
+#include "Qounters/MissedQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::MissQounter);
+DEFINE_CLASS(QountersMinus::Qounters::MissedQounter);
 
-void QountersMinus::Qounters::MissQounter::Configure(QountersMinus::MissQounterConfig config) {
+void QountersMinus::Qounters::MissedQounter::Configure(QountersMinus::MissedQounterConfig config) {
     countBadCuts = config.countBadCuts;
 
     auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Misses", false);
@@ -16,18 +16,18 @@ void QountersMinus::Qounters::MissQounter::Configure(QountersMinus::MissQounterC
     missText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, -30.0f));
 }
 
-void QountersMinus::Qounters::MissQounter::UpdateValue() {
+void QountersMinus::Qounters::MissedQounter::UpdateValue() {
     missText->set_text(il2cpp_utils::createcsstr(std::to_string(misses)));
 }
 
-void QountersMinus::Qounters::MissQounter::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
+void QountersMinus::Qounters::MissedQounter::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
     if (countBadCuts && !info->get_allIsOK() && data->colorType != GlobalNamespace::ColorType::None) {
         misses++;
         UpdateValue();
     }
 }
 
-void QountersMinus::Qounters::MissQounter::OnNoteMiss(GlobalNamespace::NoteData* data) {
+void QountersMinus::Qounters::MissedQounter::OnNoteMiss(GlobalNamespace::NoteData* data) {
     if (data->colorType != GlobalNamespace::ColorType::None) {
         misses++;
         UpdateValue();

@@ -11,9 +11,9 @@ Cheap knockoff of Counters+ for Quest
 - Speed
 - Score
 - PB
+- Fail
 
 ## Unimplemented Qounters
-- Fail
 - Progress
 
 ## TODO before release
