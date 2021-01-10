@@ -67,6 +67,15 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "enabled", config.notesLeftQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, Bool);
     }
+    if (getConfig().config.HasMember("spinometer") && getConfig().config["spinometer"].IsObject()) {
+        auto qounterConfig = getConfig().config["spinometer"].GetObject();
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.spinometerConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+        int tmpMode;
+        LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
+        config.spinometerConfig.mode = static_cast<QountersMinus::SpinometerMode>(tmpMode);
+    }
 
     // LOG_DEBUG("Everything found? %d", foundEverything);
     return foundEverything;
@@ -109,6 +118,12 @@ void QountersMinus::SaveConfig() {
     notesLeftQounterConfig.AddMember("position", (int)config.notesLeftQounterConfig.position, allocator);
     notesLeftQounterConfig.AddMember("labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, allocator);
     getConfig().config.AddMember("notesLeftQounter", notesLeftQounterConfig, allocator);
+    
+    rapidjson::Value spinometerConfig(rapidjson::kObjectType);
+    spinometerConfig.AddMember("enabled", config.spinometerConfig.enabled, allocator);
+    spinometerConfig.AddMember("position", (int)config.spinometerConfig.position, allocator);
+    spinometerConfig.AddMember("mode", (int)config.spinometerConfig.mode, allocator);
+    getConfig().config.AddMember("spinometer", spinometerConfig, allocator);
     
     getConfig().Write();
 }

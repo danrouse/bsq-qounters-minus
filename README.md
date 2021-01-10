@@ -7,6 +7,7 @@ Cheap knockoff of Counters+ for Quest
 - Miss
 - Notes
 - NotesLeft
+- Spinometer
 
 ## Unimplemented Qounters
 - Fail
@@ -14,7 +15,6 @@ Cheap knockoff of Counters+ for Quest
 - Progress
 - Score?
 - Speed
-- Spinometer
 
 ## Credits
 

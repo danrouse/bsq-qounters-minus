@@ -51,6 +51,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounters::MissQounter>();
     custom_types::Register::RegisterType<Qounters::NotesQounter>();
     custom_types::Register::RegisterType<Qounters::NotesLeftQounter>();
+    custom_types::Register::RegisterType<Qounters::Spinometer>();
 }
 
 
@@ -60,6 +61,7 @@ void QountersMinus::QounterRegistry::Initialize() {
     if (config.missQounterConfig.enabled) QounterRegistry::Initialize(config.missQounterConfig);
     if (config.notesQounterConfig.enabled) QounterRegistry::Initialize(config.notesQounterConfig);
     if (config.notesLeftQounterConfig.enabled) QounterRegistry::Initialize(config.notesLeftQounterConfig);
+    if (config.spinometerConfig.enabled) QounterRegistry::Initialize(config.spinometerConfig);
 
     // qounter position debugging
 
@@ -88,6 +90,7 @@ DefineQounterInitializer(Qounters::CutQounter*, CutQounterConfig, cutQounter);
 DefineQounterInitializer(Qounters::MissQounter*, MissQounterConfig, missQounter);
 DefineQounterInitializer(Qounters::NotesQounter*, NotesQounterConfig, notesQounter);
 DefineQounterInitializer(Qounters::NotesLeftQounter*, NotesLeftQounterConfig, notesLeftQounter);
+DefineQounterInitializer(Qounters::Spinometer*, SpinometerConfig, spinometer);
 
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]

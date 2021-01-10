@@ -7,6 +7,7 @@
 #include "config/MissQounterConfig.hpp"
 #include "config/NotesQounterConfig.hpp"
 #include "config/NotesLeftQounterConfig.hpp"
+#include "config/SpinometerConfig.hpp"
 
 Configuration& getConfig();
 
@@ -23,6 +24,7 @@ namespace QountersMinus {
         MissQounterConfig missQounterConfig;
         NotesQounterConfig notesQounterConfig;
         NotesLeftQounterConfig notesLeftQounterConfig;
+        SpinometerConfig spinometerConfig;
     } ModConfig;
 
     bool LoadConfig();

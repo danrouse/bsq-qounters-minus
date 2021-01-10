@@ -136,6 +136,16 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     
     auto notesLeftQounterEnabled = CreateConfigToggle(config.notesLeftQounterConfig.enabled, "Enabled");
     auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.notesLeftQounterConfig.labelAboveCount, "Label Above Count");
+
+    //============================================================//
+
+    auto spinometerTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Spinometer");
+    spinometerTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    spinometerTitle->set_fontSize(6.0f);
+    
+    auto spinometerEnabled = CreateConfigToggle(config.spinometerConfig.enabled, "Enabled");
+    // TODO: mode selector
+    
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {
