@@ -58,6 +58,15 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "showPercentage", config.notesQounterConfig.showPercentage, Bool);
         LoadConfigVar(qounterConfig, "decimalPrecision", config.notesQounterConfig.decimalPrecision, Int);
     }
+    if (getConfig().config.HasMember("notesLeftQounter") && getConfig().config["notesLeftQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["notesLeftQounter"].GetObject();
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.notesLeftQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+
+        LoadConfigVar(qounterConfig, "enabled", config.notesLeftQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, Bool);
+    }
 
     // LOG_DEBUG("Everything found? %d", foundEverything);
     return foundEverything;
@@ -94,6 +103,12 @@ void QountersMinus::SaveConfig() {
     notesQounterConfig.AddMember("showPercentage", config.notesQounterConfig.showPercentage, allocator);
     notesQounterConfig.AddMember("decimalPrecision", config.notesQounterConfig.decimalPrecision, allocator);
     getConfig().config.AddMember("notesQounter", notesQounterConfig, allocator);
+    
+    rapidjson::Value notesLeftQounterConfig(rapidjson::kObjectType);
+    notesLeftQounterConfig.AddMember("enabled", config.notesLeftQounterConfig.enabled, allocator);
+    notesLeftQounterConfig.AddMember("position", (int)config.notesLeftQounterConfig.position, allocator);
+    notesLeftQounterConfig.AddMember("labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, allocator);
+    getConfig().config.AddMember("notesLeftQounter", notesLeftQounterConfig, allocator);
     
     getConfig().Write();
 }
