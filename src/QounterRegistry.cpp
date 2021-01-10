@@ -35,6 +35,7 @@ UnityEngine::GameObject* QountersMinus::QounterRegistry::GetParent(QounterPositi
     if (!containerGO) {
         auto parentGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(QounterPositionParents[position].parentName));
         auto layout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(parentGO->get_transform());
+        layout->set_spacing(20.0f);
         containerGO = layout->get_gameObject();
         containerGO->get_transform()->set_localPosition(QounterPositionParents[position].localPosition);
         containerGO->set_name(containerName);
@@ -55,30 +56,30 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
 
 // Initialize all enabled Qounters [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::Initialize() {
-    if (config.cutQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.cutQounterConfig);
-    if (config.missQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
-    if (config.notesQounterConfig.enabled) QountersMinus::QounterRegistry::Initialize(config.notesQounterConfig);
-     QountersMinus::QounterRegistry::Initialize(config.notesLeftQounterConfig);
+    if (config.cutQounterConfig.enabled) QounterRegistry::Initialize(config.cutQounterConfig);
+    if (config.missQounterConfig.enabled) QounterRegistry::Initialize(config.missQounterConfig);
+    if (config.notesQounterConfig.enabled) QounterRegistry::Initialize(config.notesQounterConfig);
+    if (config.notesLeftQounterConfig.enabled) QounterRegistry::Initialize(config.notesLeftQounterConfig);
 
     // qounter position debugging
 
-    // config.missQounterConfig.position = QountersMinus::QounterPosition::BelowCombo;
-    // QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
+    // config.missQounterConfig.position = QounterPosition::BelowCombo;
+    // QounterRegistry::Initialize(config.missQounterConfig);
 
-    // config.missQounterConfig.position = QountersMinus::QounterPosition::AboveCombo;
-    // QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
+    // config.missQounterConfig.position = QounterPosition::AboveCombo;
+    // QounterRegistry::Initialize(config.missQounterConfig);
 
-    // config.missQounterConfig.position = QountersMinus::QounterPosition::BelowMultiplier;
-    // QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
+    // config.missQounterConfig.position = QounterPosition::BelowMultiplier;
+    // QounterRegistry::Initialize(config.missQounterConfig);
 
-    // config.missQounterConfig.position = QountersMinus::QounterPosition::AboveMultiplier;
-    // QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
+    // config.missQounterConfig.position = QounterPosition::AboveMultiplier;
+    // QounterRegistry::Initialize(config.missQounterConfig);
 
-    // config.missQounterConfig.position = QountersMinus::QounterPosition::BelowEnergy;
-    // QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
+    // config.missQounterConfig.position = QounterPosition::BelowEnergy;
+    // QounterRegistry::Initialize(config.missQounterConfig);
 
-    // config.missQounterConfig.position = QountersMinus::QounterPosition::OverHighway;
-    // QountersMinus::QounterRegistry::Initialize(config.missQounterConfig);
+    // config.missQounterConfig.position = QounterPosition::OverHighway;
+    // QounterRegistry::Initialize(config.missQounterConfig);
 }
 
 

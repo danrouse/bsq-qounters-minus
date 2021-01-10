@@ -4,7 +4,9 @@
 #include "custom-types/shared/macros.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Transform.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "GlobalNamespace/NoteData.hpp"
 #include "GlobalNamespace/NoteCutInfo.hpp"
 
