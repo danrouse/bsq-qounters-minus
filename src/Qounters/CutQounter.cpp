@@ -23,11 +23,13 @@ void QountersMinus::Qounters::CutQounter::Configure(QountersMinus::CutQounterCon
     leftCutText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), defaultText, false);
     leftCutText->set_alignment(TMPro::TextAlignmentOptions::Center);
     leftCutText->set_fontSize(fontSize);
+    leftCutText->set_lineSpacing(-40.0f);
     leftCutText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(xOffset * -1.0f, yOffset));
     if (separateSaberCounts) {
         rightCutText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), defaultText, false);
         rightCutText->set_alignment(TMPro::TextAlignmentOptions::Center);
         rightCutText->set_fontSize(fontSize);
+        rightCutText->set_lineSpacing(-40.0f);
         rightCutText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(xOffset, yOffset));
     }
 

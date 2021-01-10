@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
 namespace QountersMinus {
     enum class QounterPosition {
@@ -25,5 +26,6 @@ namespace QountersMinus {
     typedef struct _QounterConfig {
         bool enabled = false;
         QounterPosition position = QounterPosition::BelowCombo;
+        int distance = 0; // NYI
     } QounterConfig;
 }

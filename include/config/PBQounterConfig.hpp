@@ -1,7 +1,6 @@
 #pragma once
 
 #include "QounterConfig.hpp"
-#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "UnityEngine/Color.hpp"
 
 namespace QountersMinus {

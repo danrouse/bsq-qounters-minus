@@ -152,6 +152,16 @@ bool QountersMinus::LoadConfig() {
     } else {
         foundEverything = false;
     }
+    if (getConfig().config.HasMember("failQounter") && getConfig().config["failQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["failQounter"].GetObject();
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.failQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+        LoadConfigVar(qounterConfig, "enabled", config.failQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "showRestartsInstead", config.failQounterConfig.showRestartsInstead, Bool);
+    } else {
+        foundEverything = false;
+    }
 
     // LOG_DEBUG("Everything found? %d", foundEverything);
     return foundEverything;
@@ -227,6 +237,12 @@ void QountersMinus::SaveConfig() {
     pbQounterConfig.AddMember("betterColor", WriteColor(config.pbQounterConfig.betterColor, allocator), allocator);
     pbQounterConfig.AddMember("defaultColor", WriteColor(config.pbQounterConfig.defaultColor, allocator), allocator);
     getConfig().config.AddMember("pbQounter", pbQounterConfig, allocator);
+
+    rapidjson::Value failQounterConfig(rapidjson::kObjectType);
+    failQounterConfig.AddMember("enabled", config.failQounterConfig.enabled, allocator);
+    failQounterConfig.AddMember("position", (int)config.failQounterConfig.position, allocator);
+    failQounterConfig.AddMember("showRestartsInstead", config.failQounterConfig.showRestartsInstead, allocator);
+    getConfig().config.AddMember("failQounter", failQounterConfig, allocator);
 
     getConfig().Write();
 }

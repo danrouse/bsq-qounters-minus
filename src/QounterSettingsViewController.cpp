@@ -174,6 +174,16 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto pbQounterUnderscore = CreateConfigToggle(config.pbQounterConfig.underscore, "Underscore");
     auto pbQounterHideFirstScore = CreateConfigToggle(config.pbQounterConfig.hideFirstScore, "Hide First Score");
     // TODO colors
+
+    //============================================================//
+
+    auto failQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Fail Qounter");
+    failQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    failQounterTitle->set_fontSize(6.0f);
+
+    auto failQounterEnabled = CreateConfigToggle(config.failQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(failQounterPosition, config.failQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto failQounterShowRestartsInstead = CreateConfigToggle(config.failQounterConfig.showRestartsInstead, "Show Restarts Instead");
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {
