@@ -9,20 +9,21 @@ Cheap knockoff of Counters+ for Quest
 - NotesLeft
 - Spinometer
 - Speed
+- Score
+- PB
 
 ## Unimplemented Qounters
 - Fail
-- PB
 - Progress
-- Score
 
 ## TODO before release
-- do qounters actually need to be destroyed? or remove existing destroy shell
-- qounter sizing with regard to vertical layout group (how to force expand when e.g. multiple lines? cut qounter, speed qounter, etc.)
-- parent container alignment (grow top to bottom, not from center)
-- fine tune parent container locations
-- add distance option to each? maybe
-- pull options menu hover texts from original counters+
+- score qounter: commented stuff (positioning), custom rank colors
+- positioning: qounter sizing with regard to vertical layout group (how to force expand when e.g. multiple lines? cut qounter, speed qounter, etc.)
+- positioning: parent container alignment (grow top to bottom, not from center)
+- positioning: fine tune parent container locations
+- config: add distance option to each? maybe
+- config menu: hover help texts
+- config menu: color picker options
 
 ## Credits
 

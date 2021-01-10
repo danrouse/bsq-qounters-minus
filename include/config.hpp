@@ -10,6 +10,7 @@
 #include "config/SpinometerConfig.hpp"
 #include "config/SpeedQounterConfig.hpp"
 #include "config/ScoreQounterConfig.hpp"
+#include "config/PBQounterConfig.hpp"
 
 Configuration& getConfig();
 
@@ -29,6 +30,7 @@ namespace QountersMinus {
         SpinometerConfig spinometerConfig;
         SpeedQounterConfig speedQounterConfig;
         ScoreQounterConfig scoreQounterConfig;
+        PBQounterConfig pbQounterConfig;
     } ModConfig;
 
     bool LoadConfig();

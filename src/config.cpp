@@ -16,6 +16,27 @@ Configuration& getConfig() {
         LOG_DEBUG("Didn't find " + member); \
         foundEverything = false; \
     }
+#define LoadConfigVarColor(_config, member, internalKey) \
+    if (_config.HasMember(member) && _config[member].IsArray()) { \
+        auto arrayVal = _config[member].GetArray(); \
+        internalKey.r = arrayVal[0].GetDouble(); \
+        internalKey.g = arrayVal[1].GetDouble(); \
+        internalKey.b = arrayVal[2].GetDouble(); \
+        internalKey.a = arrayVal[3].GetDouble(); \
+    } else { \
+        LOG_DEBUG("Didn't find " + member); \
+        foundEverything = false; \
+    }
+
+rapidjson::Value WriteColor(UnityEngine::Color color, rapidjson::Document::AllocatorType& allocator) {
+    rapidjson::Value colorValue(rapidjson::kArrayType);
+    colorValue.PushBack(color.r, allocator);
+    colorValue.PushBack(color.g, allocator);
+    colorValue.PushBack(color.b, allocator);
+    colorValue.PushBack(color.a, allocator);
+    return colorValue;
+}
+
 
 bool QountersMinus::LoadConfig() {
     bool foundEverything = true;
@@ -83,6 +104,7 @@ bool QountersMinus::LoadConfig() {
         int tmpMode;
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.spinometerConfig.mode = static_cast<QountersMinus::SpinometerMode>(tmpMode);
+        LoadConfigVar(qounterConfig, "enabled", config.spinometerConfig.enabled, Bool);
     } else {
         foundEverything = false;
     }
@@ -94,6 +116,7 @@ bool QountersMinus::LoadConfig() {
         int tmpMode;
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.speedQounterConfig.mode = static_cast<QountersMinus::SpeedQounterMode>(tmpMode);
+        LoadConfigVar(qounterConfig, "enabled", config.speedQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "decimalPrecision", config.speedQounterConfig.decimalPrecision, Int);
     } else {
         foundEverything = false;
@@ -106,7 +129,26 @@ bool QountersMinus::LoadConfig() {
         int tmpMode;
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.scoreQounterConfig.mode = static_cast<QountersMinus::ScoreQounterMode>(tmpMode);
+        LoadConfigVar(qounterConfig, "enabled", config.scoreQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "customRankColors", config.scoreQounterConfig.customRankColors, Bool);
+    } else {
+        foundEverything = false;
+    }
+    if (getConfig().config.HasMember("pbQounter") && getConfig().config["pbQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["pbQounter"].GetObject();
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.pbQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+        int tmpMode;
+        LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
+        config.pbQounterConfig.mode = static_cast<QountersMinus::PBQounterMode>(tmpMode);
+        LoadConfigVar(qounterConfig, "enabled", config.pbQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "decimalPrecision", config.pbQounterConfig.decimalPrecision, Int);
+        LoadConfigVar(qounterConfig, "textSize", config.pbQounterConfig.textSize, Int);
+        LoadConfigVar(qounterConfig, "underscore", config.pbQounterConfig.underscore, Bool);
+        LoadConfigVar(qounterConfig, "hideFirstScore", config.pbQounterConfig.hideFirstScore, Bool);
+        LoadConfigVarColor(qounterConfig, "betterColor", config.pbQounterConfig.betterColor);
+        LoadConfigVarColor(qounterConfig, "defaultColor", config.pbQounterConfig.defaultColor);
     } else {
         foundEverything = false;
     }
@@ -171,7 +213,20 @@ void QountersMinus::SaveConfig() {
     scoreQounterConfig.AddMember("position", (int)config.scoreQounterConfig.position, allocator);
     scoreQounterConfig.AddMember("mode", (int)config.scoreQounterConfig.mode, allocator);
     scoreQounterConfig.AddMember("customRankColors", config.scoreQounterConfig.customRankColors, allocator);
+    // TODO colors
     getConfig().config.AddMember("scoreQounter", scoreQounterConfig, allocator);
+
+    rapidjson::Value pbQounterConfig(rapidjson::kObjectType);
+    pbQounterConfig.AddMember("enabled", config.pbQounterConfig.enabled, allocator);
+    pbQounterConfig.AddMember("position", (int)config.pbQounterConfig.position, allocator);
+    pbQounterConfig.AddMember("mode", (int)config.pbQounterConfig.mode, allocator);
+    pbQounterConfig.AddMember("decimalPrecision", config.pbQounterConfig.decimalPrecision, allocator);
+    pbQounterConfig.AddMember("textSize", config.pbQounterConfig.textSize, allocator);
+    pbQounterConfig.AddMember("underscore", config.pbQounterConfig.underscore, allocator);
+    pbQounterConfig.AddMember("hideFirstScore", config.pbQounterConfig.hideFirstScore, allocator);
+    pbQounterConfig.AddMember("betterColor", WriteColor(config.pbQounterConfig.betterColor, allocator), allocator);
+    pbQounterConfig.AddMember("defaultColor", WriteColor(config.pbQounterConfig.defaultColor, allocator), allocator);
+    getConfig().config.AddMember("pbQounter", pbQounterConfig, allocator);
 
     getConfig().Write();
 }

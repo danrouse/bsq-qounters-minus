@@ -2,20 +2,14 @@
 
 #include "logger.hpp"
 #include "format.hpp"
+#include "note_count.hpp"
 #include "Qounter.hpp"
 #include "config/NotesLeftQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 
-#include "GlobalNamespace/BeatmapData.hpp"
-#include "GlobalNamespace/BeatmapLineData.hpp"
-#include "GlobalNamespace/BeatmapObjectCallbackController.hpp"
-#include "GlobalNamespace/BeatmapObjectCallbackController_InitData.hpp"
-#include "GlobalNamespace/BeatmapObjectData.hpp"
-#include "GlobalNamespace/BeatmapObjectType.hpp"
 #include "GlobalNamespace/ColorType.hpp"
-#include "GlobalNamespace/NoteData.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesLeftQounter, QountersMinus::Qounter,

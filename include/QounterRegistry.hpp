@@ -19,6 +19,7 @@
 #include "Qounters/Spinometer.hpp"
 #include "Qounters/SpeedQounter.hpp"
 #include "Qounters/ScoreQounter.hpp"
+#include "Qounters/PBQounter.hpp"
 
 namespace QountersMinus {
     namespace QounterRegistry {
@@ -39,5 +40,6 @@ namespace QountersMinus {
         void Initialize(SpinometerConfig config);
         void Initialize(SpeedQounterConfig config);
         void Initialize(ScoreQounterConfig config);
+        void Initialize(PBQounterConfig config);
     };
 };

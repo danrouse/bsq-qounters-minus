@@ -22,5 +22,6 @@ namespace QountersMinus {
         QounterPosition position = QounterPosition::BelowMultiplier;
         ScoreQounterMode mode = ScoreQounterMode::Original;
         bool customRankColors = true;
+        // TODO: custom rank colors map (how to serialize/unserialize?)
     } ScoreQounterConfig;
 }

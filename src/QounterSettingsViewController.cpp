@@ -147,6 +147,33 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     CreateConfigEnumIncrement(scoreQounterMode, config.scoreQounterConfig.mode, "Mode", QountersMinus::ScoreQounterMode, QountersMinus::ScoreQounterModeCount, QountersMinus::ScoreQounterModeNames);
     // NYI
     // auto scoreQounterCustomRankColors = CreateConfigToggle(config.scoreQounterConfig.customRankColors, "Custom Rank Colors");
+
+    //============================================================//
+
+    auto pbQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "PB Qounter");
+    pbQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    pbQounterTitle->set_fontSize(6.0f);
+
+    auto pbQounterEnabled = CreateConfigToggle(config.pbQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(pbQounterPosition, config.pbQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    CreateConfigEnumIncrement(pbQounterMode, config.pbQounterConfig.mode, "Mode", QountersMinus::PBQounterMode, QountersMinus::PBQounterModeCount, QountersMinus::PBQounterModeNames);
+    auto pbQounterDecimalPrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Decimal Precision", 0, 1.0f, config.pbQounterConfig.decimalPrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
+            LOG_DEBUG("SET config.pbQounterConfig.decimalPrecision = %d", (int)val);
+            config.pbQounterConfig.decimalPrecision = (int)val;
+            SaveConfig();
+        }
+    ));
+    auto pbQounterTextSize = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Text Size", 0, 1.0f, config.pbQounterConfig.textSize, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
+            LOG_DEBUG("SET config.pbQounterConfig.textSize = %d", (int)val);
+            config.pbQounterConfig.textSize = (int)val;
+            SaveConfig();
+        }
+    ));
+    auto pbQounterUnderscore = CreateConfigToggle(config.pbQounterConfig.underscore, "Underscore");
+    auto pbQounterHideFirstScore = CreateConfigToggle(config.pbQounterConfig.hideFirstScore, "Hide First Score");
+    // TODO colors
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {

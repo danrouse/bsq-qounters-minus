@@ -14,12 +14,12 @@ DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, gameObject);
 
     DECLARE_METHOD(void, Awake);
-    DECLARE_METHOD(void, Destroy);
+    DECLARE_METHOD(void, OnDestroy);
 
     REGISTER_FUNCTION(Qounter,
         REGISTER_FIELD(gameObject);
 
         REGISTER_METHOD(Awake);
-        REGISTER_METHOD(Destroy);
+        REGISTER_METHOD(OnDestroy);
     )
 )

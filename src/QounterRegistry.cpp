@@ -70,6 +70,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounters::Spinometer>();
     custom_types::Register::RegisterType<Qounters::SpeedQounter>();
     custom_types::Register::RegisterType<Qounters::ScoreQounter>();
+    custom_types::Register::RegisterType<Qounters::PBQounter>();
 }
 
 #include "UnityEngine/Animator.hpp"
@@ -88,7 +89,8 @@ void QountersMinus::QounterRegistry::Initialize() {
     if (config.notesLeftQounterConfig.enabled) QounterRegistry::Initialize(config.notesLeftQounterConfig);
     if (config.spinometerConfig.enabled) QounterRegistry::Initialize(config.spinometerConfig);
     if (config.speedQounterConfig.enabled) QounterRegistry::Initialize(config.speedQounterConfig);
-    if (config.speedQounterConfig.enabled) QounterRegistry::Initialize(config.scoreQounterConfig);
+    if (config.scoreQounterConfig.enabled) QounterRegistry::Initialize(config.scoreQounterConfig);
+    if (config.pbQounterConfig.enabled) QounterRegistry::Initialize(config.pbQounterConfig);
 
     if (config.italicText) {
         auto qounters = UnityEngine::Resources::FindObjectsOfTypeAll<Qounter*>();
@@ -109,6 +111,7 @@ DefineQounterInitializer(Qounters::NotesLeftQounter*, NotesLeftQounterConfig, no
 DefineQounterInitializer(Qounters::Spinometer*, SpinometerConfig, spinometer);
 DefineQounterInitializer(Qounters::SpeedQounter*, SpeedQounterConfig, speedQounter);
 DefineQounterInitializer(Qounters::ScoreQounter*, ScoreQounterConfig, scoreQounter);
+DefineQounterInitializer(Qounters::PBQounter*, PBQounterConfig, pbQounter);
 
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
@@ -126,6 +129,7 @@ void QountersMinus::QounterRegistry::OnNoteMiss(GlobalNamespace::NoteData* data)
 }
 
 void QountersMinus::QounterRegistry::OnScoreUpdated(int modifiedScore) {
+    DefineQounterEventHandler(PBQounter, OnScoreUpdated(modifiedScore));
 }
 
 void QountersMinus::QounterRegistry::OnMaxScoreUpdated(int maxModifiedScore) {
