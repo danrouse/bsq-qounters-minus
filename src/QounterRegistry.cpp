@@ -29,7 +29,7 @@ std::map<QounterPosition, QounterPositionData> QounterPositionParents = {
     {QounterPosition::OverHighway, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(300.0f, 120.0f, 0.0f)}}
 };
 
-UnityEngine::GameObject* QountersMinus::QounterRegistry::GetParent(QounterPosition position) {
+UnityEngine::GameObject* GetParent(QounterPosition position) {
     auto containerName = il2cpp_utils::createcsstr("QountersMinus_Container" + std::to_string((int)position));
     auto containerGO = UnityEngine::GameObject::Find(containerName);
     if (!containerGO) {
@@ -37,10 +37,26 @@ UnityEngine::GameObject* QountersMinus::QounterRegistry::GetParent(QounterPositi
         auto layout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(parentGO->get_transform());
         layout->set_spacing(20.0f);
         containerGO = layout->get_gameObject();
-        containerGO->get_transform()->set_localPosition(QounterPositionParents[position].localPosition);
+        auto localPosition = QounterPositionParents[position].localPosition;
+        if (position == QounterPosition::BelowCombo || position == QounterPosition::AboveCombo) {
+            localPosition.y *= 1.0f + config.comboOffset;
+        } else if (position == QounterPosition::BelowMultiplier || position == QounterPosition::AboveMultiplier) {
+            localPosition.y *= 1.0f + config.multiplierOffset;
+        }
+        containerGO->get_transform()->set_localPosition(localPosition);
         containerGO->set_name(containerName);
     }
     return containerGO;
+}
+
+void HideChildren(UnityEngine::GameObject* gameObject) {
+    auto parent = gameObject->get_transform();
+    for (int i = 0; i < parent->get_childCount(); i++) {
+        parent->GetChild(i)->get_gameObject()->SetActive(false);
+    }
+}
+void HideChildren(std::string gameObjectName) {
+    HideChildren(UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(gameObjectName)));
 }
 
 
@@ -54,34 +70,31 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounters::Spinometer>();
 }
 
-
-// Initialize all enabled Qounters [ALL-QOUNTERS]
+#include "UnityEngine/Animator.hpp"
 void QountersMinus::QounterRegistry::Initialize() {
+    if (config.hideCombo) HideChildren("BasicGameHUD/LeftPanel/ComboPanel");
+    if (config.hideMultiplier) {
+        auto multiplierGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("BasicGameHUD/RightPanel/MultiplierCanvas"));
+        UnityEngine::Object::Destroy(multiplierGO->GetComponent<UnityEngine::Animator*>());
+        HideChildren(multiplierGO);
+    }
+
+    // Initialize all enabled Qounters [ALL-QOUNTERS]
     if (config.cutQounterConfig.enabled) QounterRegistry::Initialize(config.cutQounterConfig);
     if (config.missQounterConfig.enabled) QounterRegistry::Initialize(config.missQounterConfig);
     if (config.notesQounterConfig.enabled) QounterRegistry::Initialize(config.notesQounterConfig);
     if (config.notesLeftQounterConfig.enabled) QounterRegistry::Initialize(config.notesLeftQounterConfig);
     if (config.spinometerConfig.enabled) QounterRegistry::Initialize(config.spinometerConfig);
 
-    // qounter position debugging
-
-    // config.missQounterConfig.position = QounterPosition::BelowCombo;
-    // QounterRegistry::Initialize(config.missQounterConfig);
-
-    // config.missQounterConfig.position = QounterPosition::AboveCombo;
-    // QounterRegistry::Initialize(config.missQounterConfig);
-
-    // config.missQounterConfig.position = QounterPosition::BelowMultiplier;
-    // QounterRegistry::Initialize(config.missQounterConfig);
-
-    // config.missQounterConfig.position = QounterPosition::AboveMultiplier;
-    // QounterRegistry::Initialize(config.missQounterConfig);
-
-    // config.missQounterConfig.position = QounterPosition::BelowEnergy;
-    // QounterRegistry::Initialize(config.missQounterConfig);
-
-    // config.missQounterConfig.position = QounterPosition::OverHighway;
-    // QounterRegistry::Initialize(config.missQounterConfig);
+    if (config.italicText) {
+        auto qounters = UnityEngine::Resources::FindObjectsOfTypeAll<Qounter*>();
+        for (int i = 0; i < qounters->Length(); i++) {
+            auto texts = qounters->values[i]->GetComponentsInChildren<TMPro::TextMeshProUGUI*>();
+            for (int j = 0; j < texts->Length(); j++) {
+                texts->values[j]->set_fontStyle(TMPro::FontStyles::Italic);
+            }
+        }
+    }
 }
 
 

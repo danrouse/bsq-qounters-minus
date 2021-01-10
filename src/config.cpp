@@ -20,7 +20,7 @@ Configuration& getConfig() {
 bool QountersMinus::LoadConfig() {
     bool foundEverything = true;
     getConfig().Load();
-    
+
     LoadConfigVar(getConfig().config, "hideCombo", config.hideCombo, Bool);
     LoadConfigVar(getConfig().config, "hideMultiplier", config.hideMultiplier, Bool);
     LoadConfigVar(getConfig().config, "italicText", config.italicText, Bool);
@@ -38,6 +38,8 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "separateSaberCounts", config.cutQounterConfig.separateSaberCounts, Bool);
         LoadConfigVar(qounterConfig, "separateCutValues", config.cutQounterConfig.separateCutValues, Bool);
         LoadConfigVar(qounterConfig, "averagePrecision", config.cutQounterConfig.averagePrecision, Int);
+    } else {
+        foundEverything = false;
     }
     if (getConfig().config.HasMember("missQounter") && getConfig().config["missQounter"].IsObject()) {
         auto qounterConfig = getConfig().config["missQounter"].GetObject();
@@ -47,6 +49,8 @@ bool QountersMinus::LoadConfig() {
 
         LoadConfigVar(qounterConfig, "enabled", config.missQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "countBadCuts", config.missQounterConfig.countBadCuts, Bool);
+    } else {
+        foundEverything = false;
     }
     if (getConfig().config.HasMember("notesQounter") && getConfig().config["notesQounter"].IsObject()) {
         auto qounterConfig = getConfig().config["notesQounter"].GetObject();
@@ -57,6 +61,8 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "enabled", config.notesQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "showPercentage", config.notesQounterConfig.showPercentage, Bool);
         LoadConfigVar(qounterConfig, "decimalPrecision", config.notesQounterConfig.decimalPrecision, Int);
+    } else {
+        foundEverything = false;
     }
     if (getConfig().config.HasMember("notesLeftQounter") && getConfig().config["notesLeftQounter"].IsObject()) {
         auto qounterConfig = getConfig().config["notesLeftQounter"].GetObject();
@@ -66,6 +72,8 @@ bool QountersMinus::LoadConfig() {
 
         LoadConfigVar(qounterConfig, "enabled", config.notesLeftQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, Bool);
+    } else {
+        foundEverything = false;
     }
     if (getConfig().config.HasMember("spinometer") && getConfig().config["spinometer"].IsObject()) {
         auto qounterConfig = getConfig().config["spinometer"].GetObject();
@@ -75,6 +83,8 @@ bool QountersMinus::LoadConfig() {
         int tmpMode;
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.spinometerConfig.mode = static_cast<QountersMinus::SpinometerMode>(tmpMode);
+    } else {
+        foundEverything = false;
     }
 
     // LOG_DEBUG("Everything found? %d", foundEverything);
@@ -112,18 +122,18 @@ void QountersMinus::SaveConfig() {
     notesQounterConfig.AddMember("showPercentage", config.notesQounterConfig.showPercentage, allocator);
     notesQounterConfig.AddMember("decimalPrecision", config.notesQounterConfig.decimalPrecision, allocator);
     getConfig().config.AddMember("notesQounter", notesQounterConfig, allocator);
-    
+
     rapidjson::Value notesLeftQounterConfig(rapidjson::kObjectType);
     notesLeftQounterConfig.AddMember("enabled", config.notesLeftQounterConfig.enabled, allocator);
     notesLeftQounterConfig.AddMember("position", (int)config.notesLeftQounterConfig.position, allocator);
     notesLeftQounterConfig.AddMember("labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, allocator);
     getConfig().config.AddMember("notesLeftQounter", notesLeftQounterConfig, allocator);
-    
+
     rapidjson::Value spinometerConfig(rapidjson::kObjectType);
     spinometerConfig.AddMember("enabled", config.spinometerConfig.enabled, allocator);
     spinometerConfig.AddMember("position", (int)config.spinometerConfig.position, allocator);
     spinometerConfig.AddMember("mode", (int)config.spinometerConfig.mode, allocator);
     getConfig().config.AddMember("spinometer", spinometerConfig, allocator);
-    
+
     getConfig().Write();
 }

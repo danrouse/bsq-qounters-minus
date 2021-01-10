@@ -13,62 +13,17 @@ DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
         } \
     ));
 
-// #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
-// #include "HMUI/SimpleTextDropdown.hpp"
-// #include "HMUI/DropdownWithTableView.hpp"
-// #include "TMPro/TextMeshProUGUI.hpp"
-// #include "questui/shared/ArrayUtil.hpp"
-// #include "GlobalNamespace/NoteJumpStartBeatOffsetDropdown.hpp"
-// #include "UnityEngine/Resources.hpp"
-// #include "UnityEngine/Transform.hpp"
-// #include "System/Action_2.hpp"
-
-// HMUI::SimpleTextDropdown* CreateTextDropdown(
-//     UnityEngine::Transform* parent,
-//     std::string text,
-//     std::vector<std::string> values,
-//     int selectedIndex,
-//     UnityEngine::Vector2 anchoredPosition,
-//     System::Action_2<HMUI::DropdownWithTableView*, int>* onChange
-// ) {
-//     auto template = QuestUI::ArrayUtil::First(
-//         QuestUI::ArrayUtil::Select<UnityEngine::GameObject*>(
-//             UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>(),
-//             [](HMUI::SimpleTextDropdown* x) { return x->get_transform()->get_parent()->get_gameObject(); }
-//         ),
-//         [](UnityEngine::GameObject* x) { return to_utf8(csstrtostr(x->get_name())) == "NJBSO"; }
-//     );
-//     auto gameObject = UnityEngine::Object::Instantiate(template, parent, false);
-//     static auto name = il2cpp_utils::createcsstr("QountersMinusTextDropdown", il2cpp_utils::StringType::Manual);
-//     gameObject->set_name(name);
-//     gameObject->SetActive(false);
-
-//     auto labelText = gameObject->get_transform()->Find(il2cpp_utils::createcsstr("Label"))->get_gameObject();
-//     UnityEngine::Object::Destroy(labelText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
-//     TMPro::TextMeshProUGUI* textMesh = labelText->GetComponent<TMPro::TextMeshProUGUI*>();
-//     textMesh->SetText(il2cpp_utils::createcsstr(text));
-//     textMesh->set_richText(true);
-    
-//     UnityEngine::Object::Destroy(gameObject->GetComponentInChildren<GlobalNamespace::NoteJumpStartBeatOffsetDropdown*>());
-//     auto dropdown = gameObject->GetComponentInChildren<HMUI::SimpleTextDropdown*>();
-//     // toggle->set_interactable(true);
-//     // toggle->set_isOn(currentValue);
-//     // dropdown->
-
-//     // toggle->onValueChanged = Toggle::ToggleEvent::New_ctor();
-//     // if(onToggle)
-//     //     toggle->onValueChanged->AddListener(onToggle);
-    
-//     auto rectTransform = gameObject->GetComponent<UnityEngine::RectTransform*>();
-//     rectTransform->set_anchoredPosition(anchoredPosition);
-//     // LayoutElement* layout = gameObject->GetComponent<LayoutElement*>();
-//     // layout->set_preferredWidth(90.0f);
-//     gameObject->SetActive(true);
-//     return dropdown;
-// }
-
-#include "UnityEngine/RectOffset.hpp"
-#include "logger.hpp"
+#define CreateConfigEnumIncrement(varName, configVar, label, enumType, enumCount, enumMap) \
+   auto varName = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), label, 0, 1.0f, (float)(int)configVar, UnityEngine::Vector2(0.0f, 0.0f), nullptr); \
+   varName->OnValueChange = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>( \
+        classof(UnityEngine::Events::UnityAction_1<float>*), varName, +[](QuestUI::IncrementSetting* self, float rawVal) { \
+            auto intVal = (int)rawVal % enumCount; \
+            LOG_DEBUG("SET " + #configVar + " = %d", intVal); \
+            configVar = static_cast<enumType>(intVal); \
+            self->Text->SetText(il2cpp_utils::createcsstr(enumMap[configVar])); \
+        } \
+    ); \
+    varName->Text->SetText(il2cpp_utils::createcsstr(enumMap[configVar]));
 
 void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
     if (!firstActivation || !addedToHierarchy) return;
@@ -79,11 +34,23 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     // layout->get_gameObject()->AddComponent<QuestUI::Backgroundable*>()->ApplyBackground(il2cpp_utils::createcsstr("round-rect-panel"));
     // layout->set_padding(UnityEngine::RectOffset::New_ctor(4, 4, 4, 4));
 
-    // bool hideCombo = false;
-    // bool hideMultiplier = false;
-    // float comboOffset = 0.2f; // ?
-    // float multiplierOffset = 0.4f; // ?
-    // bool italicText = false;
+    auto hideCombo = CreateConfigToggle(config.hideCombo, "Hide Combo");
+    auto hideMultiplier = CreateConfigToggle(config.hideMultiplier, "Hide Multiplier");
+    auto comboOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Combo Offset", 1, 0.1f, config.comboOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
+            LOG_DEBUG("SET config.comboOffset = %.2f", val);
+            config.comboOffset = val;
+            SaveConfig();
+        }
+    ));
+    auto multiplierOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Multiplier Offset", 1, 0.1f, config.multiplierOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
+            LOG_DEBUG("SET config.multiplierOffset = %.2f", val);
+            config.multiplierOffset = val;
+            SaveConfig();
+        }
+    ));
+    auto italicText = CreateConfigToggle(config.italicText, "Italic Text");
 
     // Qounter-specific configuration [ALL-QOUNTERS]
     //============================================================//
@@ -93,6 +60,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     cutQounterTitle->set_fontSize(6.0f);
 
     auto cutQounterEnabled = CreateConfigToggle(config.cutQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(cutQounterPosition, config.cutQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto cutQounterSeparateSaberCounts = CreateConfigToggle(config.cutQounterConfig.separateSaberCounts, "Separate Saber Counts");
     auto cutQounterSeparateCutValues = CreateConfigToggle(config.cutQounterConfig.separateCutValues, "Separate Cut Values");
     auto cutQounterAveragePrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Average Precision", 0, 1.0f, config.cutQounterConfig.averagePrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
@@ -108,8 +76,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto missQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Miss Qounter");
     missQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
     missQounterTitle->set_fontSize(6.0f);
-    
+
     auto missQounterEnabled = CreateConfigToggle(config.missQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(missQounterPosition, config.missQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto missQounterCountBadCuts = CreateConfigToggle(config.missQounterConfig.countBadCuts, "Count Bad Cuts");
 
     //============================================================//
@@ -117,8 +86,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto notesQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Notes Qounter");
     notesQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
     notesQounterTitle->set_fontSize(6.0f);
-    
+
     auto notesQounterEnabled = CreateConfigToggle(config.notesQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(notesQounterPosition, config.notesQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto notesQounterShowPercentage = CreateConfigToggle(config.notesQounterConfig.showPercentage, "Show Percentage");
     auto notesQounterDecimalPrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Decimal Precision", 0, 1.0f, config.notesQounterConfig.decimalPrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
         classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
@@ -133,8 +103,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto notesLeftQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Notes Left Qounter");
     notesLeftQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
     notesLeftQounterTitle->set_fontSize(6.0f);
-    
+
     auto notesLeftQounterEnabled = CreateConfigToggle(config.notesLeftQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(notesLeftQounterPosition, config.notesLeftQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.notesLeftQounterConfig.labelAboveCount, "Label Above Count");
 
     //============================================================//
@@ -142,10 +113,10 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto spinometerTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Spinometer");
     spinometerTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
     spinometerTitle->set_fontSize(6.0f);
-    
+
     auto spinometerEnabled = CreateConfigToggle(config.spinometerConfig.enabled, "Enabled");
-    // TODO: mode selector
-    
+    CreateConfigEnumIncrement(spinometerPosition, config.spinometerConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    CreateConfigEnumIncrement(spinometerMode, config.spinometerConfig.mode, "Mode", QountersMinus::SpinometerMode, QountersMinus::SpinometerModeCount, QountersMinus::SpinometerModeNames);
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {
