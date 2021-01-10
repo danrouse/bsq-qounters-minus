@@ -17,6 +17,7 @@
 #include "Qounters/NotesQounter.hpp"
 #include "Qounters/NotesLeftQounter.hpp"
 #include "Qounters/Spinometer.hpp"
+#include "Qounters/SpeedQounter.hpp"
 
 namespace QountersMinus {
     namespace QounterRegistry {
@@ -35,5 +36,6 @@ namespace QountersMinus {
         void Initialize(NotesQounterConfig config);
         void Initialize(NotesLeftQounterConfig config);
         void Initialize(SpinometerConfig config);
+        void Initialize(SpeedQounterConfig config);
     };
 };

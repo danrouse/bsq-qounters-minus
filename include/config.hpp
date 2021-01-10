@@ -8,6 +8,7 @@
 #include "config/NotesQounterConfig.hpp"
 #include "config/NotesLeftQounterConfig.hpp"
 #include "config/SpinometerConfig.hpp"
+#include "config/SpeedQounterConfig.hpp"
 
 Configuration& getConfig();
 
@@ -25,6 +26,7 @@ namespace QountersMinus {
         NotesQounterConfig notesQounterConfig;
         NotesLeftQounterConfig notesLeftQounterConfig;
         SpinometerConfig spinometerConfig;
+        SpeedQounterConfig speedQounterConfig;
     } ModConfig;
 
     bool LoadConfig();

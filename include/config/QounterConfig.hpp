@@ -3,14 +3,14 @@
 #include <map>
 
 namespace QountersMinus {
-    typedef enum _QounterPosition {
+    enum class QounterPosition {
         BelowCombo,
         AboveCombo,
         BelowMultiplier,
         AboveMultiplier,
         BelowEnergy,
         OverHighway
-    } QounterPosition;
+    };
 
     static int QounterPositionCount = 6;
     static std::map<QounterPosition, std::string> QounterPositionNames = {

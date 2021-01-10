@@ -86,6 +86,18 @@ bool QountersMinus::LoadConfig() {
     } else {
         foundEverything = false;
     }
+    if (getConfig().config.HasMember("speedQounter") && getConfig().config["speedQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["speedQounter"].GetObject();
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.speedQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+        int tmpMode;
+        LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
+        config.speedQounterConfig.mode = static_cast<QountersMinus::SpeedQounterMode>(tmpMode);
+        LoadConfigVar(qounterConfig, "decimalPrecision", config.speedQounterConfig.decimalPrecision, Int);
+    } else {
+        foundEverything = false;
+    }
 
     // LOG_DEBUG("Everything found? %d", foundEverything);
     return foundEverything;
@@ -134,6 +146,13 @@ void QountersMinus::SaveConfig() {
     spinometerConfig.AddMember("position", (int)config.spinometerConfig.position, allocator);
     spinometerConfig.AddMember("mode", (int)config.spinometerConfig.mode, allocator);
     getConfig().config.AddMember("spinometer", spinometerConfig, allocator);
+
+    rapidjson::Value speedQounterConfig(rapidjson::kObjectType);
+    speedQounterConfig.AddMember("enabled", config.speedQounterConfig.enabled, allocator);
+    speedQounterConfig.AddMember("position", (int)config.speedQounterConfig.position, allocator);
+    speedQounterConfig.AddMember("mode", (int)config.speedQounterConfig.mode, allocator);
+    speedQounterConfig.AddMember("decimalPrecision", config.speedQounterConfig.decimalPrecision, allocator);
+    getConfig().config.AddMember("speedQounter", speedQounterConfig, allocator);
 
     getConfig().Write();
 }

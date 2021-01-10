@@ -68,6 +68,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounters::NotesQounter>();
     custom_types::Register::RegisterType<Qounters::NotesLeftQounter>();
     custom_types::Register::RegisterType<Qounters::Spinometer>();
+    custom_types::Register::RegisterType<Qounters::SpeedQounter>();
 }
 
 #include "UnityEngine/Animator.hpp"
@@ -85,6 +86,7 @@ void QountersMinus::QounterRegistry::Initialize() {
     if (config.notesQounterConfig.enabled) QounterRegistry::Initialize(config.notesQounterConfig);
     if (config.notesLeftQounterConfig.enabled) QounterRegistry::Initialize(config.notesLeftQounterConfig);
     if (config.spinometerConfig.enabled) QounterRegistry::Initialize(config.spinometerConfig);
+    if (config.speedQounterConfig.enabled) QounterRegistry::Initialize(config.speedQounterConfig);
 
     if (config.italicText) {
         auto qounters = UnityEngine::Resources::FindObjectsOfTypeAll<Qounter*>();
@@ -104,6 +106,7 @@ DefineQounterInitializer(Qounters::MissQounter*, MissQounterConfig, missQounter)
 DefineQounterInitializer(Qounters::NotesQounter*, NotesQounterConfig, notesQounter);
 DefineQounterInitializer(Qounters::NotesLeftQounter*, NotesLeftQounterConfig, notesLeftQounter);
 DefineQounterInitializer(Qounters::Spinometer*, SpinometerConfig, spinometer);
+DefineQounterInitializer(Qounters::SpeedQounter*, SpeedQounterConfig, speedQounter);
 
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]

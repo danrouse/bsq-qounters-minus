@@ -3,11 +3,11 @@
 #include "QounterConfig.hpp"
 
 namespace QountersMinus {
-    typedef enum _SpinometerMode {
+    enum class SpinometerMode {
         Average,
         SplitAverage,
         Highest
-    } SpinometerMode;
+    };
 
     static int SpinometerModeCount = 3;
     static std::map<SpinometerMode, std::string> SpinometerModeNames = {
@@ -18,9 +18,7 @@ namespace QountersMinus {
 
     typedef struct _SpinometerConfig : QounterConfig {
         QounterPosition position = QounterPosition::AboveMultiplier;
-        
+
         SpinometerMode mode = SpinometerMode::SplitAverage;
-        bool separateCutValues = true;
-        int averagePrecision = 1;
     } SpinometerConfig;
 }

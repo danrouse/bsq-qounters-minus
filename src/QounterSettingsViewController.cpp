@@ -18,6 +18,7 @@ DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
    varName->OnValueChange = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>( \
         classof(UnityEngine::Events::UnityAction_1<float>*), varName, +[](QuestUI::IncrementSetting* self, float rawVal) { \
             auto intVal = (int)rawVal % enumCount; \
+            if (intVal < 0) intVal = enumCount - (intVal * -1); \
             LOG_DEBUG("SET " + #configVar + " = %d", intVal); \
             configVar = static_cast<enumType>(intVal); \
             self->Text->SetText(il2cpp_utils::createcsstr(enumMap[configVar])); \
@@ -117,6 +118,23 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto spinometerEnabled = CreateConfigToggle(config.spinometerConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(spinometerPosition, config.spinometerConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     CreateConfigEnumIncrement(spinometerMode, config.spinometerConfig.mode, "Mode", QountersMinus::SpinometerMode, QountersMinus::SpinometerModeCount, QountersMinus::SpinometerModeNames);
+
+    //============================================================//
+
+    auto speedQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Speed Qounter");
+    speedQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    speedQounterTitle->set_fontSize(6.0f);
+
+    auto speedQounterEnabled = CreateConfigToggle(config.speedQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(speedQounterPosition, config.speedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    CreateConfigEnumIncrement(speedQounterMode, config.speedQounterConfig.mode, "Mode", QountersMinus::SpeedQounterMode, QountersMinus::SpeedQounterModeCount, QountersMinus::SpeedQounterModeNames);
+    auto speedQounterDecimalPrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Decimal Precision", 0, 1.0f, config.speedQounterConfig.decimalPrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
+            LOG_DEBUG("SET config.speedQounterConfig.decimalPrecision = %d", (int)val);
+            config.speedQounterConfig.decimalPrecision = (int)val;
+            SaveConfig();
+        }
+    ));
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {
