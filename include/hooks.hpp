@@ -12,6 +12,7 @@
 
 typedef System::Action_3<GlobalNamespace::NoteData*, GlobalNamespace::NoteCutInfo*, int>* NoteCutDelegate;
 typedef System::Action_2<GlobalNamespace::NoteData*, int>* NoteMissDelegate;
+typedef System::Action_2<int, int>* ScoreChangeDelegate;
 
 namespace QountersMinus {
     void InstallHooks();

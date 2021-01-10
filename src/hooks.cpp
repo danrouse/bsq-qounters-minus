@@ -14,14 +14,24 @@ MAKE_HOOK_OFFSETLESS(CoreGameHUDController_Start, void, GlobalNamespace::CoreGam
 MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreController* self) {
     LOG_CALLER;
     ScoreController_Start(self);
-    self->add_noteWasCutEvent(MakeDelegate<System::Action_3<GlobalNamespace::NoteData*, GlobalNamespace::NoteCutInfo*, int>*>(
-        classof(NoteCutDelegate), self, +[](GlobalNamespace::ScoreController self, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info, int unused) {
+    self->add_noteWasCutEvent(MakeDelegate<NoteCutDelegate>(
+        classof(NoteCutDelegate), self, +[](GlobalNamespace::ScoreController* self, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info, int unused) {
             QountersMinus::QounterRegistry::OnNoteCut(data, info);
         }
     ));
-    self->add_noteWasMissedEvent(MakeDelegate<System::Action_2<GlobalNamespace::NoteData*, int>*>(
-        classof(NoteMissDelegate), self, +[](GlobalNamespace::ScoreController self, GlobalNamespace::NoteData* data, int unused) {
+    self->add_noteWasMissedEvent(MakeDelegate<NoteMissDelegate>(
+        classof(NoteMissDelegate), self, +[](GlobalNamespace::ScoreController* self, GlobalNamespace::NoteData* data, int unused) {
             QountersMinus::QounterRegistry::OnNoteMiss(data);
+        }
+    ));
+    self->add_scoreDidChangeEvent(MakeDelegate<ScoreChangeDelegate>(
+        classof(ScoreChangeDelegate), self, +[](GlobalNamespace::ScoreController* self, int rawScore, int modifiedScore) {
+            QountersMinus::QounterRegistry::OnScoreUpdated(modifiedScore);
+        }
+    ));
+    self->add_immediateMaxPossibleScoreDidChangeEvent(MakeDelegate<ScoreChangeDelegate>(
+        classof(ScoreChangeDelegate), self, +[](GlobalNamespace::ScoreController* self, int rawScore, int modifiedScore) {
+            QountersMinus::QounterRegistry::OnMaxScoreUpdated(modifiedScore);
         }
     ));
 }
