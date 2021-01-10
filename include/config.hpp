@@ -9,6 +9,7 @@
 #include "config/NotesLeftQounterConfig.hpp"
 #include "config/SpinometerConfig.hpp"
 #include "config/SpeedQounterConfig.hpp"
+#include "config/ScoreQounterConfig.hpp"
 
 Configuration& getConfig();
 
@@ -16,8 +17,8 @@ namespace QountersMinus {
     typedef struct _ModConfig {
         bool hideCombo = false;
         bool hideMultiplier = false;
-        float comboOffset = 0.2f; // ?
-        float multiplierOffset = 0.4f; // ?
+        float comboOffset = 0.2f;
+        float multiplierOffset = 0.4f;
         bool italicText = false;
 
         // [ALL-QOUNTERS]
@@ -27,6 +28,7 @@ namespace QountersMinus {
         NotesLeftQounterConfig notesLeftQounterConfig;
         SpinometerConfig spinometerConfig;
         SpeedQounterConfig speedQounterConfig;
+        ScoreQounterConfig scoreQounterConfig;
     } ModConfig;
 
     bool LoadConfig();

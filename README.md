@@ -16,6 +16,14 @@ Cheap knockoff of Counters+ for Quest
 - Progress
 - Score
 
+## TODO before release
+- do qounters actually need to be destroyed? or remove existing destroy shell
+- qounter sizing with regard to vertical layout group (how to force expand when e.g. multiple lines? cut qounter, speed qounter, etc.)
+- parent container alignment (grow top to bottom, not from center)
+- fine tune parent container locations
+- add distance option to each? maybe
+- pull options menu hover texts from original counters+
+
 ## Credits
 
 * [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)

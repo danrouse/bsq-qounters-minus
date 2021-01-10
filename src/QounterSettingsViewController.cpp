@@ -135,6 +135,18 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
             SaveConfig();
         }
     ));
+
+    //============================================================//
+
+    auto scoreQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Score Qounter");
+    scoreQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    scoreQounterTitle->set_fontSize(6.0f);
+
+    auto scoreQounterEnabled = CreateConfigToggle(config.scoreQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(scoreQounterPosition, config.scoreQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    CreateConfigEnumIncrement(scoreQounterMode, config.scoreQounterConfig.mode, "Mode", QountersMinus::ScoreQounterMode, QountersMinus::ScoreQounterModeCount, QountersMinus::ScoreQounterModeNames);
+    // NYI
+    // auto scoreQounterCustomRankColors = CreateConfigToggle(config.scoreQounterConfig.customRankColors, "Custom Rank Colors");
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {
