@@ -35,10 +35,7 @@ void QountersMinus::Qounters::Spinometer::Configure(QountersMinus::SpinometerCon
     leftAngles = il2cpp_utils::New<System::Collections::Generic::List_1<float>*>().value();
     rightAngles = il2cpp_utils::New<System::Collections::Generic::List_1<float>*>().value();
 
-    saberManager = QuestUI::ArrayUtil::First<GlobalNamespace::SaberManager>(
-        UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SaberManager*>(),
-        [](GlobalNamespace::SaberManager* x) { return x->get_enabled(); }
-    );
+    saberManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::SaberManager*>();
 }
 
 void QountersMinus::Qounters::Spinometer::Update() {

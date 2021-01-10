@@ -7,10 +7,8 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/ArrayUtil.hpp"
 
 #include "UnityEngine/Color.hpp"
-#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Quaternion.hpp"
 #include "UnityEngine/Time.hpp"
 #include "GlobalNamespace/Saber.hpp"
@@ -27,7 +25,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<float>*, rightAngles);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, timeSinceLastUpdate, 0.0f);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, highestSpin, 0.0f);
-    
+
     DECLARE_INSTANCE_FIELD(int, mode);
 
     DECLARE_METHOD(void, Update);

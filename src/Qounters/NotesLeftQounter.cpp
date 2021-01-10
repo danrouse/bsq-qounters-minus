@@ -4,10 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::NotesLeftQounter);
 
 int GetNoteCount() {
     int noteCount = 0;
-    auto bocc = QuestUI::ArrayUtil::First<GlobalNamespace::BeatmapObjectCallbackController>(
-        UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::BeatmapObjectCallbackController*>(),
-        [](GlobalNamespace::BeatmapObjectCallbackController* x) { return x->get_enabled(); }
-    );
+    auto bocc = UnityEngine::Object::FindObjectOfType<GlobalNamespace::BeatmapObjectCallbackController*>();
     auto songTime = bocc->initData->spawningStartTime;
     // auto beatmapLinesData = bocc->initData->beatmapData->GetCopy()->beatmapLinesData;
     auto beatmapLinesData = reinterpret_cast<GlobalNamespace::BeatmapData*>(bocc->initData->beatmapData)->beatmapLinesData;
@@ -44,7 +41,7 @@ void QountersMinus::Qounters::NotesLeftQounter::Configure(QountersMinus::NotesLe
     notesLeftText->set_alignment(TMPro::TextAlignmentOptions::Center);
     notesLeftText->set_fontSize(fontSize);
     notesLeftText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, yOffset));
-    
+
     notesLeft = GetNoteCount();
     UpdateValue();
 }

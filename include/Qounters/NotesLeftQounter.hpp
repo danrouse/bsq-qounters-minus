@@ -7,9 +7,7 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/ArrayUtil.hpp"
 
-#include "UnityEngine/Resources.hpp"
 #include "GlobalNamespace/BeatmapData.hpp"
 #include "GlobalNamespace/BeatmapLineData.hpp"
 #include "GlobalNamespace/BeatmapObjectCallbackController.hpp"
@@ -23,7 +21,7 @@
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesLeftQounter, QountersMinus::Qounter,
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, notesLeftText);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, notesLeft, 0);
-    
+
     DECLARE_INSTANCE_FIELD(bool, labelAboveCount);
 
     DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
