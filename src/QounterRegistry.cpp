@@ -25,8 +25,8 @@ std::map<QounterPosition, QounterPositionData> QounterPositionParents = {
     {QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, 100.0f, 0.0f)}},
     {QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -180.0f, 0.0f)}},
     {QounterPosition::AboveMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, 120.0f, 0.0f)}},
-    {QounterPosition::BelowEnergy, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(300.0f, -180.0f, 0.0f)}},
-    {QounterPosition::OverHighway, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(300.0f, 120.0f, 0.0f)}}
+    {QounterPosition::BelowEnergy, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f)}},
+    {QounterPosition::OverHighway, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f)}}
 };
 
 UnityEngine::GameObject* GetParent(QounterPosition position) {

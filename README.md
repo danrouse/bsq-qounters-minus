@@ -2,9 +2,11 @@
 
 Store brand version of [Counters+](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~Qounters to display more information in-game.
 
-## Implemented Qounters
+## Qounter types
+All of the modules included in Counters+ are now available.
+
 - Cut
-- Miss
+- Missed
 - Notes
 - NotesLeft
 - Spinometer
@@ -12,8 +14,6 @@ Store brand version of [Counters+](https://github.com/Caeden117/CountersPlus) fo
 - Score
 - PB
 - Fail
-
-## Unimplemented Qounters
 - Progress
 
 ## TODO before release
@@ -28,6 +28,7 @@ Store brand version of [Counters+](https://github.com/Caeden117/CountersPlus) fo
 - refactor: common way to make titles
 - refactor: normalize default counter text name
 - refactor: allow for loading pc counters+ configs
+- readme smile
 
 ## Credits
 

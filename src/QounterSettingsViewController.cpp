@@ -193,6 +193,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto progressQounterEnabled = CreateConfigToggle(config.progressQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(progressQounterPosition, config.progressQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    CreateConfigEnumIncrement(progressQounterMode, config.progressQounterConfig.mode, "Mode", QountersMinus::ProgressQounterMode, QountersMinus::ProgressQounterModeCount, QountersMinus::ProgressQounterModeNames);
     auto progressQounterProgressTimeLeft = CreateConfigToggle(config.progressQounterConfig.progressTimeLeft, "Show Time Left");
     auto progressQounterIncludeRing = CreateConfigToggle(config.progressQounterConfig.includeRing, "Include Ring");
 }
