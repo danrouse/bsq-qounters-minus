@@ -35,6 +35,7 @@ bool QountersMinus::LoadConfig() {
     bool foundEverything = true;
     getConfig().Load();
 
+    LoadConfigVar(getConfig().config, "enabled", config.enabled, Bool);
     LoadConfigVar(getConfig().config, "hideCombo", config.hideCombo, Bool);
     LoadConfigVar(getConfig().config, "hideMultiplier", config.hideMultiplier, Bool);
     LoadConfigVar(getConfig().config, "italicText", config.italicText, Bool);
@@ -194,6 +195,7 @@ void QountersMinus::SaveConfig() {
     getConfig().config.RemoveAllMembers();
     getConfig().config.SetObject();
     rapidjson::Document::AllocatorType& allocator = getConfig().config.GetAllocator();
+    getConfig().config.AddMember("enabled", config.enabled, allocator);
     getConfig().config.AddMember("hideCombo", config.hideCombo, allocator);
     getConfig().config.AddMember("hideMultiplier", config.hideMultiplier, allocator);
     getConfig().config.AddMember("italicText", config.italicText, allocator);

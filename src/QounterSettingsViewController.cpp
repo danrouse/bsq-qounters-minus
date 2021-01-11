@@ -44,6 +44,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     // layout->get_gameObject()->AddComponent<QuestUI::Backgroundable*>()->ApplyBackground(il2cpp_utils::createcsstr("round-rect-panel"));
     // layout->set_padding(UnityEngine::RectOffset::New_ctor(4, 4, 4, 4));
 
+    auto globalEnabled = CreateConfigToggle(config.enabled, "Enabled");
     auto hideCombo = CreateConfigToggle(config.hideCombo, "Hide Combo");
     auto hideMultiplier = CreateConfigToggle(config.hideMultiplier, "Hide Multiplier");
     auto comboOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Combo Offset", 1, 0.1f, config.comboOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(

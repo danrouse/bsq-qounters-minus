@@ -19,6 +19,7 @@ Configuration& getConfig();
 
 namespace QountersMinus {
     typedef struct _ModConfig {
+        bool enabled = true;
         bool hideCombo = false;
         bool hideMultiplier = false;
         float comboOffset = 0.2f;

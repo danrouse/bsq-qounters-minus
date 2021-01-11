@@ -87,6 +87,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
 }
 
 void QountersMinus::QounterRegistry::Initialize() {
+    if (!config.enabled) return;
     if (config.hideCombo) HideChildren("BasicGameHUD/LeftPanel/ComboPanel");
     if (config.hideMultiplier) {
         auto multiplierGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("BasicGameHUD/RightPanel/MultiplierCanvas"));
