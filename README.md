@@ -2,6 +2,8 @@
 
 Store brand version of [Counters+](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~Qounters to display more information in-game.
 
+Settings can be loaded from a Counters+ configuration! Rename your `CountersPlus.json` to `qounters-minus.json` and upload it through BMBF's Upload screen after installing Qounters-.
+
 ## Qounter types
 All of the modules included in Counters+ are now available.
 
@@ -20,7 +22,6 @@ All of the modules included in Counters+ are now available.
 - ScoreQounter custom rank colors
 - ScoreQounter commented stuff
 - PBQounter "under score" option
-- config menu: hover help texts, confirm readable option names
 - config menu: color picker options
 - readme smile
 

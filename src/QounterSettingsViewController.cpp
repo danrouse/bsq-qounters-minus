@@ -45,8 +45,17 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     // layout->set_padding(UnityEngine::RectOffset::New_ctor(4, 4, 4, 4));
 
     auto globalEnabled = CreateConfigToggle(config.enabled, "Enabled");
+    QuestUI::BeatSaberUI::AddHoverHint(globalEnabled->get_gameObject(), "Toggles Qounters-.");
+
     auto hideCombo = CreateConfigToggle(config.hideCombo, "Hide Combo");
+    QuestUI::BeatSaberUI::AddHoverHint(hideCombo->get_gameObject(), "Hides the Combo counter.");
+
     auto hideMultiplier = CreateConfigToggle(config.hideMultiplier, "Hide Multiplier");
+    QuestUI::BeatSaberUI::AddHoverHint(hideMultiplier->get_gameObject(), "Hides the Multiplier.");
+
+    auto italicText = CreateConfigToggle(config.italicText, "Use Italic Text");
+    QuestUI::BeatSaberUI::AddHoverHint(italicText->get_gameObject(), "Text elements will be italicized to match the base game.");
+
     auto comboOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Combo Offset", 1, 0.1f, config.comboOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
         classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
             LOG_DEBUG("SET config.comboOffset = %.2f", val);
@@ -54,6 +63,8 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
             SaveConfig();
         }
     ));
+    QuestUI::BeatSaberUI::AddHoverHint(comboOffset->get_gameObject(), "Applies additional offset to qounters situated above or below the Combo.");
+
     auto multiplierOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Multiplier Offset", 1, 0.1f, config.multiplierOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
         classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
             LOG_DEBUG("SET config.multiplierOffset = %.2f", val);
@@ -61,8 +72,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
             SaveConfig();
         }
     ));
-    auto italicText = CreateConfigToggle(config.italicText, "Italic Text");
+    QuestUI::BeatSaberUI::AddHoverHint(multiplierOffset->get_gameObject(), "Applies additional offset to qounters situated above or below the Multiplier.");
 
+    //============================================================//
     // Qounter-specific configuration [ALL-QOUNTERS]
     //============================================================//
 
@@ -73,9 +85,12 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto cutQounterEnabled = CreateConfigToggle(config.cutQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(cutQounterPosition, config.cutQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto cutQounterDistance = CreateConfigIntIncrement(config.cutQounterConfig.distance, "Distance");
-    auto cutQounterSeparateSaberCounts = CreateConfigToggle(config.cutQounterConfig.separateSaberCounts, "Separate Saber Counts");
+    auto cutQounterSeparateSaberCounts = CreateConfigToggle(config.cutQounterConfig.separateSaberCounts, "Separate Saber Cuts");
+    QuestUI::BeatSaberUI::AddHoverHint(cutQounterSeparateSaberCounts->get_gameObject(), "Shows the average cut for the left and right sabers separately.");
     auto cutQounterSeparateCutValues = CreateConfigToggle(config.cutQounterConfig.separateCutValues, "Separate Cut Values");
-    auto cutQounterAveragePrecision = CreateConfigIntIncrement(config.cutQounterConfig.averagePrecision, "Average Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(cutQounterSeparateCutValues->get_gameObject(), "Show separate averages for angle before cut (0-70), angle after cut (0-30) and distance to center (0-15).");
+    auto cutQounterAveragePrecision = CreateConfigIntIncrement(config.cutQounterConfig.averagePrecision, "Average Cut Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(cutQounterAveragePrecision->get_gameObject(), "How many decimals should be shown on the average cuts?");
 
     //============================================================//
 
@@ -86,7 +101,8 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto missedQounterEnabled = CreateConfigToggle(config.missedQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(missedQounterPosition, config.missedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto missedQounterDistance = CreateConfigIntIncrement(config.missedQounterConfig.distance, "Distance");
-    auto missedQounterCountBadCuts = CreateConfigToggle(config.missedQounterConfig.countBadCuts, "Count Bad Cuts");
+    auto missedQounterCountBadCuts = CreateConfigToggle(config.missedQounterConfig.countBadCuts, "Include Bad Cuts");
+    QuestUI::BeatSaberUI::AddHoverHint(missedQounterCountBadCuts->get_gameObject(), "Bad cuts count towards the Missed counter.");
 
     //============================================================//
 
@@ -98,7 +114,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     CreateConfigEnumIncrement(notesQounterPosition, config.notesQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto notesQounterDistance = CreateConfigIntIncrement(config.notesQounterConfig.distance, "Distance");
     auto notesQounterShowPercentage = CreateConfigToggle(config.notesQounterConfig.showPercentage, "Show Percentage");
-    auto notesQounterDecimalPrecision = CreateConfigIntIncrement(config.notesQounterConfig.decimalPrecision, "Decimal Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(notesQounterShowPercentage->get_gameObject(), "Toggles the percentage of notes hit over total notes.");
+    auto notesQounterDecimalPrecision = CreateConfigIntIncrement(config.notesQounterConfig.decimalPrecision, "Percentage Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(notesQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
 
     //============================================================//
 
@@ -109,7 +127,8 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto notesLeftQounterEnabled = CreateConfigToggle(config.notesLeftQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(notesLeftQounterPosition, config.notesLeftQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto notesLeftQounterDistance = CreateConfigIntIncrement(config.notesLeftQounterConfig.distance, "Distance");
-    auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.notesLeftQounterConfig.labelAboveCount, "Label Above Count");
+    auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.notesLeftQounterConfig.labelAboveCount, "Label Above Qounter");
+    QuestUI::BeatSaberUI::AddHoverHint(notesLeftQounterLabelAboveCount->get_gameObject(), "Put the label above the number, similar to a usual Qounters- qounter.");
 
     //============================================================//
 
@@ -121,6 +140,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     CreateConfigEnumIncrement(spinometerPosition, config.spinometerConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto spinometerDistance = CreateConfigIntIncrement(config.spinometerConfig.distance, "Distance");
     CreateConfigEnumIncrement(spinometerMode, config.spinometerConfig.mode, "Mode", QountersMinus::SpinometerMode, QountersMinus::SpinometerModeCount, QountersMinus::SpinometerModeNames);
+    QuestUI::BeatSaberUI::AddHoverHint(spinometerMode->get_gameObject(), "How should this Qounter display data?");
 
     //============================================================//
 
@@ -131,8 +151,10 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto speedQounterEnabled = CreateConfigToggle(config.speedQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(speedQounterPosition, config.speedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto speedQounterDistance = CreateConfigIntIncrement(config.speedQounterConfig.distance, "Distance");
+    auto speedQounterDecimalPrecision = CreateConfigIntIncrement(config.speedQounterConfig.decimalPrecision, "Percentage Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(speedQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
     CreateConfigEnumIncrement(speedQounterMode, config.speedQounterConfig.mode, "Mode", QountersMinus::SpeedQounterMode, QountersMinus::SpeedQounterModeCount, QountersMinus::SpeedQounterModeNames);
-    auto speedQounterDecimalPrecision = CreateConfigIntIncrement(config.speedQounterConfig.decimalPrecision, "Decimal Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(speedQounterMode->get_gameObject(), "How should this Qounter display data?");
 
     //============================================================//
 
@@ -144,8 +166,13 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     CreateConfigEnumIncrement(scoreQounterPosition, config.scoreQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto scoreQounterDistance = CreateConfigIntIncrement(config.scoreQounterConfig.distance, "Distance");
     CreateConfigEnumIncrement(scoreQounterMode, config.scoreQounterConfig.mode, "Mode", QountersMinus::ScoreQounterMode, QountersMinus::ScoreQounterModeCount, QountersMinus::ScoreQounterModeNames);
-    auto scoreQounterDecimalPrecision = CreateConfigIntIncrement(config.scoreQounterConfig.decimalPrecision, "Decimal Precision");
-    // auto scoreQounterCustomRankColors = CreateConfigToggle(config.scoreQounterConfig.customRankColors, "Custom Rank Colors");
+    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterMode->get_gameObject(), "How should this Qounter display data?");
+    auto scoreQounterDecimalPrecision = CreateConfigIntIncrement(config.scoreQounterConfig.decimalPrecision, "Percentage Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
+    auto scoreQounterCustomRankColors = CreateConfigToggle(config.scoreQounterConfig.customRankColors, "Custom Rank Colors");
+    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterCustomRankColors->get_gameObject(), "Colors your Score Qounter depending on the rank you have in a song.");
+    // TODO colors
+    // hover hint eeach: Change the rank color for the SS rank.
 
     //============================================================//
 
@@ -157,11 +184,17 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     CreateConfigEnumIncrement(pbQounterPosition, config.pbQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto pbQounterDistance = CreateConfigIntIncrement(config.pbQounterConfig.distance, "Distance");
     CreateConfigEnumIncrement(pbQounterMode, config.pbQounterConfig.mode, "Mode", QountersMinus::PBQounterMode, QountersMinus::PBQounterModeCount, QountersMinus::PBQounterModeNames);
-    auto pbQounterDecimalPrecision = CreateConfigIntIncrement(config.pbQounterConfig.decimalPrecision, "Decimal Precision");
-    auto pbQounterTextSize = CreateConfigIntIncrement(config.pbQounterConfig.textSize, "Text Size");
-    auto pbQounterUnderscore = CreateConfigToggle(config.pbQounterConfig.underscore, "Underscore");
-    auto pbQounterHideFirstScore = CreateConfigToggle(config.pbQounterConfig.hideFirstScore, "Hide First Score");
+    QuestUI::BeatSaberUI::AddHoverHint(pbQounterMode->get_gameObject(), "Change color based on absolute (song maximum) or relative (current maximum) score.");
     // TODO colors
+    auto pbQounterDecimalPrecision = CreateConfigIntIncrement(config.pbQounterConfig.decimalPrecision, "Percentage Precision");
+    QuestUI::BeatSaberUI::AddHoverHint(pbQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
+    auto pbQounterTextSize = CreateConfigIntIncrement(config.pbQounterConfig.textSize, "Text Size");
+    QuestUI::BeatSaberUI::AddHoverHint(pbQounterTextSize->get_gameObject(), "How large should the text be?");
+    auto pbQounterUnderscore = CreateConfigToggle(config.pbQounterConfig.underscore, "Below Score Qounter");
+    QuestUI::BeatSaberUI::AddHoverHint(pbQounterUnderscore->get_gameObject(), "Will the Personal Best counter instead be positioned below the Score Qounter?");
+    auto pbQounterHideFirstScore = CreateConfigToggle(config.pbQounterConfig.hideFirstScore, "Hide First Score");
+    QuestUI::BeatSaberUI::AddHoverHint(pbQounterHideFirstScore->get_gameObject(), "Hides Personal Best if you play a map that doesnt yet have a personal best set.");
+
 
     //============================================================//
 
@@ -172,7 +205,8 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto failQounterEnabled = CreateConfigToggle(config.failQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(failQounterPosition, config.failQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto failQounterDistance = CreateConfigIntIncrement(config.failQounterConfig.distance, "Distance");
-    auto failQounterShowRestartsInstead = CreateConfigToggle(config.failQounterConfig.showRestartsInstead, "Show Restarts Instead");
+    auto failQounterShowRestartsInstead = CreateConfigToggle(config.failQounterConfig.showRestartsInstead, "Track Restarts");
+    QuestUI::BeatSaberUI::AddHoverHint(failQounterShowRestartsInstead->get_gameObject(), "Instead of showing global fail count, show the amount of times you have restarted the same song.");
 
     //============================================================//
 
@@ -183,9 +217,12 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto progressQounterEnabled = CreateConfigToggle(config.progressQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(progressQounterPosition, config.progressQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto progressQounterDistance = CreateConfigIntIncrement(config.progressQounterConfig.distance, "Distance");
-    CreateConfigEnumIncrement(progressQounterMode, config.progressQounterConfig.mode, "Mode", QountersMinus::ProgressQounterMode, QountersMinus::ProgressQounterModeCount, QountersMinus::ProgressQounterModeNames);
     auto progressQounterProgressTimeLeft = CreateConfigToggle(config.progressQounterConfig.progressTimeLeft, "Show Time Left");
-    auto progressQounterIncludeRing = CreateConfigToggle(config.progressQounterConfig.includeRing, "Include Ring");
+    QuestUI::BeatSaberUI::AddHoverHint(progressQounterProgressTimeLeft->get_gameObject(), "Starts the counter from the end of the song and decreases while the song is played.");
+    CreateConfigEnumIncrement(progressQounterMode, config.progressQounterConfig.mode, "Mode", QountersMinus::ProgressQounterMode, QountersMinus::ProgressQounterModeCount, QountersMinus::ProgressQounterModeNames);
+    QuestUI::BeatSaberUI::AddHoverHint(progressQounterMode->get_gameObject(), "How should this Qounter display data?");
+    auto progressQounterIncludeRing = CreateConfigToggle(config.progressQounterConfig.includeRing, "Include Progress Ring");
+    QuestUI::BeatSaberUI::AddHoverHint(progressQounterIncludeRing->get_gameObject(), "Whether or not the Progress Ring will also be affected by the \"Show Time Left\" setting. Only active in \"Original\" mode.");
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {
