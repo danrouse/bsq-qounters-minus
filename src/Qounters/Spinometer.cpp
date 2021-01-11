@@ -6,7 +6,7 @@ std::string SpeedToColor(float speed) {
     static auto orange = UnityEngine::Color(1.0f, 0.647f, 0.0f, 1.0f);
     auto color = UnityEngine::Color::Lerp(UnityEngine::Color::get_white(), orange, speed / 3600.0f);
     if (speed >= 3600) color = UnityEngine::Color::get_red();
-    return FormatColorToHex(color.r, color.g, color.b);
+    return FormatColorToHex(color);
 }
 
 int Sum(System::Collections::Generic::List_1<float>* list) {
@@ -62,12 +62,12 @@ void QountersMinus::Qounters::Spinometer::Update() {
 
     std::string nextText;
     if (mode == (int)QountersMinus::SpinometerMode::Average) {
-        nextText = "<color=#" + SpeedToColor(averageSpeed) + ">" + std::to_string((int)roundf(averageSpeed)) + "</color>";
+        nextText = "<color=" + SpeedToColor(averageSpeed) + ">" + std::to_string((int)roundf(averageSpeed)) + "</color>";
     } else if (mode == (int)QountersMinus::SpinometerMode::Highest) {
-        nextText = "<color=#" + SpeedToColor(highestSpin) + ">" + std::to_string((int)roundf(highestSpin)) + "</color>";
+        nextText = "<color=" + SpeedToColor(highestSpin) + ">" + std::to_string((int)roundf(highestSpin)) + "</color>";
     } else if (mode == (int)QountersMinus::SpinometerMode::SplitAverage) {
-        nextText = "<color=#" + SpeedToColor(leftSpeed) + ">" + std::to_string((int)roundf(leftSpeed)) + "</color> | " +
-                   "<color=#" + SpeedToColor(rightSpeed) + ">" + std::to_string((int)roundf(rightSpeed)) + "</color>";
+        nextText = "<color=" + SpeedToColor(leftSpeed) + ">" + std::to_string((int)roundf(leftSpeed)) + "</color> | " +
+                   "<color=" + SpeedToColor(rightSpeed) + ">" + std::to_string((int)roundf(rightSpeed)) + "</color>";
     }
     basicText->set_text(il2cpp_utils::createcsstr(nextText));
 }

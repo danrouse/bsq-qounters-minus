@@ -6,8 +6,9 @@ std::string FormatNumber(float number, int precision) {
     return stream.str();
 }
 
-std::string FormatColorToHex(float r, float g, float b) {
+#include "logger.hpp"
+std::string FormatColorToHex(UnityEngine::Color color) {
     std::stringstream stream;
-    stream << std::hex << ((int)(r * 255) << 16 | (int)(g * 255) << 8 | (int)(b * 255));
-    return stream.str();
+    stream << std::hex << std::setw(6) << std::setfill('0') << ((int)(color.r * 255) << 16 | (int)(color.g * 255) << 8 | (int)(color.b * 255));
+    return "#" + stream.str();
 }

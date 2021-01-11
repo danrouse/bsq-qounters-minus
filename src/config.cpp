@@ -17,26 +17,19 @@ Configuration& getConfig() {
         foundEverything = false; \
     }
 #define LoadConfigVarColor(_config, member, internalKey) \
-    if (_config.HasMember(member) && _config[member].IsArray()) { \
-        auto arrayVal = _config[member].GetArray(); \
-        internalKey.r = arrayVal[0].GetDouble(); \
-        internalKey.g = arrayVal[1].GetDouble(); \
-        internalKey.b = arrayVal[2].GetDouble(); \
-        internalKey.a = arrayVal[3].GetDouble(); \
+    if (_config.HasMember(member) && _config[member].IsString()) { \
+        auto hexVal = _config[member].GetString(); \
+        internalKey = ParseHexColor(hexVal); \
     } else { \
         LOG_DEBUG("Didn't find " + member); \
         foundEverything = false; \
     }
 
-rapidjson::Value WriteColor(UnityEngine::Color color, rapidjson::Document::AllocatorType& allocator) {
-    rapidjson::Value colorValue(rapidjson::kArrayType);
-    colorValue.PushBack(color.r, allocator);
-    colorValue.PushBack(color.g, allocator);
-    colorValue.PushBack(color.b, allocator);
-    colorValue.PushBack(color.a, allocator);
-    return colorValue;
+UnityEngine::Color ParseHexColor(std::string hexString) {
+    int r, g, b;
+    sscanf(hexString.substr(1).c_str(), "%02x%02x%02x", &r, &g, &b);
+    return UnityEngine::Color((float)r/255, (float)g/255, (float)b/255, 1.0f);
 }
-
 
 bool QountersMinus::LoadConfig() {
     bool foundEverything = true;
@@ -262,13 +255,13 @@ void QountersMinus::SaveConfig() {
     scoreQounterConfig.AddMember("decimalPrecision", config.scoreQounterConfig.decimalPrecision, allocator);
     scoreQounterConfig.AddMember("displayRank", config.scoreQounterConfig.displayRank, allocator);
     scoreQounterConfig.AddMember("customRankColors", config.scoreQounterConfig.customRankColors, allocator);
-    scoreQounterConfig.AddMember("ssColor", WriteColor(config.scoreQounterConfig.ssColor, allocator), allocator);
-    scoreQounterConfig.AddMember("sColor", WriteColor(config.scoreQounterConfig.sColor, allocator), allocator);
-    scoreQounterConfig.AddMember("aColor", WriteColor(config.scoreQounterConfig.aColor, allocator), allocator);
-    scoreQounterConfig.AddMember("bColor", WriteColor(config.scoreQounterConfig.bColor, allocator), allocator);
-    scoreQounterConfig.AddMember("cColor", WriteColor(config.scoreQounterConfig.cColor, allocator), allocator);
-    scoreQounterConfig.AddMember("dColor", WriteColor(config.scoreQounterConfig.dColor, allocator), allocator);
-    scoreQounterConfig.AddMember("eColor", WriteColor(config.scoreQounterConfig.eColor, allocator), allocator);
+    scoreQounterConfig.AddMember("ssColor", FormatColorToHex(config.scoreQounterConfig.ssColor), allocator);
+    scoreQounterConfig.AddMember("sColor", FormatColorToHex(config.scoreQounterConfig.sColor), allocator);
+    scoreQounterConfig.AddMember("aColor", FormatColorToHex(config.scoreQounterConfig.aColor), allocator);
+    scoreQounterConfig.AddMember("bColor", FormatColorToHex(config.scoreQounterConfig.bColor), allocator);
+    scoreQounterConfig.AddMember("cColor", FormatColorToHex(config.scoreQounterConfig.cColor), allocator);
+    scoreQounterConfig.AddMember("dColor", FormatColorToHex(config.scoreQounterConfig.dColor), allocator);
+    scoreQounterConfig.AddMember("eColor", FormatColorToHex(config.scoreQounterConfig.eColor), allocator);
     getConfig().config.AddMember("scoreQounter", scoreQounterConfig, allocator);
 
     rapidjson::Value pbQounterConfig(rapidjson::kObjectType);
@@ -280,8 +273,8 @@ void QountersMinus::SaveConfig() {
     pbQounterConfig.AddMember("textSize", config.pbQounterConfig.textSize, allocator);
     pbQounterConfig.AddMember("underscore", config.pbQounterConfig.underscore, allocator);
     pbQounterConfig.AddMember("hideFirstScore", config.pbQounterConfig.hideFirstScore, allocator);
-    pbQounterConfig.AddMember("betterColor", WriteColor(config.pbQounterConfig.betterColor, allocator), allocator);
-    pbQounterConfig.AddMember("defaultColor", WriteColor(config.pbQounterConfig.defaultColor, allocator), allocator);
+    pbQounterConfig.AddMember("betterColor", FormatColorToHex(config.pbQounterConfig.betterColor), allocator);
+    pbQounterConfig.AddMember("defaultColor", FormatColorToHex(config.pbQounterConfig.defaultColor), allocator);
     getConfig().config.AddMember("pbQounter", pbQounterConfig, allocator);
 
     rapidjson::Value failQounterConfig(rapidjson::kObjectType);

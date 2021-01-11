@@ -1,5 +1,6 @@
 #pragma once
 
+#include "format.hpp"
 #include "modloader/shared/modloader.hpp"
 #include "beatsaber-hook/shared/config/config-utils.hpp"
 
