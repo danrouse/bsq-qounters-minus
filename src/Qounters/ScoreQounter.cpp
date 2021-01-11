@@ -7,10 +7,7 @@ void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounte
     customRankColors = config.customRankColors;
     decimalPrecision = config.decimalPrecision;
 
-    auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Score", false);
-    titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
-    titleText->set_fontSize(20.0f);
-    titleText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
+    CreateBasicTitle("Score");
 
     auto coreGameHUD = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
     relativeScoreText = coreGameHUD->relativeScoreGO->GetComponentInChildren<TMPro::TextMeshProUGUI*>();

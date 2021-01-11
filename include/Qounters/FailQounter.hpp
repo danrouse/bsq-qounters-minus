@@ -20,10 +20,8 @@
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Time.hpp"
 #include "System/Action.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qounter,
-    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, failText);
     DECLARE_STATIC_FIELD(Il2CppString*, prevBeatmapHash);
     DECLARE_STATIC_FIELD(int, restarts);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, count, 0);
@@ -34,7 +32,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qount
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(FailQounter,
-        REGISTER_FIELD(failText);
         REGISTER_FIELD(prevBeatmapHash);
         REGISTER_FIELD(restarts);
         REGISTER_FIELD(count);

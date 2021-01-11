@@ -9,13 +9,11 @@
 #include "questui/shared/BeatSaberUI.hpp"
 
 #include "GlobalNamespace/ColorType.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qounter,
-    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, notesText);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, allCuts, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, goodCuts, 0);
-    
+
     DECLARE_INSTANCE_FIELD(bool, showPercentage);
     DECLARE_INSTANCE_FIELD(int, decimalPrecision);
 
@@ -24,7 +22,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
     DECLARE_METHOD(void, UpdateValue);
 
     REGISTER_FUNCTION(NotesQounter,
-        REGISTER_FIELD(notesText);
         REGISTER_FIELD(allCuts);
         REGISTER_FIELD(goodCuts);
 

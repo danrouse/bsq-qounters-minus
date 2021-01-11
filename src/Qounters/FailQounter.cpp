@@ -8,11 +8,7 @@ Il2CppString* QountersMinus::Qounters::FailQounter::prevBeatmapHash = nullptr;
 void QountersMinus::Qounters::FailQounter::Configure(QountersMinus::FailQounterConfig config) {
     showRestartsInstead = config.showRestartsInstead;
 
-    auto titleTextVal = showRestartsInstead ? "Restarts" : "Fails";
-    auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), titleTextVal, false);
-    titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
-    titleText->set_fontSize(20.0f);
-    titleText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
+    CreateBasicTitle(showRestartsInstead ? "Restarts" : "Fails");
 
     auto gameplayCoreInstaller = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayCoreInstaller*>()->values[0];
     auto beatmap = gameplayCoreInstaller->sceneSetupData->difficultyBeatmap;
@@ -33,22 +29,19 @@ void QountersMinus::Qounters::FailQounter::Configure(QountersMinus::FailQounterC
         gameEnergyCounter->add_gameEnergyDidReach0Event(il2cpp_utils::MakeDelegate<System::Action*>(
             classof(System::Action*), this, +[](QountersMinus::Qounters::FailQounter* self) {
                 self->count += 1;
-                self->failText->set_text(il2cpp_utils::createcsstr(std::to_string(self->count)));
+                self->basicText->set_text(il2cpp_utils::createcsstr(std::to_string(self->count)));
                 self->animationTimer = 0.0f;
             }
         ));
     }
 
-    failText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), std::to_string(count), false);
-    failText->set_alignment(TMPro::TextAlignmentOptions::Center);
-    failText->set_fontSize(35.0f);
-    failText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, -30.0f));
+    CreateBasicText(std::to_string(count));
     animationTimer = 10.0f;
 }
 
 void QountersMinus::Qounters::FailQounter::Update() {
     if (animationTimer < 1.0f) {
-        failText->set_color(UnityEngine::Color::Lerp(UnityEngine::Color::get_white(), UnityEngine::Color::get_red(), animationTimer));
+        basicText->set_color(UnityEngine::Color::Lerp(UnityEngine::Color::get_white(), UnityEngine::Color::get_red(), animationTimer));
         animationTimer += UnityEngine::Time::get_deltaTime();
     }
 }

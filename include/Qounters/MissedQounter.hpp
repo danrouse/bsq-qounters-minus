@@ -8,10 +8,8 @@
 #include "questui/shared/BeatSaberUI.hpp"
 
 #include "GlobalNamespace/ColorType.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissedQounter, QountersMinus::Qounter,
-    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, missText);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, misses, 0);
 
     DECLARE_INSTANCE_FIELD(bool, countBadCuts);
@@ -21,7 +19,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissedQounter, QountersMinus::Qou
     DECLARE_METHOD(void, UpdateValue);
 
     REGISTER_FUNCTION(MissedQounter,
-        REGISTER_FIELD(missText);
         REGISTER_FIELD(misses);
 
         REGISTER_FIELD(countBadCuts);

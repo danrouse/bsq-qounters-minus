@@ -18,10 +18,8 @@
 #include "UnityEngine/Material.hpp"
 #include "UnityEngine/Sprite.hpp"
 #include "HMUI/ImageView.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ProgressQounter, QountersMinus::Qounter,
-    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, timeText);
     DECLARE_INSTANCE_FIELD(HMUI::ImageView*, progressRing);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, length, 0.0f);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, songBPM, 0.0f);
@@ -34,7 +32,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ProgressQounter, QountersMinus::Q
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(ProgressQounter,
-        REGISTER_FIELD(timeText);
         REGISTER_FIELD(progressRing);
         REGISTER_FIELD(length);
         REGISTER_FIELD(songBPM);

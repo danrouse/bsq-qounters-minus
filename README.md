@@ -22,8 +22,6 @@ All of the modules included in Counters+ are now available.
 - PBQounter "under score" option
 - config menu: hover help texts, confirm readable option names
 - config menu: color picker options
-- refactor: common way to make titles
-- refactor: normalize default counter text name
 - refactor: allow for loading pc counters+ configs
 - readme smile
 

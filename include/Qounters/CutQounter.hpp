@@ -12,14 +12,13 @@
 #include "GlobalNamespace/ISaberSwingRatingCounter.hpp"
 #include "GlobalNamespace/SwingSaberRatingDidFinishDelegate.hpp"
 #include "System/Collections/Generic/List_1.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounter,
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, leftCutText);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, rightCutText);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::NoteCutInfo*, prevNoteCutInfo);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
-    
+
     DECLARE_INSTANCE_FIELD(bool, separateCutValues);
     DECLARE_INSTANCE_FIELD(bool, separateSaberCounts);
     DECLARE_INSTANCE_FIELD(int, averagePrecision);

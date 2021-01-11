@@ -23,9 +23,9 @@ struct QounterPositionData {
 };
 
 std::map<QounterPosition, QounterPositionData> QounterPositionData = {
-    {QounterPosition::BelowCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, -130.0f, 0.0f), true}},
-    {QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, 28.0f, 0.0f), false}},
-    {QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -100.0f, 0.0f), true}},
+    {QounterPosition::BelowCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(-5.0f, -122.0f, 0.0f), true}},
+    {QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(-5.0f, 28.0f, 0.0f), false}},
+    {QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -90.0f, 0.0f), true}},
     {QounterPosition::AboveMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, 20.0f, 0.0f), false}},
     {QounterPosition::BelowEnergy, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f), true}},
     {QounterPosition::AboveHighway, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f), false}}
@@ -51,7 +51,7 @@ UnityEngine::GameObject* GetParent(QounterPosition position) {
 }
 
 void SetPosition(UnityEngine::Transform* transform, QounterPosition position, int distance) {
-    static const float distanceUnit = 65.0f;
+    static const float distanceUnit = 62.0f;
     const auto mult = QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f;
     const auto pivot = UnityEngine::Vector2(0.5f, QounterPositionData[position].distanceIsDown ? 1.0f : 0.0f);
     const auto anchoredPosition = UnityEngine::Vector2(0.0f, distance * distanceUnit * mult);

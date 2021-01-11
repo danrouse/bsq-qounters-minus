@@ -13,10 +13,17 @@ void QountersMinus::Qounter::OnDestroy() {
     UnityEngine::GameObject::Destroy(gameObject);
 }
 
-// void QountersMinus::Qounter::CreateBasicTitle(Il2CppString* text) {
+TMPro::TextMeshProUGUI* QountersMinus::Qounter::CreateBasicTitle(std::string text) {
+    auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), text, false);
+    titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
+    titleText->set_fontSize(20.0f);
+    titleText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
+    return titleText;
+}
 
-// }
-
-// void QountersMinus::Qounter::CreateBasicText(Il2CppString* text) {
-
-// }
+void QountersMinus::Qounter::CreateBasicText(std::string text) {
+    basicText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), text, false);
+    basicText->set_alignment(TMPro::TextAlignmentOptions::Center);
+    basicText->set_fontSize(35.0f);
+    basicText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, -30.0f));
+}

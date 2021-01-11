@@ -40,10 +40,7 @@ void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::Progress
     progressTimeLeft = config.progressTimeLeft;
     includeRing = config.includeRing;
 
-    timeText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "0", false);
-    timeText->set_alignment(TMPro::TextAlignmentOptions::Center);
-    timeText->set_fontSize(35.0f);
-    timeText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, -30.0f));
+    CreateBasicText("0");
 
     audioTimeSyncController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::AudioTimeSyncController*>();
     length = audioTimeSyncController->get_songLength();
@@ -56,7 +53,7 @@ void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::Progress
 
     if (mode != (int)QountersMinus::ProgressQounterMode::Percent) {
         auto backgroundImage = CreateRing(gameObject->get_transform());
-        auto anchoredPosition = timeText->get_rectTransform()->get_anchoredPosition();
+        auto anchoredPosition = basicText->get_rectTransform()->get_anchoredPosition();
         backgroundImage->get_rectTransform()->set_anchoredPosition(anchoredPosition);
         backgroundImage->CrossFadeAlpha(0.05f, 1.0f, false);
         auto ringScale = UnityEngine::Vector3(1.0f, 1.0f, 1.0f); // 1.175f?
@@ -76,11 +73,11 @@ void QountersMinus::Qounters::ProgressQounter::Update() {
     if (mode == (int)QountersMinus::ProgressQounterMode::Original || mode == (int)QountersMinus::ProgressQounterMode::TimeInBeats) {
         if (mode == (int)QountersMinus::ProgressQounterMode::TimeInBeats) {
             auto beats = std::roundf(songBPM / 60 * time / 0.25f) * 0.25f;
-            timeText->set_text(il2cpp_utils::createcsstr(FormatNumber(beats, 2)));
+            basicText->set_text(il2cpp_utils::createcsstr(FormatNumber(beats, 2)));
         } else {
             int minutes = std::floor((int)time / 60);
             int seconds = std::floor((int)time % 60);
-            timeText->set_text(il2cpp_utils::createcsstr(
+            basicText->set_text(il2cpp_utils::createcsstr(
                 (minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" +
                 (seconds < 10 ? "0" : "") + std::to_string(seconds)
             ));
@@ -88,6 +85,6 @@ void QountersMinus::Qounters::ProgressQounter::Update() {
         progressRing->set_fillAmount((includeRing ? time : audioTimeSyncController->songTime) / length);
         progressRing->SetVerticesDirty();
     } else {
-        timeText->set_text(il2cpp_utils::createcsstr(FormatNumber(100.0f * time / length, 2) + "%"));
+        basicText->set_text(il2cpp_utils::createcsstr(FormatNumber(100.0f * time / length, 2) + "%"));
     }
 }

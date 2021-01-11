@@ -14,10 +14,8 @@
 #include "GlobalNamespace/Saber.hpp"
 #include "GlobalNamespace/SaberManager.hpp"
 #include "System/Collections/Generic/List_1.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounter,
-    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, text);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::SaberManager*, saberManager);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<UnityEngine::Quaternion>*, leftQuaternions);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<UnityEngine::Quaternion>*, rightQuaternions);
@@ -31,7 +29,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(Spinometer,
-        REGISTER_FIELD(text);
         REGISTER_FIELD(saberManager);
         REGISTER_FIELD(leftQuaternions);
         REGISTER_FIELD(rightQuaternions);

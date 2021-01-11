@@ -24,10 +24,7 @@ void QountersMinus::Qounters::SpeedQounter::Configure(QountersMinus::SpeedQounte
     decimalPrecision = config.decimalPrecision;
 
     if (config.mode != QountersMinus::SpeedQounterMode::Top5Sec) {
-        auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Average Speed", false);
-        titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
-        titleText->set_fontSize(20.0f);
-        titleText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
+        CreateBasicTitle("Average Speed");
 
         averageText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "0", false);
         averageText->set_alignment(TMPro::TextAlignmentOptions::Center);
@@ -35,9 +32,7 @@ void QountersMinus::Qounters::SpeedQounter::Configure(QountersMinus::SpeedQounte
         averageText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, -30.0f));
     }
     if (config.mode != QountersMinus::SpeedQounterMode::Average && config.mode != QountersMinus::SpeedQounterMode::SplitAverage) {
-        auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Recent Top Speed", false);
-        titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
-        titleText->set_fontSize(20.0f);
+        auto titleText = CreateBasicTitle("Recent Top Speed");
         auto titleYOffset = 0.0f;
         auto textYOffset = -30.0f;
         if (config.mode == QountersMinus::SpeedQounterMode::Both || config.mode == QountersMinus::SpeedQounterMode::SplitBoth) {

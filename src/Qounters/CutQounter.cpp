@@ -7,10 +7,7 @@ void QountersMinus::Qounters::CutQounter::Configure(QountersMinus::CutQounterCon
     separateCutValues = config.separateCutValues;
     separateSaberCounts = config.separateSaberCounts;
 
-    auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Average Cut", false);
-    titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
-    titleText->set_fontSize(20.0f);
-    titleText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
+    CreateBasicTitle("Average Cut");
 
     auto defaultText = FormatNumber(0.0f, averagePrecision);
     if (separateCutValues) {

@@ -20,15 +20,8 @@ int Sum(System::Collections::Generic::List_1<float>* list) {
 void QountersMinus::Qounters::Spinometer::Configure(QountersMinus::SpinometerConfig config) {
     mode = (int)config.mode;
 
-    auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Spinometer", false);
-    titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
-    titleText->set_fontSize(20.0f);
-    titleText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
-
-    text = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "0", false);
-    text->set_alignment(TMPro::TextAlignmentOptions::Center);
-    text->set_fontSize(35.0f);
-    text->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, -30.0f));
+    CreateBasicTitle("Spinometer");
+    CreateBasicText("0");
 
     leftQuaternions = il2cpp_utils::New<System::Collections::Generic::List_1<UnityEngine::Quaternion>*>().value();
     rightQuaternions = il2cpp_utils::New<System::Collections::Generic::List_1<UnityEngine::Quaternion>*>().value();
@@ -76,5 +69,5 @@ void QountersMinus::Qounters::Spinometer::Update() {
         nextText = "<color=#" + SpeedToColor(leftSpeed) + ">" + std::to_string((int)roundf(leftSpeed)) + "</color> | " +
                    "<color=#" + SpeedToColor(rightSpeed) + ">" + std::to_string((int)roundf(rightSpeed)) + "</color>";
     }
-    text->set_text(il2cpp_utils::createcsstr(nextText));
+    basicText->set_text(il2cpp_utils::createcsstr(nextText));
 }
