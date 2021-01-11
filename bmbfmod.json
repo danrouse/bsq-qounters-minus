@@ -7,7 +7,7 @@
     "Cheap knockoff of Counters+ for Quest"
   ],
   "category": "Gameplay",
-  "gameVersion": "1.12.2",
+  "gameVersion": "1.13.0",
   "platform": "Quest",
   "components": [
     {
@@ -23,6 +23,18 @@
       "type": "HookModLibrary",
       "installAction": {
         "installLibraryFile": "libbeatsaber-hook_0_8_4.so"
+      }
+    },
+    {
+      "type": "HookModLibrary",
+      "installAction": {
+        "installLibraryFile": "libcustom-types.so"
+      }
+    },
+    {
+      "type": "HookModLibrary",
+      "installAction": {
+        "installLibraryFile": "libquestui.so"
       }
     }
   ]

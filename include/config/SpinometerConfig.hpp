@@ -14,6 +14,11 @@ namespace QountersMinus {
         {SpinometerMode::SplitAverage, "Split Average"},
         {SpinometerMode::Highest, "Highest"}
     };
+    static std::map<std::string, SpinometerMode> SpinometerModeLookup = {
+        {"Average", SpinometerMode::Average},
+        {"SplitAverage", SpinometerMode::SplitAverage},
+        {"Highest", SpinometerMode::Highest}
+    };
 
     typedef struct _SpinometerConfig : QounterConfig {
         QounterPosition position = QounterPosition::AboveMultiplier;

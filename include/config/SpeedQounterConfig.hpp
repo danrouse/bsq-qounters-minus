@@ -18,6 +18,13 @@ namespace QountersMinus {
         {SpeedQounterMode::SplitAverage, "Split Average"},
         {SpeedQounterMode::SplitBoth, "Split Both Metrics"}
     };
+    static std::map<std::string, SpeedQounterMode> SpeedQounterModeLookup = {
+        {"Average", SpeedQounterMode::Average},
+        {"Top5Sec", SpeedQounterMode::Top5Sec},
+        {"Both", SpeedQounterMode::Both},
+        {"SplitAverage", SpeedQounterMode::SplitAverage},
+        {"SplitBoth", SpeedQounterMode::SplitBoth}
+    };
 
     typedef struct _SpeedQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowMultiplier;

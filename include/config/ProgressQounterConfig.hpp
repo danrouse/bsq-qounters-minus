@@ -16,6 +16,12 @@ namespace QountersMinus {
         {ProgressQounterMode::TimeInBeats, "Time in Beats"},
         {ProgressQounterMode::Percent, "Percentage"}
     };
+    static std::map<std::string, ProgressQounterMode> ProgressQounterModeLookup = {
+        {"Original", ProgressQounterMode::Original},
+        {"BaseGame", ProgressQounterMode::BaseGame},
+        {"TimeInBeats", ProgressQounterMode::TimeInBeats},
+        {"Percent", ProgressQounterMode::Percent}
+    };
 
     typedef struct _ProgressQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowEnergy;

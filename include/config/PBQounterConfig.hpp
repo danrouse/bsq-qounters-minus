@@ -13,6 +13,10 @@ namespace QountersMinus {
         {PBQounterMode::Absolute, "Absolute"},
         {PBQounterMode::Relative, "Relative"}
     };
+    static std::map<std::string, PBQounterMode> PBQounterModeLookup = {
+        {"Absolute", PBQounterMode::Absolute},
+        {"Relative", PBQounterMode::Relative}
+    };
 
     typedef struct _PBQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowMultiplier;

@@ -21,6 +21,14 @@ namespace QountersMinus {
         {QounterPosition::BelowEnergy, "Below Energy"},
         {QounterPosition::AboveHighway, "Over Highway"}
     };
+    static std::map<std::string, QounterPosition> QounterPositionLookup = {
+        {"BelowCombo", QounterPosition::BelowCombo},
+        {"AboveCombo", QounterPosition::AboveCombo},
+        {"BelowMultiplier", QounterPosition::BelowMultiplier},
+        {"AboveMultiplier", QounterPosition::AboveMultiplier},
+        {"BelowEnergy", QounterPosition::BelowEnergy},
+        {"AboveHighway", QounterPosition::AboveHighway}
+    };
 
     typedef struct _QounterConfig {
         bool enabled = false;

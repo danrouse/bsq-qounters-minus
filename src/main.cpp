@@ -16,5 +16,6 @@ extern "C" void load() {
     QountersMinus::InstallHooks();
 
     LOG_DEBUG("Loading config");
-    if (!QountersMinus::LoadConfig()) QountersMinus::SaveConfig();
+    // if (!QountersMinus::LoadConfig())
+    QountersMinus::SaveConfig();
 }

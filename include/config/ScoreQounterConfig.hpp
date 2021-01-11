@@ -18,6 +18,12 @@ namespace QountersMinus {
         {ScoreQounterMode::ScoreOnly, "Remove Rank"},
         {ScoreQounterMode::RankOnly, "Remove Percentage"}
     };
+    static std::map<std::string, ScoreQounterMode> ScoreQounterModeLookup = {
+        {"Original", ScoreQounterMode::Original},
+        {"LeavePoints", ScoreQounterMode::LeavePoints},
+        {"ScoreOnly", ScoreQounterMode::ScoreOnly},
+        {"RankOnly", ScoreQounterMode::RankOnly}
+    };
 
     typedef struct _ScoreQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowMultiplier;
