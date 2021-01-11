@@ -19,7 +19,6 @@ All of the modules included in Counters+ are now available.
 - Progress
 
 ## TODO before release
-- ScoreQounter custom rank colors
 - ScoreQounter commented stuff
 - PBQounter "under score" option
 - config menu: color picker options
