@@ -17,12 +17,9 @@ All of the modules included in Counters+ are now available.
 - Progress
 
 ## TODO before release
-- score qounter: commented stuff (positioning), custom rank colors
-- pb qounter: attach to score qounter if enabled, underscore option
-- positioning: qounter sizing with regard to vertical layout group (how to force expand when e.g. multiple lines? cut qounter, speed qounter, etc.)
-- positioning: parent container alignment (grow top to bottom, not from center)
-- positioning: fine tune parent container locations
-- config: add distance option to each? maybe
+- ScoreQounter custom rank colors
+- ScoreQounter commented stuff
+- PBQounter "under score" option
 - config menu: hover help texts, confirm readable option names
 - config menu: color picker options
 - refactor: common way to make titles

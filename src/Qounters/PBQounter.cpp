@@ -36,7 +36,7 @@ void QountersMinus::Qounters::PBQounter::Configure(QountersMinus::PBQounterConfi
     // }
     pbText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "", false);
     pbText->set_alignment(TMPro::TextAlignmentOptions::Top);
-    pbText->set_fontSize(config.textSize * 15.5f);
+    pbText->set_fontSize(config.textSize * 10.0f);
     pbText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
 
     SetPersonalBest((float)highScore / maxPossibleScore);

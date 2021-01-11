@@ -6,7 +6,7 @@
 #include "Qounter.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/register.hpp"
-#include "questui/shared/ArrayUtil.hpp"
+#include "UnityEngine/Animator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "TMPro/FontStyles.hpp"

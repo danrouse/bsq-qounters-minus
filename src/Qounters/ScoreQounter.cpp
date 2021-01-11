@@ -5,6 +5,7 @@ DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounterConfig config) {
     mode = (int)config.mode;
     customRankColors = config.customRankColors;
+    decimalPrecision = config.decimalPrecision;
 
     auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "Score", false);
     titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
@@ -68,5 +69,5 @@ void QountersMinus::Qounters::ScoreQounter::UpdateText() {
         rankText->set_color(color);
     }
     float relativeScore = relativeScoreAndImmediateRankCounter->relativeScore * 100.0f;
-    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, 0))); // settings.decimalPrecision?
+    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, decimalPrecision)));
 }

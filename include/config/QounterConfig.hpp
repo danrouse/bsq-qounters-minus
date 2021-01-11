@@ -10,9 +10,8 @@ namespace QountersMinus {
         BelowMultiplier,
         AboveMultiplier,
         BelowEnergy,
-        OverHighway
+        AboveHighway
     };
-
     static int QounterPositionCount = 6;
     static std::map<QounterPosition, std::string> QounterPositionNames = {
         {QounterPosition::BelowCombo, "Below Combo"},
@@ -20,12 +19,12 @@ namespace QountersMinus {
         {QounterPosition::BelowMultiplier, "Below Multiplier"},
         {QounterPosition::AboveMultiplier, "Above Multiplier"},
         {QounterPosition::BelowEnergy, "Below Energy"},
-        {QounterPosition::OverHighway, "Over Highway"}
+        {QounterPosition::AboveHighway, "Over Highway"}
     };
 
     typedef struct _QounterConfig {
         bool enabled = false;
         QounterPosition position = QounterPosition::BelowCombo;
-        int distance = 0; // NYI
+        int distance = 0;
     } QounterConfig;
 }

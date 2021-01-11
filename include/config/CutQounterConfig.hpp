@@ -4,8 +4,8 @@
 
 namespace QountersMinus {
     typedef struct _CutQounterConfig : QounterConfig {
-        QounterPosition position = QounterPosition::OverHighway;
-
+        QounterPosition position = QounterPosition::AboveHighway;
+        int distance = 1;
         bool separateSaberCounts = false;
         bool separateCutValues = false;
         int averagePrecision = 1;

@@ -25,6 +25,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
 
     DECLARE_INSTANCE_FIELD(int, mode);
     DECLARE_INSTANCE_FIELD(bool, customRankColors);
+    DECLARE_INSTANCE_FIELD(int, decimalPrecision);
 
     DECLARE_METHOD(void, UpdateText);
 
@@ -36,6 +37,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
 
         REGISTER_FIELD(mode);
         REGISTER_FIELD(customRankColors);
+        REGISTER_FIELD(decimalPrecision);
 
         REGISTER_METHOD(UpdateText);
     )

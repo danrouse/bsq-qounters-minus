@@ -5,7 +5,8 @@
 namespace QountersMinus {
     typedef struct _NotesQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowCombo;
-        bool showPercentage = true;
-        int decimalPrecision = 1;
+        int distance = 1;
+        bool showPercentage = false;
+        int decimalPrecision = 2;
     } NotesQounterConfig;
 }

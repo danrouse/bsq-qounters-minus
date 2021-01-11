@@ -56,6 +56,7 @@ bool QountersMinus::LoadConfig() {
         config.cutQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
 
         LoadConfigVar(qounterConfig, "enabled", config.cutQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.cutQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "separateSaberCounts", config.cutQounterConfig.separateSaberCounts, Bool);
         LoadConfigVar(qounterConfig, "separateCutValues", config.cutQounterConfig.separateCutValues, Bool);
         LoadConfigVar(qounterConfig, "averagePrecision", config.cutQounterConfig.averagePrecision, Int);
@@ -69,6 +70,7 @@ bool QountersMinus::LoadConfig() {
         config.missedQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
 
         LoadConfigVar(qounterConfig, "enabled", config.missedQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.missedQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "countBadCuts", config.missedQounterConfig.countBadCuts, Bool);
     } else {
         foundEverything = false;
@@ -80,6 +82,7 @@ bool QountersMinus::LoadConfig() {
         config.notesQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
 
         LoadConfigVar(qounterConfig, "enabled", config.notesQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.notesQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "showPercentage", config.notesQounterConfig.showPercentage, Bool);
         LoadConfigVar(qounterConfig, "decimalPrecision", config.notesQounterConfig.decimalPrecision, Int);
     } else {
@@ -92,6 +95,7 @@ bool QountersMinus::LoadConfig() {
         config.notesLeftQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
 
         LoadConfigVar(qounterConfig, "enabled", config.notesLeftQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.notesLeftQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, Bool);
     } else {
         foundEverything = false;
@@ -105,6 +109,7 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.spinometerConfig.mode = static_cast<QountersMinus::SpinometerMode>(tmpMode);
         LoadConfigVar(qounterConfig, "enabled", config.spinometerConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.spinometerConfig.distance, Int);
     } else {
         foundEverything = false;
     }
@@ -117,6 +122,7 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.speedQounterConfig.mode = static_cast<QountersMinus::SpeedQounterMode>(tmpMode);
         LoadConfigVar(qounterConfig, "enabled", config.speedQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.speedQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "decimalPrecision", config.speedQounterConfig.decimalPrecision, Int);
     } else {
         foundEverything = false;
@@ -130,7 +136,17 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.scoreQounterConfig.mode = static_cast<QountersMinus::ScoreQounterMode>(tmpMode);
         LoadConfigVar(qounterConfig, "enabled", config.scoreQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.scoreQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "decimalPrecision", config.scoreQounterConfig.decimalPrecision, Int);
+        LoadConfigVar(qounterConfig, "displayRank", config.scoreQounterConfig.displayRank, Bool);
         LoadConfigVar(qounterConfig, "customRankColors", config.scoreQounterConfig.customRankColors, Bool);
+        LoadConfigVarColor(qounterConfig, "ssColor", config.scoreQounterConfig.ssColor);
+        LoadConfigVarColor(qounterConfig, "sColor", config.scoreQounterConfig.sColor);
+        LoadConfigVarColor(qounterConfig, "aColor", config.scoreQounterConfig.aColor);
+        LoadConfigVarColor(qounterConfig, "bColor", config.scoreQounterConfig.bColor);
+        LoadConfigVarColor(qounterConfig, "cColor", config.scoreQounterConfig.cColor);
+        LoadConfigVarColor(qounterConfig, "dColor", config.scoreQounterConfig.dColor);
+        LoadConfigVarColor(qounterConfig, "eColor", config.scoreQounterConfig.eColor);
     } else {
         foundEverything = false;
     }
@@ -143,6 +159,7 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "mode", tmpMode, Int);
         config.pbQounterConfig.mode = static_cast<QountersMinus::PBQounterMode>(tmpMode);
         LoadConfigVar(qounterConfig, "enabled", config.pbQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.pbQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "decimalPrecision", config.pbQounterConfig.decimalPrecision, Int);
         LoadConfigVar(qounterConfig, "textSize", config.pbQounterConfig.textSize, Int);
         LoadConfigVar(qounterConfig, "underscore", config.pbQounterConfig.underscore, Bool);
@@ -158,6 +175,7 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
         config.failQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
         LoadConfigVar(qounterConfig, "enabled", config.failQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.failQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "showRestartsInstead", config.failQounterConfig.showRestartsInstead, Bool);
     } else {
         foundEverything = false;
@@ -168,6 +186,7 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
         config.progressQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
         LoadConfigVar(qounterConfig, "enabled", config.progressQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "distance", config.progressQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "progressTimeLeft", config.progressQounterConfig.progressTimeLeft, Bool);
         LoadConfigVar(qounterConfig, "includeRing", config.progressQounterConfig.includeRing, Bool);
     } else {
@@ -191,6 +210,7 @@ void QountersMinus::SaveConfig() {
     // [ALL-QOUNTERS]
     rapidjson::Value cutQounterConfig(rapidjson::kObjectType);
     cutQounterConfig.AddMember("enabled", config.cutQounterConfig.enabled, allocator);
+    cutQounterConfig.AddMember("distance", config.cutQounterConfig.distance, allocator);
     cutQounterConfig.AddMember("position", (int)config.cutQounterConfig.position, allocator);
     cutQounterConfig.AddMember("separateSaberCounts", config.cutQounterConfig.separateSaberCounts, allocator);
     cutQounterConfig.AddMember("separateCutValues", config.cutQounterConfig.separateCutValues, allocator);
@@ -199,12 +219,14 @@ void QountersMinus::SaveConfig() {
 
     rapidjson::Value missedQounterConfig(rapidjson::kObjectType);
     missedQounterConfig.AddMember("enabled", config.missedQounterConfig.enabled, allocator);
+    missedQounterConfig.AddMember("distance", config.missedQounterConfig.distance, allocator);
     missedQounterConfig.AddMember("position", (int)config.missedQounterConfig.position, allocator);
     missedQounterConfig.AddMember("countBadCuts", config.missedQounterConfig.countBadCuts, allocator);
     getConfig().config.AddMember("missedQounter", missedQounterConfig, allocator);
 
     rapidjson::Value notesQounterConfig(rapidjson::kObjectType);
     notesQounterConfig.AddMember("enabled", config.notesQounterConfig.enabled, allocator);
+    notesQounterConfig.AddMember("distance", config.notesQounterConfig.distance, allocator);
     notesQounterConfig.AddMember("position", (int)config.notesQounterConfig.position, allocator);
     notesQounterConfig.AddMember("showPercentage", config.notesQounterConfig.showPercentage, allocator);
     notesQounterConfig.AddMember("decimalPrecision", config.notesQounterConfig.decimalPrecision, allocator);
@@ -212,18 +234,21 @@ void QountersMinus::SaveConfig() {
 
     rapidjson::Value notesLeftQounterConfig(rapidjson::kObjectType);
     notesLeftQounterConfig.AddMember("enabled", config.notesLeftQounterConfig.enabled, allocator);
+    notesLeftQounterConfig.AddMember("distance", config.notesLeftQounterConfig.distance, allocator);
     notesLeftQounterConfig.AddMember("position", (int)config.notesLeftQounterConfig.position, allocator);
     notesLeftQounterConfig.AddMember("labelAboveCount", config.notesLeftQounterConfig.labelAboveCount, allocator);
     getConfig().config.AddMember("notesLeftQounter", notesLeftQounterConfig, allocator);
 
     rapidjson::Value spinometerConfig(rapidjson::kObjectType);
     spinometerConfig.AddMember("enabled", config.spinometerConfig.enabled, allocator);
+    spinometerConfig.AddMember("distance", config.spinometerConfig.distance, allocator);
     spinometerConfig.AddMember("position", (int)config.spinometerConfig.position, allocator);
     spinometerConfig.AddMember("mode", (int)config.spinometerConfig.mode, allocator);
     getConfig().config.AddMember("spinometer", spinometerConfig, allocator);
 
     rapidjson::Value speedQounterConfig(rapidjson::kObjectType);
     speedQounterConfig.AddMember("enabled", config.speedQounterConfig.enabled, allocator);
+    speedQounterConfig.AddMember("distance", config.speedQounterConfig.distance, allocator);
     speedQounterConfig.AddMember("position", (int)config.speedQounterConfig.position, allocator);
     speedQounterConfig.AddMember("mode", (int)config.speedQounterConfig.mode, allocator);
     speedQounterConfig.AddMember("decimalPrecision", config.speedQounterConfig.decimalPrecision, allocator);
@@ -231,14 +256,24 @@ void QountersMinus::SaveConfig() {
 
     rapidjson::Value scoreQounterConfig(rapidjson::kObjectType);
     scoreQounterConfig.AddMember("enabled", config.scoreQounterConfig.enabled, allocator);
+    scoreQounterConfig.AddMember("distance", config.scoreQounterConfig.distance, allocator);
     scoreQounterConfig.AddMember("position", (int)config.scoreQounterConfig.position, allocator);
     scoreQounterConfig.AddMember("mode", (int)config.scoreQounterConfig.mode, allocator);
+    scoreQounterConfig.AddMember("decimalPrecision", config.scoreQounterConfig.decimalPrecision, allocator);
+    scoreQounterConfig.AddMember("displayRank", config.scoreQounterConfig.displayRank, allocator);
     scoreQounterConfig.AddMember("customRankColors", config.scoreQounterConfig.customRankColors, allocator);
-    // TODO colors
+    scoreQounterConfig.AddMember("ssColor", WriteColor(config.scoreQounterConfig.ssColor, allocator), allocator);
+    scoreQounterConfig.AddMember("sColor", WriteColor(config.scoreQounterConfig.sColor, allocator), allocator);
+    scoreQounterConfig.AddMember("aColor", WriteColor(config.scoreQounterConfig.aColor, allocator), allocator);
+    scoreQounterConfig.AddMember("bColor", WriteColor(config.scoreQounterConfig.bColor, allocator), allocator);
+    scoreQounterConfig.AddMember("cColor", WriteColor(config.scoreQounterConfig.cColor, allocator), allocator);
+    scoreQounterConfig.AddMember("dColor", WriteColor(config.scoreQounterConfig.dColor, allocator), allocator);
+    scoreQounterConfig.AddMember("eColor", WriteColor(config.scoreQounterConfig.eColor, allocator), allocator);
     getConfig().config.AddMember("scoreQounter", scoreQounterConfig, allocator);
 
     rapidjson::Value pbQounterConfig(rapidjson::kObjectType);
     pbQounterConfig.AddMember("enabled", config.pbQounterConfig.enabled, allocator);
+    pbQounterConfig.AddMember("distance", config.pbQounterConfig.distance, allocator);
     pbQounterConfig.AddMember("position", (int)config.pbQounterConfig.position, allocator);
     pbQounterConfig.AddMember("mode", (int)config.pbQounterConfig.mode, allocator);
     pbQounterConfig.AddMember("decimalPrecision", config.pbQounterConfig.decimalPrecision, allocator);
@@ -251,12 +286,14 @@ void QountersMinus::SaveConfig() {
 
     rapidjson::Value failQounterConfig(rapidjson::kObjectType);
     failQounterConfig.AddMember("enabled", config.failQounterConfig.enabled, allocator);
+    failQounterConfig.AddMember("distance", config.failQounterConfig.distance, allocator);
     failQounterConfig.AddMember("position", (int)config.failQounterConfig.position, allocator);
     failQounterConfig.AddMember("showRestartsInstead", config.failQounterConfig.showRestartsInstead, allocator);
     getConfig().config.AddMember("failQounter", failQounterConfig, allocator);
 
     rapidjson::Value progressQounterConfig(rapidjson::kObjectType);
     progressQounterConfig.AddMember("enabled", config.progressQounterConfig.enabled, allocator);
+    progressQounterConfig.AddMember("distance", config.progressQounterConfig.distance, allocator);
     progressQounterConfig.AddMember("position", (int)config.progressQounterConfig.position, allocator);
     progressQounterConfig.AddMember("progressTimeLeft", config.progressQounterConfig.progressTimeLeft, allocator);
     progressQounterConfig.AddMember("includeRing", config.progressQounterConfig.includeRing, allocator);

@@ -6,6 +6,7 @@ using namespace QountersMinus;
     void QountersMinus::QounterRegistry::Initialize(configType config) { \
         auto parent = GetParent(config.position); \
         auto qounter = parent->AddComponent<qounterType>(); \
+        SetPosition(qounter->gameObject->get_transform(), config.position, config.distance); \
         qounter->Configure(config); \
     }
 
@@ -18,35 +19,44 @@ extern QountersMinus::ModConfig config;
 struct QounterPositionData {
     std::string parentName;
     UnityEngine::Vector3 localPosition;
+    bool distanceIsDown;
 };
 
-std::map<QounterPosition, QounterPositionData> QounterPositionParents = {
-    {QounterPosition::BelowCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, -180.0f, 0.0f)}},
-    {QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, 100.0f, 0.0f)}},
-    {QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -180.0f, 0.0f)}},
-    {QounterPosition::AboveMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, 120.0f, 0.0f)}},
-    {QounterPosition::BelowEnergy, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f)}},
-    {QounterPosition::OverHighway, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f)}}
+std::map<QounterPosition, QounterPositionData> QounterPositionData = {
+    {QounterPosition::BelowCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, -130.0f, 0.0f), true}},
+    {QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(0.0f, 28.0f, 0.0f), false}},
+    {QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -100.0f, 0.0f), true}},
+    {QounterPosition::AboveMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, 20.0f, 0.0f), false}},
+    {QounterPosition::BelowEnergy, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f), true}},
+    {QounterPosition::AboveHighway, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f), false}}
 };
 
 UnityEngine::GameObject* GetParent(QounterPosition position) {
     auto containerName = il2cpp_utils::createcsstr("QountersMinus_Container" + std::to_string((int)position));
     auto containerGO = UnityEngine::GameObject::Find(containerName);
     if (!containerGO) {
-        auto parentGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(QounterPositionParents[position].parentName));
-        auto layout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(parentGO->get_transform());
-        layout->set_spacing(20.0f);
-        containerGO = layout->get_gameObject();
-        auto localPosition = QounterPositionParents[position].localPosition;
+        auto parentGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(QounterPositionData[position].parentName));
+        containerGO = UnityEngine::GameObject::New_ctor(containerName);
+        containerGO->AddComponent<UnityEngine::RectTransform*>();
+        containerGO->get_transform()->SetParent(parentGO->get_transform(), false);
+        auto localPosition = QounterPositionData[position].localPosition;
         if (position == QounterPosition::BelowCombo || position == QounterPosition::AboveCombo) {
             localPosition.y *= 1.0f + config.comboOffset;
         } else if (position == QounterPosition::BelowMultiplier || position == QounterPosition::AboveMultiplier) {
             localPosition.y *= 1.0f + config.multiplierOffset;
         }
         containerGO->get_transform()->set_localPosition(localPosition);
-        containerGO->set_name(containerName);
     }
     return containerGO;
+}
+
+void SetPosition(UnityEngine::Transform* transform, QounterPosition position, int distance) {
+    static const float distanceUnit = 65.0f;
+    const auto mult = QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f;
+    const auto pivot = UnityEngine::Vector2(0.5f, QounterPositionData[position].distanceIsDown ? 1.0f : 0.0f);
+    const auto anchoredPosition = UnityEngine::Vector2(0.0f, distance * distanceUnit * mult);
+    reinterpret_cast<UnityEngine::RectTransform*>(transform)->set_pivot(pivot);
+    reinterpret_cast<UnityEngine::RectTransform*>(transform)->set_anchoredPosition(anchoredPosition);
 }
 
 void HideChildren(UnityEngine::GameObject* gameObject) {
@@ -55,6 +65,7 @@ void HideChildren(UnityEngine::GameObject* gameObject) {
         parent->GetChild(i)->get_gameObject()->SetActive(false);
     }
 }
+
 void HideChildren(std::string gameObjectName) {
     HideChildren(UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(gameObjectName)));
 }
@@ -75,7 +86,6 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounters::ProgressQounter>();
 }
 
-#include "UnityEngine/Animator.hpp"
 void QountersMinus::QounterRegistry::Initialize() {
     if (config.hideCombo) HideChildren("BasicGameHUD/LeftPanel/ComboPanel");
     if (config.hideMultiplier) {

@@ -9,7 +9,6 @@ namespace QountersMinus {
         TimeInBeats,
         Percent
     };
-
     static int ProgressQounterModeCount = 4;
     static std::map<ProgressQounterMode, std::string> ProgressQounterModeNames = {
         {ProgressQounterMode::Original, "Original"},
@@ -20,7 +19,8 @@ namespace QountersMinus {
 
     typedef struct _ProgressQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowEnergy;
-
+        bool enabled = true;
+        int distance = 0;
         ProgressQounterMode mode = ProgressQounterMode::Original;
         bool progressTimeLeft = false;
         bool includeRing = false;

@@ -10,7 +10,6 @@ namespace QountersMinus {
         SplitAverage,
         SplitBoth
     };
-
     static int SpeedQounterModeCount = 5;
     static std::map<SpeedQounterMode, std::string> SpeedQounterModeNames = {
         {SpeedQounterMode::Average, "Average"},
@@ -22,7 +21,7 @@ namespace QountersMinus {
 
     typedef struct _SpeedQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowMultiplier;
-
+        int distance = 2;
         SpeedQounterMode mode = SpeedQounterMode::Average;
         bool separateCutValues = true;
         int decimalPrecision = 2;

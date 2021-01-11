@@ -13,6 +13,15 @@ DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
         } \
     ));
 
+#define CreateConfigIntIncrement(configVar, label) \
+    QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), label, 0, 1.0f, configVar, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>( \
+        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) { \
+            LOG_DEBUG("SET " + #configVar + " = %d", (int)val); \
+            configVar = (int)val; \
+            SaveConfig(); \
+        } \
+    ));
+
 #define CreateConfigEnumIncrement(varName, configVar, label, enumType, enumCount, enumMap) \
    auto varName = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), label, 0, 1.0f, (float)(int)configVar, UnityEngine::Vector2(0.0f, 0.0f), nullptr); \
    varName->OnValueChange = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>( \
@@ -62,15 +71,10 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto cutQounterEnabled = CreateConfigToggle(config.cutQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(cutQounterPosition, config.cutQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto cutQounterDistance = CreateConfigIntIncrement(config.cutQounterConfig.distance, "Distance");
     auto cutQounterSeparateSaberCounts = CreateConfigToggle(config.cutQounterConfig.separateSaberCounts, "Separate Saber Counts");
     auto cutQounterSeparateCutValues = CreateConfigToggle(config.cutQounterConfig.separateCutValues, "Separate Cut Values");
-    auto cutQounterAveragePrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Average Precision", 0, 1.0f, config.cutQounterConfig.averagePrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
-        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
-            LOG_DEBUG("SET config.cutQounterConfig.averagePrecision = %d", (int)val);
-            config.cutQounterConfig.averagePrecision = (int)val;
-            SaveConfig();
-        }
-    ));
+    auto cutQounterAveragePrecision = CreateConfigIntIncrement(config.cutQounterConfig.averagePrecision, "Average Precision");
 
     //============================================================//
 
@@ -80,6 +84,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto missedQounterEnabled = CreateConfigToggle(config.missedQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(missedQounterPosition, config.missedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto missedQounterDistance = CreateConfigIntIncrement(config.missedQounterConfig.distance, "Distance");
     auto missedQounterCountBadCuts = CreateConfigToggle(config.missedQounterConfig.countBadCuts, "Count Bad Cuts");
 
     //============================================================//
@@ -90,14 +95,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto notesQounterEnabled = CreateConfigToggle(config.notesQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(notesQounterPosition, config.notesQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto notesQounterDistance = CreateConfigIntIncrement(config.notesQounterConfig.distance, "Distance");
     auto notesQounterShowPercentage = CreateConfigToggle(config.notesQounterConfig.showPercentage, "Show Percentage");
-    auto notesQounterDecimalPrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Decimal Precision", 0, 1.0f, config.notesQounterConfig.decimalPrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
-        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
-            LOG_DEBUG("SET config.notesQounterConfig.decimalPrecision = %d", (int)val);
-            config.notesQounterConfig.decimalPrecision = (int)val;
-            SaveConfig();
-        }
-    ));
+    auto notesQounterDecimalPrecision = CreateConfigIntIncrement(config.notesQounterConfig.decimalPrecision, "Decimal Precision");
 
     //============================================================//
 
@@ -107,6 +107,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto notesLeftQounterEnabled = CreateConfigToggle(config.notesLeftQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(notesLeftQounterPosition, config.notesLeftQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto notesLeftQounterDistance = CreateConfigIntIncrement(config.notesLeftQounterConfig.distance, "Distance");
     auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.notesLeftQounterConfig.labelAboveCount, "Label Above Count");
 
     //============================================================//
@@ -117,6 +118,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto spinometerEnabled = CreateConfigToggle(config.spinometerConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(spinometerPosition, config.spinometerConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto spinometerDistance = CreateConfigIntIncrement(config.spinometerConfig.distance, "Distance");
     CreateConfigEnumIncrement(spinometerMode, config.spinometerConfig.mode, "Mode", QountersMinus::SpinometerMode, QountersMinus::SpinometerModeCount, QountersMinus::SpinometerModeNames);
 
     //============================================================//
@@ -127,14 +129,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto speedQounterEnabled = CreateConfigToggle(config.speedQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(speedQounterPosition, config.speedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto speedQounterDistance = CreateConfigIntIncrement(config.speedQounterConfig.distance, "Distance");
     CreateConfigEnumIncrement(speedQounterMode, config.speedQounterConfig.mode, "Mode", QountersMinus::SpeedQounterMode, QountersMinus::SpeedQounterModeCount, QountersMinus::SpeedQounterModeNames);
-    auto speedQounterDecimalPrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Decimal Precision", 0, 1.0f, config.speedQounterConfig.decimalPrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
-        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
-            LOG_DEBUG("SET config.speedQounterConfig.decimalPrecision = %d", (int)val);
-            config.speedQounterConfig.decimalPrecision = (int)val;
-            SaveConfig();
-        }
-    ));
+    auto speedQounterDecimalPrecision = CreateConfigIntIncrement(config.speedQounterConfig.decimalPrecision, "Decimal Precision");
 
     //============================================================//
 
@@ -144,8 +141,9 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto scoreQounterEnabled = CreateConfigToggle(config.scoreQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(scoreQounterPosition, config.scoreQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto scoreQounterDistance = CreateConfigIntIncrement(config.scoreQounterConfig.distance, "Distance");
     CreateConfigEnumIncrement(scoreQounterMode, config.scoreQounterConfig.mode, "Mode", QountersMinus::ScoreQounterMode, QountersMinus::ScoreQounterModeCount, QountersMinus::ScoreQounterModeNames);
-    // NYI
+    auto scoreQounterDecimalPrecision = CreateConfigIntIncrement(config.scoreQounterConfig.decimalPrecision, "Decimal Precision");
     // auto scoreQounterCustomRankColors = CreateConfigToggle(config.scoreQounterConfig.customRankColors, "Custom Rank Colors");
 
     //============================================================//
@@ -156,21 +154,10 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto pbQounterEnabled = CreateConfigToggle(config.pbQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(pbQounterPosition, config.pbQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto pbQounterDistance = CreateConfigIntIncrement(config.pbQounterConfig.distance, "Distance");
     CreateConfigEnumIncrement(pbQounterMode, config.pbQounterConfig.mode, "Mode", QountersMinus::PBQounterMode, QountersMinus::PBQounterModeCount, QountersMinus::PBQounterModeNames);
-    auto pbQounterDecimalPrecision = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Decimal Precision", 0, 1.0f, config.pbQounterConfig.decimalPrecision, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
-        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
-            LOG_DEBUG("SET config.pbQounterConfig.decimalPrecision = %d", (int)val);
-            config.pbQounterConfig.decimalPrecision = (int)val;
-            SaveConfig();
-        }
-    ));
-    auto pbQounterTextSize = QuestUI::BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "Text Size", 0, 1.0f, config.pbQounterConfig.textSize, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
-        classof(UnityEngine::Events::UnityAction_1<float>*), this, +[](QountersMinus::QounterSettingsViewController* self, float val) {
-            LOG_DEBUG("SET config.pbQounterConfig.textSize = %d", (int)val);
-            config.pbQounterConfig.textSize = (int)val;
-            SaveConfig();
-        }
-    ));
+    auto pbQounterDecimalPrecision = CreateConfigIntIncrement(config.pbQounterConfig.decimalPrecision, "Decimal Precision");
+    auto pbQounterTextSize = CreateConfigIntIncrement(config.pbQounterConfig.textSize, "Text Size");
     auto pbQounterUnderscore = CreateConfigToggle(config.pbQounterConfig.underscore, "Underscore");
     auto pbQounterHideFirstScore = CreateConfigToggle(config.pbQounterConfig.hideFirstScore, "Hide First Score");
     // TODO colors
@@ -183,6 +170,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto failQounterEnabled = CreateConfigToggle(config.failQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(failQounterPosition, config.failQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto failQounterDistance = CreateConfigIntIncrement(config.failQounterConfig.distance, "Distance");
     auto failQounterShowRestartsInstead = CreateConfigToggle(config.failQounterConfig.showRestartsInstead, "Show Restarts Instead");
 
     //============================================================//
@@ -193,6 +181,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     auto progressQounterEnabled = CreateConfigToggle(config.progressQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(progressQounterPosition, config.progressQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto progressQounterDistance = CreateConfigIntIncrement(config.progressQounterConfig.distance, "Distance");
     CreateConfigEnumIncrement(progressQounterMode, config.progressQounterConfig.mode, "Mode", QountersMinus::ProgressQounterMode, QountersMinus::ProgressQounterModeCount, QountersMinus::ProgressQounterModeNames);
     auto progressQounterProgressTimeLeft = CreateConfigToggle(config.progressQounterConfig.progressTimeLeft, "Show Time Left");
     auto progressQounterIncludeRing = CreateConfigToggle(config.progressQounterConfig.includeRing, "Include Ring");
