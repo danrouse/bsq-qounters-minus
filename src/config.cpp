@@ -162,6 +162,17 @@ bool QountersMinus::LoadConfig() {
     } else {
         foundEverything = false;
     }
+    if (getConfig().config.HasMember("progressQounter") && getConfig().config["progressQounter"].IsObject()) {
+        auto qounterConfig = getConfig().config["progressQounter"].GetObject();
+        int tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "position", tmpQounterPosition, Int);
+        config.progressQounterConfig.position = static_cast<QountersMinus::QounterPosition>(tmpQounterPosition);
+        LoadConfigVar(qounterConfig, "enabled", config.progressQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "progressTimeLeft", config.progressQounterConfig.progressTimeLeft, Bool);
+        LoadConfigVar(qounterConfig, "includeRing", config.progressQounterConfig.includeRing, Bool);
+    } else {
+        foundEverything = false;
+    }
 
     // LOG_DEBUG("Everything found? %d", foundEverything);
     return foundEverything;
@@ -243,6 +254,13 @@ void QountersMinus::SaveConfig() {
     failQounterConfig.AddMember("position", (int)config.failQounterConfig.position, allocator);
     failQounterConfig.AddMember("showRestartsInstead", config.failQounterConfig.showRestartsInstead, allocator);
     getConfig().config.AddMember("failQounter", failQounterConfig, allocator);
+
+    rapidjson::Value progressQounterConfig(rapidjson::kObjectType);
+    progressQounterConfig.AddMember("enabled", config.progressQounterConfig.enabled, allocator);
+    progressQounterConfig.AddMember("position", (int)config.progressQounterConfig.position, allocator);
+    progressQounterConfig.AddMember("progressTimeLeft", config.progressQounterConfig.progressTimeLeft, allocator);
+    progressQounterConfig.AddMember("includeRing", config.progressQounterConfig.includeRing, allocator);
+    getConfig().config.AddMember("progressQounter", progressQounterConfig, allocator);
 
     getConfig().Write();
 }

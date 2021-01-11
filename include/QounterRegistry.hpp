@@ -21,6 +21,7 @@
 #include "Qounters/ScoreQounter.hpp"
 #include "Qounters/PBQounter.hpp"
 #include "Qounters/FailQounter.hpp"
+#include "Qounters/ProgressQounter.hpp"
 
 namespace QountersMinus {
     namespace QounterRegistry {
@@ -43,5 +44,6 @@ namespace QountersMinus {
         void Initialize(ScoreQounterConfig config);
         void Initialize(PBQounterConfig config);
         void Initialize(FailQounterConfig config);
+        void Initialize(ProgressQounterConfig config);
     };
 };

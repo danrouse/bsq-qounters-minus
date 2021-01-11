@@ -12,6 +12,7 @@
 #include "config/ScoreQounterConfig.hpp"
 #include "config/PBQounterConfig.hpp"
 #include "config/FailQounterConfig.hpp"
+#include "config/ProgressQounterConfig.hpp"
 
 Configuration& getConfig();
 
@@ -33,6 +34,7 @@ namespace QountersMinus {
         ScoreQounterConfig scoreQounterConfig;
         PBQounterConfig pbQounterConfig;
         FailQounterConfig failQounterConfig;
+        ProgressQounterConfig progressQounterConfig;
     } ModConfig;
 
     bool LoadConfig();

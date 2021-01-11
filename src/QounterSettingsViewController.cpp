@@ -184,6 +184,17 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     auto failQounterEnabled = CreateConfigToggle(config.failQounterConfig.enabled, "Enabled");
     CreateConfigEnumIncrement(failQounterPosition, config.failQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
     auto failQounterShowRestartsInstead = CreateConfigToggle(config.failQounterConfig.showRestartsInstead, "Show Restarts Instead");
+
+    //============================================================//
+
+    auto progressQounterTitle = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "Progress Qounter");
+    progressQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    progressQounterTitle->set_fontSize(6.0f);
+
+    auto progressQounterEnabled = CreateConfigToggle(config.progressQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(progressQounterPosition, config.progressQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto progressQounterProgressTimeLeft = CreateConfigToggle(config.progressQounterConfig.progressTimeLeft, "Show Time Left");
+    auto progressQounterIncludeRing = CreateConfigToggle(config.progressQounterConfig.includeRing, "Include Ring");
 }
 
 void QountersMinus::QounterSettingsViewController::Register() {

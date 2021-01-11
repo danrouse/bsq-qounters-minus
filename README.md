@@ -1,6 +1,6 @@
 # Qounters-
 
-Cheap knockoff of Counters+ for Quest
+Store brand version of [Counters+](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~Qounters to display more information in-game.
 
 ## Implemented Qounters
 - Cut
@@ -23,10 +23,11 @@ Cheap knockoff of Counters+ for Quest
 - positioning: parent container alignment (grow top to bottom, not from center)
 - positioning: fine tune parent container locations
 - config: add distance option to each? maybe
-- config menu: hover help texts
+- config menu: hover help texts, confirm readable option names
 - config menu: color picker options
 - refactor: common way to make titles
 - refactor: normalize default counter text name
+- refactor: allow for loading pc counters+ configs
 
 ## Credits
 
