@@ -2,17 +2,14 @@
 
 using namespace QountersMinus;
 
-#define DefineQounterInitializer(qounterType, configType, registryName) \
-    void QountersMinus::QounterRegistry::Initialize(configType config) { \
+#define DefineQounterInitializer(type) \
+    void QountersMinus::QounterRegistry::Initialize(type##Config config) { \
+        if (!config.enabled) return; \
         auto parent = GetParent(config.position); \
-        auto qounter = parent->AddComponent<qounterType>(); \
-        SetPosition(qounter->gameObject->get_transform(), config.position, config.distance); \
-        qounter->Configure(config); \
+        type = parent->AddComponent<QountersMinus::Qounters::type*>(); \
+        SetPosition(type->gameObject->get_transform(), config.position, config.distance); \
+        type->Configure(config); \
     }
-
-#define DefineQounterEventHandler(type, handler) \
-    auto all_##type = UnityEngine::Resources::FindObjectsOfTypeAll<Qounters::type*>(); \
-    for (int i = 0; i < all_##type->Length(); i++) { all_##type->values[i]->handler; }
 
 extern QountersMinus::ModConfig config;
 
@@ -95,17 +92,17 @@ void QountersMinus::QounterRegistry::Initialize() {
         HideChildren(multiplierGO);
     }
 
-    // Initialize all enabled Qounters [ALL-QOUNTERS]
-    if (config.cutQounterConfig.enabled) QounterRegistry::Initialize(config.cutQounterConfig);
-    if (config.missedQounterConfig.enabled) QounterRegistry::Initialize(config.missedQounterConfig);
-    if (config.notesQounterConfig.enabled) QounterRegistry::Initialize(config.notesQounterConfig);
-    if (config.notesLeftQounterConfig.enabled) QounterRegistry::Initialize(config.notesLeftQounterConfig);
-    if (config.spinometerConfig.enabled) QounterRegistry::Initialize(config.spinometerConfig);
-    if (config.speedQounterConfig.enabled) QounterRegistry::Initialize(config.speedQounterConfig);
-    if (config.scoreQounterConfig.enabled) QounterRegistry::Initialize(config.scoreQounterConfig);
-    if (config.pbQounterConfig.enabled) QounterRegistry::Initialize(config.pbQounterConfig);
-    if (config.failQounterConfig.enabled) QounterRegistry::Initialize(config.failQounterConfig);
-    if (config.progressQounterConfig.enabled) QounterRegistry::Initialize(config.progressQounterConfig);
+    // [ALL-QOUNTERS]
+    QounterRegistry::Initialize(config.CutQounterConfig);
+    QounterRegistry::Initialize(config.MissedQounterConfig);
+    QounterRegistry::Initialize(config.NotesQounterConfig);
+    QounterRegistry::Initialize(config.NotesLeftQounterConfig);
+    QounterRegistry::Initialize(config.SpinometerConfig);
+    QounterRegistry::Initialize(config.SpeedQounterConfig);
+    QounterRegistry::Initialize(config.ScoreQounterConfig);
+    QounterRegistry::Initialize(config.PBQounterConfig);
+    QounterRegistry::Initialize(config.FailQounterConfig);
+    QounterRegistry::Initialize(config.ProgressQounterConfig);
 
     if (config.italicText) {
         auto qounters = UnityEngine::Resources::FindObjectsOfTypeAll<Qounter*>();
@@ -118,35 +115,35 @@ void QountersMinus::QounterRegistry::Initialize() {
     }
 }
 
-// Define a typed initializer for all Qounter types [ALL-QOUNTERS]
-DefineQounterInitializer(Qounters::CutQounter*, CutQounterConfig, cutQounter);
-DefineQounterInitializer(Qounters::MissedQounter*, MissedQounterConfig, missedQounter);
-DefineQounterInitializer(Qounters::NotesQounter*, NotesQounterConfig, notesQounter);
-DefineQounterInitializer(Qounters::NotesLeftQounter*, NotesLeftQounterConfig, notesLeftQounter);
-DefineQounterInitializer(Qounters::Spinometer*, SpinometerConfig, spinometer);
-DefineQounterInitializer(Qounters::SpeedQounter*, SpeedQounterConfig, speedQounter);
-DefineQounterInitializer(Qounters::ScoreQounter*, ScoreQounterConfig, scoreQounter);
-DefineQounterInitializer(Qounters::PBQounter*, PBQounterConfig, pbQounter);
-DefineQounterInitializer(Qounters::FailQounter*, FailQounterConfig, failQounter);
-DefineQounterInitializer(Qounters::ProgressQounter*, ProgressQounterConfig, progressQounter);
+// [ALL-QOUNTERS]
+DefineQounterInitializer(CutQounter);
+DefineQounterInitializer(MissedQounter);
+DefineQounterInitializer(NotesQounter);
+DefineQounterInitializer(NotesLeftQounter);
+DefineQounterInitializer(Spinometer);
+DefineQounterInitializer(SpeedQounter);
+DefineQounterInitializer(ScoreQounter);
+DefineQounterInitializer(PBQounter);
+DefineQounterInitializer(FailQounter);
+DefineQounterInitializer(ProgressQounter);
 
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
-    DefineQounterEventHandler(CutQounter, OnNoteCut(data, info));
-    DefineQounterEventHandler(MissedQounter, OnNoteCut(data, info));
-    DefineQounterEventHandler(NotesQounter, OnNoteCut(data, info));
-    DefineQounterEventHandler(NotesLeftQounter, OnNoteCut(data, info));
+    if (CutQounter) CutQounter->OnNoteCut(data, info);
+    if (MissedQounter) MissedQounter->OnNoteCut(data, info);
+    if (NotesQounter) NotesQounter->OnNoteCut(data, info);
+    if (NotesLeftQounter) NotesLeftQounter->OnNoteCut(data, info);
 }
 
 void QountersMinus::QounterRegistry::OnNoteMiss(GlobalNamespace::NoteData* data) {
-    DefineQounterEventHandler(MissedQounter, OnNoteMiss(data));
-    DefineQounterEventHandler(NotesQounter, OnNoteMiss(data));
-    DefineQounterEventHandler(NotesLeftQounter, OnNoteMiss(data));
+    if (MissedQounter) MissedQounter->OnNoteMiss(data);
+    if (NotesQounter) NotesQounter->OnNoteMiss(data);
+    if (NotesLeftQounter) NotesLeftQounter->OnNoteMiss(data);
 }
 
 void QountersMinus::QounterRegistry::OnScoreUpdated(int modifiedScore) {
-    DefineQounterEventHandler(PBQounter, OnScoreUpdated(modifiedScore));
+    if (PBQounter) PBQounter->OnScoreUpdated(modifiedScore);
 }
 
 void QountersMinus::QounterRegistry::OnMaxScoreUpdated(int maxModifiedScore) {

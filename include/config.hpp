@@ -27,16 +27,16 @@ namespace QountersMinus {
         bool italicText = false;
 
         // [ALL-QOUNTERS]
-        CutQounterConfig cutQounterConfig;
-        MissedQounterConfig missedQounterConfig;
-        NotesQounterConfig notesQounterConfig;
-        NotesLeftQounterConfig notesLeftQounterConfig;
-        SpinometerConfig spinometerConfig;
-        SpeedQounterConfig speedQounterConfig;
-        ScoreQounterConfig scoreQounterConfig;
-        PBQounterConfig pbQounterConfig;
-        FailQounterConfig failQounterConfig;
-        ProgressQounterConfig progressQounterConfig;
+        CutQounterConfig CutQounterConfig;
+        MissedQounterConfig MissedQounterConfig;
+        NotesQounterConfig NotesQounterConfig;
+        NotesLeftQounterConfig NotesLeftQounterConfig;
+        SpinometerConfig SpinometerConfig;
+        SpeedQounterConfig SpeedQounterConfig;
+        ScoreQounterConfig ScoreQounterConfig;
+        PBQounterConfig PBQounterConfig;
+        FailQounterConfig FailQounterConfig;
+        ProgressQounterConfig ProgressQounterConfig;
     } ModConfig;
 
     bool LoadConfig();

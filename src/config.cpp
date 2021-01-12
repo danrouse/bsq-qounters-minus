@@ -55,13 +55,13 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["CutConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.cutQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.CutQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
 
-        LoadConfigVar(qounterConfig, "Enabled", config.cutQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.cutQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "SeparateSaberCounts", config.cutQounterConfig.separateSaberCounts, Bool);
-        LoadConfigVar(qounterConfig, "SeparateCutValues", config.cutQounterConfig.separateCutValues, Bool);
-        LoadConfigVar(qounterConfig, "AveragePrecision", config.cutQounterConfig.averagePrecision, Int);
+        LoadConfigVar(qounterConfig, "Enabled", config.CutQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.CutQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "SeparateSaberCounts", config.CutQounterConfig.separateSaberCounts, Bool);
+        LoadConfigVar(qounterConfig, "SeparateCutValues", config.CutQounterConfig.separateCutValues, Bool);
+        LoadConfigVar(qounterConfig, "AveragePrecision", config.CutQounterConfig.averagePrecision, Int);
     } else {
         foundEverything = false;
     }
@@ -69,11 +69,11 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["MissedConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.missedQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.MissedQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
 
-        LoadConfigVar(qounterConfig, "Enabled", config.missedQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.missedQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "CountBadCuts", config.missedQounterConfig.countBadCuts, Bool);
+        LoadConfigVar(qounterConfig, "Enabled", config.MissedQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.MissedQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "CountBadCuts", config.MissedQounterConfig.countBadCuts, Bool);
     } else {
         foundEverything = false;
     }
@@ -81,12 +81,12 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["NoteConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.notesQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.NotesQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
 
-        LoadConfigVar(qounterConfig, "Enabled", config.notesQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.notesQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "ShowPercentage", config.notesQounterConfig.showPercentage, Bool);
-        LoadConfigVar(qounterConfig, "DecimalPrecision", config.notesQounterConfig.decimalPrecision, Int);
+        LoadConfigVar(qounterConfig, "Enabled", config.NotesQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.NotesQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "ShowPercentage", config.NotesQounterConfig.showPercentage, Bool);
+        LoadConfigVar(qounterConfig, "DecimalPrecision", config.NotesQounterConfig.decimalPrecision, Int);
     } else {
         foundEverything = false;
     }
@@ -94,11 +94,11 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["NotesLeftConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.notesLeftQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.NotesLeftQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
 
-        LoadConfigVar(qounterConfig, "Enabled", config.notesLeftQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.notesLeftQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "LabelAboveCount", config.notesLeftQounterConfig.labelAboveCount, Bool);
+        LoadConfigVar(qounterConfig, "Enabled", config.NotesLeftQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.NotesLeftQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "LabelAboveCount", config.NotesLeftQounterConfig.labelAboveCount, Bool);
     } else {
         foundEverything = false;
     }
@@ -106,12 +106,12 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["SpinometerConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.spinometerConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.SpinometerConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
         std::string tmpMode;
         LoadConfigVar(qounterConfig, "Mode", tmpMode, String);
-        config.spinometerConfig.mode = QountersMinus::SpinometerModeLookup[tmpMode];
-        LoadConfigVar(qounterConfig, "Enabled", config.spinometerConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.spinometerConfig.distance, Int);
+        config.SpinometerConfig.mode = QountersMinus::SpinometerModeLookup[tmpMode];
+        LoadConfigVar(qounterConfig, "Enabled", config.SpinometerConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.SpinometerConfig.distance, Int);
     } else {
         foundEverything = false;
     }
@@ -119,13 +119,13 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["SpeedConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.speedQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.SpeedQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
         std::string tmpMode;
         LoadConfigVar(qounterConfig, "Mode", tmpMode, String);
-        config.speedQounterConfig.mode = QountersMinus::SpeedQounterModeLookup[tmpMode];
-        LoadConfigVar(qounterConfig, "Enabled", config.speedQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.speedQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "DecimalPrecision", config.speedQounterConfig.decimalPrecision, Int);
+        config.SpeedQounterConfig.mode = QountersMinus::SpeedQounterModeLookup[tmpMode];
+        LoadConfigVar(qounterConfig, "Enabled", config.SpeedQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.SpeedQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "DecimalPrecision", config.SpeedQounterConfig.decimalPrecision, Int);
     } else {
         foundEverything = false;
     }
@@ -133,22 +133,22 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["ScoreConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.scoreQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.ScoreQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
         std::string tmpMode;
         LoadConfigVar(qounterConfig, "Mode", tmpMode, String);
-        config.scoreQounterConfig.mode = QountersMinus::ScoreQounterModeLookup[tmpMode];
-        LoadConfigVar(qounterConfig, "Enabled", config.scoreQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.scoreQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "DecimalPrecision", config.scoreQounterConfig.decimalPrecision, Int);
-        LoadConfigVar(qounterConfig, "DisplayRank", config.scoreQounterConfig.displayRank, Bool);
-        LoadConfigVar(qounterConfig, "CustomRankColors", config.scoreQounterConfig.customRankColors, Bool);
-        LoadConfigVarColor(qounterConfig, "SSColor", config.scoreQounterConfig.ssColor);
-        LoadConfigVarColor(qounterConfig, "SColor", config.scoreQounterConfig.sColor);
-        LoadConfigVarColor(qounterConfig, "AColor", config.scoreQounterConfig.aColor);
-        LoadConfigVarColor(qounterConfig, "BColor", config.scoreQounterConfig.bColor);
-        LoadConfigVarColor(qounterConfig, "CColor", config.scoreQounterConfig.cColor);
-        LoadConfigVarColor(qounterConfig, "DColor", config.scoreQounterConfig.dColor);
-        LoadConfigVarColor(qounterConfig, "EColor", config.scoreQounterConfig.eColor);
+        config.ScoreQounterConfig.mode = QountersMinus::ScoreQounterModeLookup[tmpMode];
+        LoadConfigVar(qounterConfig, "Enabled", config.ScoreQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.ScoreQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "DecimalPrecision", config.ScoreQounterConfig.decimalPrecision, Int);
+        LoadConfigVar(qounterConfig, "DisplayRank", config.ScoreQounterConfig.displayRank, Bool);
+        LoadConfigVar(qounterConfig, "CustomRankColors", config.ScoreQounterConfig.customRankColors, Bool);
+        LoadConfigVarColor(qounterConfig, "SSColor", config.ScoreQounterConfig.ssColor);
+        LoadConfigVarColor(qounterConfig, "SColor", config.ScoreQounterConfig.sColor);
+        LoadConfigVarColor(qounterConfig, "AColor", config.ScoreQounterConfig.aColor);
+        LoadConfigVarColor(qounterConfig, "BColor", config.ScoreQounterConfig.bColor);
+        LoadConfigVarColor(qounterConfig, "CColor", config.ScoreQounterConfig.cColor);
+        LoadConfigVarColor(qounterConfig, "DColor", config.ScoreQounterConfig.dColor);
+        LoadConfigVarColor(qounterConfig, "EColor", config.ScoreQounterConfig.eColor);
     } else {
         foundEverything = false;
     }
@@ -156,18 +156,18 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["PBConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.pbQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        config.PBQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
         std::string tmpMode;
         LoadConfigVar(qounterConfig, "Mode", tmpMode, String);
-        config.pbQounterConfig.mode = QountersMinus::PBQounterModeLookup[tmpMode];
-        LoadConfigVar(qounterConfig, "Enabled", config.pbQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.pbQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "DecimalPrecision", config.pbQounterConfig.decimalPrecision, Int);
-        LoadConfigVar(qounterConfig, "TextSize", config.pbQounterConfig.textSize, Int);
-        LoadConfigVar(qounterConfig, "UnderScore", config.pbQounterConfig.underscore, Bool);
-        LoadConfigVar(qounterConfig, "HideFirstScore", config.pbQounterConfig.hideFirstScore, Bool);
-        LoadConfigVarColor(qounterConfig, "BetterColor", config.pbQounterConfig.betterColor);
-        LoadConfigVarColor(qounterConfig, "DefaultColor", config.pbQounterConfig.defaultColor);
+        config.PBQounterConfig.mode = QountersMinus::PBQounterModeLookup[tmpMode];
+        LoadConfigVar(qounterConfig, "Enabled", config.PBQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.PBQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "DecimalPrecision", config.PBQounterConfig.decimalPrecision, Int);
+        LoadConfigVar(qounterConfig, "TextSize", config.PBQounterConfig.textSize, Int);
+        LoadConfigVar(qounterConfig, "UnderScore", config.PBQounterConfig.underscore, Bool);
+        LoadConfigVar(qounterConfig, "HideFirstScore", config.PBQounterConfig.hideFirstScore, Bool);
+        LoadConfigVarColor(qounterConfig, "BetterColor", config.PBQounterConfig.betterColor);
+        LoadConfigVarColor(qounterConfig, "DefaultColor", config.PBQounterConfig.defaultColor);
     } else {
         foundEverything = false;
     }
@@ -175,10 +175,10 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["FailsConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.failQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
-        LoadConfigVar(qounterConfig, "Enabled", config.failQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.failQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "ShowRestartsInstead", config.failQounterConfig.showRestartsInstead, Bool);
+        config.FailQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        LoadConfigVar(qounterConfig, "Enabled", config.FailQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.FailQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "ShowRestartsInstead", config.FailQounterConfig.showRestartsInstead, Bool);
     } else {
         foundEverything = false;
     }
@@ -186,11 +186,11 @@ bool QountersMinus::LoadConfig() {
         auto qounterConfig = getConfig().config["ProgressConfig"].GetObject();
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
-        config.progressQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
-        LoadConfigVar(qounterConfig, "Enabled", config.progressQounterConfig.enabled, Bool);
-        LoadConfigVar(qounterConfig, "Distance", config.progressQounterConfig.distance, Int);
-        LoadConfigVar(qounterConfig, "ProgressTimeLeft", config.progressQounterConfig.progressTimeLeft, Bool);
-        LoadConfigVar(qounterConfig, "IncludeRing", config.progressQounterConfig.includeRing, Bool);
+        config.ProgressQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        LoadConfigVar(qounterConfig, "Enabled", config.ProgressQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.ProgressQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "ProgressTimeLeft", config.ProgressQounterConfig.progressTimeLeft, Bool);
+        LoadConfigVar(qounterConfig, "IncludeRing", config.ProgressQounterConfig.includeRing, Bool);
     } else {
         foundEverything = false;
     }
@@ -211,94 +211,94 @@ void QountersMinus::SaveConfig() {
 
     // [ALL-QOUNTERS]
     rapidjson::Value cutQounterConfig(rapidjson::kObjectType);
-    cutQounterConfig.AddMember("Enabled", config.cutQounterConfig.enabled, allocator);
-    cutQounterConfig.AddMember("Distance", config.cutQounterConfig.distance, allocator);
-    cutQounterConfig.AddMember("Position", LookupEnumString(config.cutQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    cutQounterConfig.AddMember("SeparateSaberCounts", config.cutQounterConfig.separateSaberCounts, allocator);
-    cutQounterConfig.AddMember("SeparateCutValues", config.cutQounterConfig.separateCutValues, allocator);
-    cutQounterConfig.AddMember("AveragePrecision", config.cutQounterConfig.averagePrecision, allocator);
+    cutQounterConfig.AddMember("Enabled", config.CutQounterConfig.enabled, allocator);
+    cutQounterConfig.AddMember("Distance", config.CutQounterConfig.distance, allocator);
+    cutQounterConfig.AddMember("Position", LookupEnumString(config.CutQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    cutQounterConfig.AddMember("SeparateSaberCounts", config.CutQounterConfig.separateSaberCounts, allocator);
+    cutQounterConfig.AddMember("SeparateCutValues", config.CutQounterConfig.separateCutValues, allocator);
+    cutQounterConfig.AddMember("AveragePrecision", config.CutQounterConfig.averagePrecision, allocator);
     getConfig().config.AddMember("CutConfig", cutQounterConfig, allocator);
 
     rapidjson::Value missedQounterConfig(rapidjson::kObjectType);
-    missedQounterConfig.AddMember("Enabled", config.missedQounterConfig.enabled, allocator);
-    missedQounterConfig.AddMember("Distance", config.missedQounterConfig.distance, allocator);
-    missedQounterConfig.AddMember("Position", LookupEnumString(config.missedQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    missedQounterConfig.AddMember("CountBadCuts", config.missedQounterConfig.countBadCuts, allocator);
+    missedQounterConfig.AddMember("Enabled", config.MissedQounterConfig.enabled, allocator);
+    missedQounterConfig.AddMember("Distance", config.MissedQounterConfig.distance, allocator);
+    missedQounterConfig.AddMember("Position", LookupEnumString(config.MissedQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    missedQounterConfig.AddMember("CountBadCuts", config.MissedQounterConfig.countBadCuts, allocator);
     getConfig().config.AddMember("MissedConfig", missedQounterConfig, allocator);
 
     rapidjson::Value notesQounterConfig(rapidjson::kObjectType);
-    notesQounterConfig.AddMember("Enabled", config.notesQounterConfig.enabled, allocator);
-    notesQounterConfig.AddMember("Distance", config.notesQounterConfig.distance, allocator);
-    notesQounterConfig.AddMember("Position", LookupEnumString(config.notesQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    notesQounterConfig.AddMember("ShowPercentage", config.notesQounterConfig.showPercentage, allocator);
-    notesQounterConfig.AddMember("DecimalPrecision", config.notesQounterConfig.decimalPrecision, allocator);
+    notesQounterConfig.AddMember("Enabled", config.NotesQounterConfig.enabled, allocator);
+    notesQounterConfig.AddMember("Distance", config.NotesQounterConfig.distance, allocator);
+    notesQounterConfig.AddMember("Position", LookupEnumString(config.NotesQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    notesQounterConfig.AddMember("ShowPercentage", config.NotesQounterConfig.showPercentage, allocator);
+    notesQounterConfig.AddMember("DecimalPrecision", config.NotesQounterConfig.decimalPrecision, allocator);
     getConfig().config.AddMember("NoteConfig", notesQounterConfig, allocator);
 
     rapidjson::Value notesLeftQounterConfig(rapidjson::kObjectType);
-    notesLeftQounterConfig.AddMember("Enabled", config.notesLeftQounterConfig.enabled, allocator);
-    notesLeftQounterConfig.AddMember("Distance", config.notesLeftQounterConfig.distance, allocator);
-    notesLeftQounterConfig.AddMember("Position", LookupEnumString(config.notesLeftQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    notesLeftQounterConfig.AddMember("LabelAboveCount", config.notesLeftQounterConfig.labelAboveCount, allocator);
+    notesLeftQounterConfig.AddMember("Enabled", config.NotesLeftQounterConfig.enabled, allocator);
+    notesLeftQounterConfig.AddMember("Distance", config.NotesLeftQounterConfig.distance, allocator);
+    notesLeftQounterConfig.AddMember("Position", LookupEnumString(config.NotesLeftQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    notesLeftQounterConfig.AddMember("LabelAboveCount", config.NotesLeftQounterConfig.labelAboveCount, allocator);
     getConfig().config.AddMember("NotesLeftConfig", notesLeftQounterConfig, allocator);
 
     rapidjson::Value spinometerConfig(rapidjson::kObjectType);
-    spinometerConfig.AddMember("Enabled", config.spinometerConfig.enabled, allocator);
-    spinometerConfig.AddMember("Distance", config.spinometerConfig.distance, allocator);
-    spinometerConfig.AddMember("Position", LookupEnumString(config.spinometerConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    spinometerConfig.AddMember("Mode", LookupEnumString(config.spinometerConfig.mode, QountersMinus::SpinometerModeLookup), allocator);
+    spinometerConfig.AddMember("Enabled", config.SpinometerConfig.enabled, allocator);
+    spinometerConfig.AddMember("Distance", config.SpinometerConfig.distance, allocator);
+    spinometerConfig.AddMember("Position", LookupEnumString(config.SpinometerConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    spinometerConfig.AddMember("Mode", LookupEnumString(config.SpinometerConfig.mode, QountersMinus::SpinometerModeLookup), allocator);
     getConfig().config.AddMember("SpinometerConfig", spinometerConfig, allocator);
 
     rapidjson::Value speedQounterConfig(rapidjson::kObjectType);
-    speedQounterConfig.AddMember("Enabled", config.speedQounterConfig.enabled, allocator);
-    speedQounterConfig.AddMember("Distance", config.speedQounterConfig.distance, allocator);
-    speedQounterConfig.AddMember("Position", LookupEnumString(config.speedQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    speedQounterConfig.AddMember("Mode", LookupEnumString(config.speedQounterConfig.mode, QountersMinus::SpeedQounterModeLookup), allocator);
-    speedQounterConfig.AddMember("DecimalPrecision", config.speedQounterConfig.decimalPrecision, allocator);
+    speedQounterConfig.AddMember("Enabled", config.SpeedQounterConfig.enabled, allocator);
+    speedQounterConfig.AddMember("Distance", config.SpeedQounterConfig.distance, allocator);
+    speedQounterConfig.AddMember("Position", LookupEnumString(config.SpeedQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    speedQounterConfig.AddMember("Mode", LookupEnumString(config.SpeedQounterConfig.mode, QountersMinus::SpeedQounterModeLookup), allocator);
+    speedQounterConfig.AddMember("DecimalPrecision", config.SpeedQounterConfig.decimalPrecision, allocator);
     getConfig().config.AddMember("SpeedConfig", speedQounterConfig, allocator);
 
     rapidjson::Value scoreQounterConfig(rapidjson::kObjectType);
-    scoreQounterConfig.AddMember("Enabled", config.scoreQounterConfig.enabled, allocator);
-    scoreQounterConfig.AddMember("Distance", config.scoreQounterConfig.distance, allocator);
-    scoreQounterConfig.AddMember("Position", LookupEnumString(config.scoreQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    scoreQounterConfig.AddMember("Mode", LookupEnumString(config.scoreQounterConfig.mode, QountersMinus::ScoreQounterModeLookup), allocator);
-    scoreQounterConfig.AddMember("DecimalPrecision", config.scoreQounterConfig.decimalPrecision, allocator);
-    scoreQounterConfig.AddMember("DisplayRank", config.scoreQounterConfig.displayRank, allocator);
-    scoreQounterConfig.AddMember("CustomRankColors", config.scoreQounterConfig.customRankColors, allocator);
-    scoreQounterConfig.AddMember("SsColor", FormatColorToHex(config.scoreQounterConfig.ssColor), allocator);
-    scoreQounterConfig.AddMember("SColor", FormatColorToHex(config.scoreQounterConfig.sColor), allocator);
-    scoreQounterConfig.AddMember("AColor", FormatColorToHex(config.scoreQounterConfig.aColor), allocator);
-    scoreQounterConfig.AddMember("BColor", FormatColorToHex(config.scoreQounterConfig.bColor), allocator);
-    scoreQounterConfig.AddMember("CColor", FormatColorToHex(config.scoreQounterConfig.cColor), allocator);
-    scoreQounterConfig.AddMember("DColor", FormatColorToHex(config.scoreQounterConfig.dColor), allocator);
-    scoreQounterConfig.AddMember("EColor", FormatColorToHex(config.scoreQounterConfig.eColor), allocator);
+    scoreQounterConfig.AddMember("Enabled", config.ScoreQounterConfig.enabled, allocator);
+    scoreQounterConfig.AddMember("Distance", config.ScoreQounterConfig.distance, allocator);
+    scoreQounterConfig.AddMember("Position", LookupEnumString(config.ScoreQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    scoreQounterConfig.AddMember("Mode", LookupEnumString(config.ScoreQounterConfig.mode, QountersMinus::ScoreQounterModeLookup), allocator);
+    scoreQounterConfig.AddMember("DecimalPrecision", config.ScoreQounterConfig.decimalPrecision, allocator);
+    scoreQounterConfig.AddMember("DisplayRank", config.ScoreQounterConfig.displayRank, allocator);
+    scoreQounterConfig.AddMember("CustomRankColors", config.ScoreQounterConfig.customRankColors, allocator);
+    scoreQounterConfig.AddMember("SsColor", FormatColorToHex(config.ScoreQounterConfig.ssColor), allocator);
+    scoreQounterConfig.AddMember("SColor", FormatColorToHex(config.ScoreQounterConfig.sColor), allocator);
+    scoreQounterConfig.AddMember("AColor", FormatColorToHex(config.ScoreQounterConfig.aColor), allocator);
+    scoreQounterConfig.AddMember("BColor", FormatColorToHex(config.ScoreQounterConfig.bColor), allocator);
+    scoreQounterConfig.AddMember("CColor", FormatColorToHex(config.ScoreQounterConfig.cColor), allocator);
+    scoreQounterConfig.AddMember("DColor", FormatColorToHex(config.ScoreQounterConfig.dColor), allocator);
+    scoreQounterConfig.AddMember("EColor", FormatColorToHex(config.ScoreQounterConfig.eColor), allocator);
     getConfig().config.AddMember("ScoreConfig", scoreQounterConfig, allocator);
 
     rapidjson::Value pbQounterConfig(rapidjson::kObjectType);
-    pbQounterConfig.AddMember("Enabled", config.pbQounterConfig.enabled, allocator);
-    pbQounterConfig.AddMember("Distance", config.pbQounterConfig.distance, allocator);
-    pbQounterConfig.AddMember("Position", LookupEnumString(config.pbQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    pbQounterConfig.AddMember("Mode", LookupEnumString(config.pbQounterConfig.mode, QountersMinus::PBQounterModeLookup), allocator);
-    pbQounterConfig.AddMember("DecimalPrecision", config.pbQounterConfig.decimalPrecision, allocator);
-    pbQounterConfig.AddMember("TextSize", config.pbQounterConfig.textSize, allocator);
-    pbQounterConfig.AddMember("Underscore", config.pbQounterConfig.underscore, allocator);
-    pbQounterConfig.AddMember("HideFirstScore", config.pbQounterConfig.hideFirstScore, allocator);
-    pbQounterConfig.AddMember("BetterColor", FormatColorToHex(config.pbQounterConfig.betterColor), allocator);
-    pbQounterConfig.AddMember("DefaultColor", FormatColorToHex(config.pbQounterConfig.defaultColor), allocator);
+    pbQounterConfig.AddMember("Enabled", config.PBQounterConfig.enabled, allocator);
+    pbQounterConfig.AddMember("Distance", config.PBQounterConfig.distance, allocator);
+    pbQounterConfig.AddMember("Position", LookupEnumString(config.PBQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    pbQounterConfig.AddMember("Mode", LookupEnumString(config.PBQounterConfig.mode, QountersMinus::PBQounterModeLookup), allocator);
+    pbQounterConfig.AddMember("DecimalPrecision", config.PBQounterConfig.decimalPrecision, allocator);
+    pbQounterConfig.AddMember("TextSize", config.PBQounterConfig.textSize, allocator);
+    pbQounterConfig.AddMember("Underscore", config.PBQounterConfig.underscore, allocator);
+    pbQounterConfig.AddMember("HideFirstScore", config.PBQounterConfig.hideFirstScore, allocator);
+    pbQounterConfig.AddMember("BetterColor", FormatColorToHex(config.PBQounterConfig.betterColor), allocator);
+    pbQounterConfig.AddMember("DefaultColor", FormatColorToHex(config.PBQounterConfig.defaultColor), allocator);
     getConfig().config.AddMember("PBConfig", pbQounterConfig, allocator);
 
     rapidjson::Value failQounterConfig(rapidjson::kObjectType);
-    failQounterConfig.AddMember("Enabled", config.failQounterConfig.enabled, allocator);
-    failQounterConfig.AddMember("Distance", config.failQounterConfig.distance, allocator);
-    failQounterConfig.AddMember("Position", LookupEnumString(config.failQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    failQounterConfig.AddMember("ShowRestartsInstead", config.failQounterConfig.showRestartsInstead, allocator);
+    failQounterConfig.AddMember("Enabled", config.FailQounterConfig.enabled, allocator);
+    failQounterConfig.AddMember("Distance", config.FailQounterConfig.distance, allocator);
+    failQounterConfig.AddMember("Position", LookupEnumString(config.FailQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    failQounterConfig.AddMember("ShowRestartsInstead", config.FailQounterConfig.showRestartsInstead, allocator);
     getConfig().config.AddMember("FailsConfig", failQounterConfig, allocator);
 
     rapidjson::Value progressQounterConfig(rapidjson::kObjectType);
-    progressQounterConfig.AddMember("Enabled", config.progressQounterConfig.enabled, allocator);
-    progressQounterConfig.AddMember("Distance", config.progressQounterConfig.distance, allocator);
-    progressQounterConfig.AddMember("Position", LookupEnumString(config.progressQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
-    progressQounterConfig.AddMember("ProgressTimeLeft", config.progressQounterConfig.progressTimeLeft, allocator);
-    progressQounterConfig.AddMember("IncludeRing", config.progressQounterConfig.includeRing, allocator);
+    progressQounterConfig.AddMember("Enabled", config.ProgressQounterConfig.enabled, allocator);
+    progressQounterConfig.AddMember("Distance", config.ProgressQounterConfig.distance, allocator);
+    progressQounterConfig.AddMember("Position", LookupEnumString(config.ProgressQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    progressQounterConfig.AddMember("ProgressTimeLeft", config.ProgressQounterConfig.progressTimeLeft, allocator);
+    progressQounterConfig.AddMember("IncludeRing", config.ProgressQounterConfig.includeRing, allocator);
     getConfig().config.AddMember("ProgressConfig", progressQounterConfig, allocator);
 
     getConfig().Write();

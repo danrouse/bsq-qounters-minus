@@ -11,7 +11,7 @@
 #include "UnityEngine/Transform.hpp"
 #include "TMPro/FontStyles.hpp"
 
-// Include all Qounter types [ALL-QOUNTERS]
+// [ALL-QOUNTERS]
 #include "Qounters/CutQounter.hpp"
 #include "Qounters/MissedQounter.hpp"
 #include "Qounters/NotesQounter.hpp"
@@ -22,6 +22,10 @@
 #include "Qounters/PBQounter.hpp"
 #include "Qounters/FailQounter.hpp"
 #include "Qounters/ProgressQounter.hpp"
+
+#define RegisterQounterType(type) \
+    static QountersMinus::Qounters::type* type; \
+    void Initialize(type##Config config);
 
 namespace QountersMinus {
     namespace QounterRegistry {
@@ -34,16 +38,16 @@ namespace QountersMinus {
         void OnScoreUpdated(int modifiedScore);
         void OnMaxScoreUpdated(int maxModifiedScore);
 
-        // Typed initializer for each Qounter type [ALL-QOUNTERS]
-        void Initialize(CutQounterConfig config);
-        void Initialize(MissedQounterConfig config);
-        void Initialize(NotesQounterConfig config);
-        void Initialize(NotesLeftQounterConfig config);
-        void Initialize(SpinometerConfig config);
-        void Initialize(SpeedQounterConfig config);
-        void Initialize(ScoreQounterConfig config);
-        void Initialize(PBQounterConfig config);
-        void Initialize(FailQounterConfig config);
-        void Initialize(ProgressQounterConfig config);
+        // [ALL-QOUNTERS]
+        RegisterQounterType(CutQounter);
+        RegisterQounterType(FailQounter);
+        RegisterQounterType(MissedQounter);
+        RegisterQounterType(NotesLeftQounter);
+        RegisterQounterType(NotesQounter);
+        RegisterQounterType(PBQounter);
+        RegisterQounterType(ProgressQounter);
+        RegisterQounterType(ScoreQounter);
+        RegisterQounterType(SpeedQounter);
+        RegisterQounterType(Spinometer);
     };
 };

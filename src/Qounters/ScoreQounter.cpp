@@ -62,7 +62,7 @@ void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounte
 }
 
 UnityEngine::Color QountersMinus::Qounters::ScoreQounter::GetRankColor(GlobalNamespace::RankModel::Rank rank) {
-    switch (immediateRank) {
+    switch (rank) {
         case GlobalNamespace::RankModel::Rank::S: return sColor;
         case GlobalNamespace::RankModel::Rank::A: return aColor;
         case GlobalNamespace::RankModel::Rank::B: return bColor;
