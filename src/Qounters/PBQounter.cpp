@@ -2,10 +2,13 @@
 
 DEFINE_CLASS(QountersMinus::Qounters::PBQounter);
 
+// TODO: don't do this
+// #include "config.hpp"
+// extern QountersMinus::ModConfig config;
+
 void QountersMinus::Qounters::PBQounter::Configure(QountersMinus::PBQounterConfig config) {
     mode = (int)config.mode;
     decimalPrecision = config.decimalPrecision;
-    underscore = config.underscore;
     hideFirstScore = config.hideFirstScore;
     betterColor = config.betterColor;
     defaultColor = config.defaultColor;
@@ -25,19 +28,15 @@ void QountersMinus::Qounters::PBQounter::Configure(QountersMinus::PBQounterConfi
     auto playerLevelStats = playerDataModel->playerData->GetPlayerLevelStatsData(gameplayCoreInstaller->sceneSetupData->difficultyBeatmap);
     highScore = playerLevelStats->highScore;
 
-    // bool scoreConfigEnabled = underscore; // hmmmm how to access this
-    // if (scoreConfigEnabled && underscore) {
+    // if (config.ScoreQounterConfig.enabled && config.underScore) {
     //     HUDCanvas scoreCanvas = CanvasUtility.GetCanvasSettingsFromID(scoreConfig.CanvasID);
     //     counter = CanvasUtility.CreateTextFromSettings(scoreConfig, SCORE_COUNTER_OFFSET * (3f / scoreCanvas.PositionScale));
+    // } else {
+        pbText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "", false);
+        pbText->set_alignment(TMPro::TextAlignmentOptions::Top);
+        pbText->set_fontSize(config.textSize * 10.0f);
+        pbText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
     // }
-    // else
-    // {
-    //     counter = CanvasUtility.CreateTextFromSettings(Settings);
-    // }
-    pbText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "", false);
-    pbText->set_alignment(TMPro::TextAlignmentOptions::Top);
-    pbText->set_fontSize(config.textSize * 10.0f);
-    pbText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
 
     SetPersonalBest((float)highScore / maxPossibleScore);
     OnScoreUpdated(0);

@@ -35,9 +35,9 @@ All of the base modules included in *Counters+* are available.
 | Fail | How many times you've failed or restarted |
 | Progress | Enhanced version of default song timer |
 
-## TODO before release
-- ScoreQounter commented stuff
-- PBQounter "under score" option
+## TODO
+- ScoreQounter repositioning default score text elements
+- PBQounter "under score" option (currently disabled from config)
 
 ## Qoming Soon
 - PP Qounter

@@ -164,7 +164,7 @@ bool QountersMinus::LoadConfig() {
         LoadConfigVar(qounterConfig, "Distance", config.PBQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "DecimalPrecision", config.PBQounterConfig.decimalPrecision, Int);
         LoadConfigVar(qounterConfig, "TextSize", config.PBQounterConfig.textSize, Int);
-        LoadConfigVar(qounterConfig, "UnderScore", config.PBQounterConfig.underscore, Bool);
+        LoadConfigVar(qounterConfig, "UnderScore", config.PBQounterConfig.underScore, Bool);
         LoadConfigVar(qounterConfig, "HideFirstScore", config.PBQounterConfig.hideFirstScore, Bool);
         LoadConfigVarColor(qounterConfig, "BetterColor", config.PBQounterConfig.betterColor);
         LoadConfigVarColor(qounterConfig, "DefaultColor", config.PBQounterConfig.defaultColor);
@@ -280,7 +280,7 @@ void QountersMinus::SaveConfig() {
     pbQounterConfig.AddMember("Mode", LookupEnumString(config.PBQounterConfig.mode, QountersMinus::PBQounterModeLookup), allocator);
     pbQounterConfig.AddMember("DecimalPrecision", config.PBQounterConfig.decimalPrecision, allocator);
     pbQounterConfig.AddMember("TextSize", config.PBQounterConfig.textSize, allocator);
-    pbQounterConfig.AddMember("Underscore", config.PBQounterConfig.underscore, allocator);
+    pbQounterConfig.AddMember("Underscore", config.PBQounterConfig.underScore, allocator);
     pbQounterConfig.AddMember("HideFirstScore", config.PBQounterConfig.hideFirstScore, allocator);
     pbQounterConfig.AddMember("BetterColor", FormatColorToHex(config.PBQounterConfig.betterColor), allocator);
     pbQounterConfig.AddMember("DefaultColor", FormatColorToHex(config.PBQounterConfig.defaultColor), allocator);

@@ -2,17 +2,21 @@
 
 DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
-void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounterConfig config) {
-    mode = (int)config.mode;
-    customRankColors = config.customRankColors;
-    decimalPrecision = config.decimalPrecision;
-    ssColor = config.ssColor;
-    sColor = config.sColor;
-    aColor = config.aColor;
-    bColor = config.bColor;
-    cColor = config.cColor;
-    dColor = config.dColor;
-    eColor = config.eColor;
+// TODO: don't do this
+#include "config.hpp"
+extern QountersMinus::ModConfig config;
+
+void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounterConfig _config) {
+    mode = (int)_config.mode;
+    customRankColors = _config.customRankColors;
+    decimalPrecision = _config.decimalPrecision;
+    ssColor = _config.ssColor;
+    sColor = _config.sColor;
+    aColor = _config.aColor;
+    bColor = _config.bColor;
+    cColor = _config.cColor;
+    dColor = _config.dColor;
+    eColor = _config.eColor;
 
     CreateBasicTitle("Score");
 
@@ -28,27 +32,33 @@ void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounte
     coreGameHUD->relativeScoreGO->get_transform()->SetParent(scoreUIText->get_transform(), true);
     coreGameHUD->immediateRankGO->get_transform()->SetParent(scoreUIText->get_transform(), true);
 
-    // if (!mainConfig.ItalicText)
-    // {
-    //     old.fontStyle = relativeScoreText.fontStyle = rankText.fontStyle = FontStyles.Normal;
-    //     Vector3 localPosition = relativeScoreText.rectTransform.localPosition;
-    //     relativeScoreText.rectTransform.localPosition = new Vector3(0, localPosition.y, localPosition.z);
-    //     localPosition = rankText.rectTransform.localPosition;
-    //     rankText.rectTransform.localPosition = new Vector3(0, localPosition.y, localPosition.z);
-    // }
+    if (!config.italicText) {
+        scoreUIText->set_fontStyle(TMPro::FontStyles::Normal);
+        relativeScoreText->set_fontStyle(TMPro::FontStyles::Normal);
+        rankText->set_fontStyle(TMPro::FontStyles::Normal);
+        auto localPosition1 = relativeScoreText->get_rectTransform()->get_localPosition();
+        relativeScoreText->get_rectTransform()->set_localPosition(UnityEngine::Vector3(0.0f, localPosition1.y, localPosition1.z));
+        auto localPosition2 = rankText->get_rectTransform()->get_localPosition();
+        rankText->get_rectTransform()->set_localPosition(UnityEngine::Vector3(0.0f, localPosition2.y, localPosition2.z));
+    }
 
     if (mode == (int)QountersMinus::ScoreQounterMode::RankOnly) UnityEngine::Object::Destroy(coreGameHUD->relativeScoreGO);
     if (mode == (int)QountersMinus::ScoreQounterMode::ScoreOnly) UnityEngine::Object::Destroy(coreGameHUD->immediateRankGO);
 
-    // RectTransform pointsTextTransform = old.rectTransform;
-
     // HUDCanvas currentSettings = CanvasUtility.GetCanvasSettingsFromID(Settings.CanvasID);
-
     // Vector2 anchoredPos = CanvasUtility.GetAnchoredPositionFromConfig(Settings) + (offset * (3f / currentSettings.PositionScale));
+    // scoreUIText.rectTransform.localPosition = anchoredPos * currentSettings.PositionScale;
+    // scoreUIText.rectTransform.localPosition = new Vector3(scoreUIText.rectTransform.localPosition.x, scoreUIText.rectTransform.localPosition.y, 0);
+    // scoreUIText.rectTransform.localEulerAngles = Vector3.zero;
 
-    // pointsTextTransform.localPosition = anchoredPos * currentSettings.PositionScale;
-    // pointsTextTransform.localPosition = new Vector3(pointsTextTransform.localPosition.x, pointsTextTransform.localPosition.y, 0);
-    // pointsTextTransform.localEulerAngles = Vector3.zero;
+    // WIP porting that from above
+    // auto scoreUITextRect = scoreUIText->get_rectTransform();
+    // scoreUITextRect->set_localPosition(UnityEngine::Vector3(
+    //     scoreUITextRect->get_localPosition().x * anchoredPos * currentSettings.positionScale,
+    //     scoreUITextRect->get_localPosition().y * anchoredPos * currentSettings.positionScale,
+    //     0.0f
+    // ));
+    // scoreUITextRect->set_localEulerAngles(UnityEngine::Vector3::get_zero());
 
     UnityEngine::Object::Destroy(coreGameHUD->GetComponentInChildren<GlobalNamespace::ImmediateRankUIPanel*>());
 

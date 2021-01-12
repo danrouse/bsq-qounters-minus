@@ -28,7 +28,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
 
     DECLARE_INSTANCE_FIELD(int, mode);
     DECLARE_INSTANCE_FIELD(int, decimalPrecision);
-    DECLARE_INSTANCE_FIELD(bool, underscore);
     DECLARE_INSTANCE_FIELD(bool, hideFirstScore);
     DECLARE_INSTANCE_FIELD(UnityEngine::Color, betterColor);
     DECLARE_INSTANCE_FIELD(UnityEngine::Color, defaultColor);
@@ -44,7 +43,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
 
         REGISTER_FIELD(mode);
         REGISTER_FIELD(decimalPrecision);
-        REGISTER_FIELD(underscore);
         REGISTER_FIELD(hideFirstScore);
         REGISTER_FIELD(betterColor);
         REGISTER_FIELD(defaultColor);
