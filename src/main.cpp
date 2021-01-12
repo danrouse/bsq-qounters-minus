@@ -7,6 +7,7 @@ extern "C" void setup(ModInfo& info) {
 
 extern "C" void load() {
     il2cpp_functions::Init();
+    QuestUI::Init();
 
     LOG_DEBUG("Registering types");
     QountersMinus::QounterRegistry::RegisterTypes();
@@ -16,6 +17,5 @@ extern "C" void load() {
     QountersMinus::InstallHooks();
 
     LOG_DEBUG("Loading config");
-    // if (!QountersMinus::LoadConfig())
-    QountersMinus::SaveConfig();
+    if (!QountersMinus::LoadConfig()) QountersMinus::SaveConfig();
 }

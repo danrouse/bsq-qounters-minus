@@ -1,6 +1,6 @@
 # Qounters-
 
-Store brand version of [*Counters+*](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~ Qounters to display information in-game.
+Store brand version of [*Counters+*](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~ Qounters to display statistics in-game.
 
 Configure your Qounters from the Mod Settings menu (Main menu → Settings (gear icon) → Mod Settings → Qounters-)
 
