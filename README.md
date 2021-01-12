@@ -1,28 +1,46 @@
 # Qounters-
 
-Store brand version of [Counters+](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~Qounters to display more information in-game.
+Store brand version of [*Counters+*](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~ Qounters to display information in-game.
 
-Settings can be loaded from a Counters+ configuration! Rename your `CountersPlus.json` to `qounters-minus.json` and upload it through BMBF's Upload screen after installing Qounters-.
+Configure your Qounters from the Mod Settings menu (Main menu → Settings (gear icon) → Mod Settings → Qounters-)
+
+Settings can be loaded from a *Counters+* configuration file! Rename your `CountersPlus.json` to `qounters-minus.json` and upload it through BMBF's Upload screen after installing Qounters-.
+
+Everything covered by the original base mod is supported, *except*:
+- The settings menu is store brand
+- Separate canvases are not supported
+
+---
+
+If Qounters- is failing to load, make sure it is the most recently enabled mod in BMBF by disabling and re-enabling it.
+
+---
+
+*Today's interface has been brought to you by the letter **Q***.
+
+---
 
 ## Qounter types
-All of the modules included in Counters+ are now available.
-
-- Cut
-- Missed
-- Notes
-- NotesLeft
-- Spinometer
-- Speed
-- Score
-- PB
-- Fail
-- Progress
+All of the base modules included in *Counters+* are available.
+| Qounter | Description |
+|-|-|
+| Cut | Average cut scores, optionally split between sabers and/or score components |
+| Missed | Number of missed notes in the current song |
+| Notes | Number of notes so far in the song, and how many you've hit |
+| Notes Left | Number of notes remaining in the current song |
+| Spinometer | How fast your Sabers are rotating |
+| Speed | How fast your Sabers are moving |
+| Score | Enhanced version of default score UI |
+| PB | How your current play matches up to your personal best |
+| Fail | How many times you've failed or restarted |
+| Progress | Enhanced version of default song timer |
 
 ## TODO before release
 - ScoreQounter commented stuff
 - PBQounter "under score" option
-- config menu: color picker options
-- readme smile
+
+## Qoming Soon
+- PP Qounter
 
 ## Credits
 

@@ -11,9 +11,11 @@
 #include "UnityEngine/RectOffset.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus, QounterSettingsViewController, HMUI::ViewController,
+    DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, layout);
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
     REGISTER_FUNCTION(QounterSettingsViewController,
+        REGISTER_FIELD(layout);
         REGISTER_METHOD(DidActivate);
     )
 
