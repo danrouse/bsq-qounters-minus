@@ -10,6 +10,7 @@
 #include "GlobalNamespace/GameplayCoreInstaller.hpp"
 #include "GlobalNamespace/IDifficultyBeatmap.hpp"
 #include "GlobalNamespace/IBeatmapLevel.hpp"
+#include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/PlayerDataModel.hpp"
 #include "GlobalNamespace/PlayerData.hpp"

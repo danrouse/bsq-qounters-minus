@@ -13,6 +13,7 @@
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/IDifficultyBeatmap.hpp"
 #include "GlobalNamespace/IBeatmapLevel.hpp"
+#include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
 #include "GlobalNamespace/CoreGameHUDController.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Material.hpp"

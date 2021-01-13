@@ -91,5 +91,5 @@ void QountersMinus::Qounters::ScoreQounter::UpdateText() {
         rankText->set_color(customRankColors ? GetRankColor(immediateRank) : UnityEngine::Color::get_white());
     }
     float relativeScore = relativeScoreAndImmediateRankCounter->relativeScore * 100.0f;
-    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, decimalPrecision)));
+    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, decimalPrecision) + "%"));
 }

@@ -12,7 +12,7 @@ void QountersMinus::Qounters::FailQounter::Configure(QountersMinus::FailQounterC
 
     auto gameplayCoreInstaller = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayCoreInstaller*>()->values[0];
     auto beatmap = gameplayCoreInstaller->sceneSetupData->difficultyBeatmap;
-    auto currentBeatmapHash = to_utf8(csstrtostr(beatmap->get_level()->get_levelID())) + "_" + std::to_string(beatmap->get_difficultyRank());
+    auto currentBeatmapHash = to_utf8(csstrtostr(reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(beatmap->get_level())->get_levelID())) + "_" + std::to_string(beatmap->get_difficultyRank());
 
     if (showRestartsInstead) {
         if (prevBeatmapHash != nullptr && to_utf8(csstrtostr(prevBeatmapHash)) == currentBeatmapHash) {

@@ -46,7 +46,7 @@ void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::Progress
     length = audioTimeSyncController->get_songLength();
 
     auto gameplayCoreInstaller = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayCoreInstaller*>()->values[0];
-    songBPM = gameplayCoreInstaller->sceneSetupData->difficultyBeatmap->get_level()->get_beatsPerMinute();
+    songBPM = reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(gameplayCoreInstaller->sceneSetupData->difficultyBeatmap->get_level())->get_beatsPerMinute();
 
     auto coreGameHUDController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
     UnityEngine::Object::Destroy(coreGameHUDController->songProgressPanelGO);
