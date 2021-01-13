@@ -22,8 +22,8 @@ struct QounterPositionData {
 std::map<QounterPosition, QounterPositionData> QounterPositionData = {
     {QounterPosition::BelowCombo, {"ComboPanel", UnityEngine::Vector3(-5.0f, -122.0f, 0.0f), true}},
     {QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector3(-5.0f, 28.0f, 0.0f), false}},
-    {QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, -90.0f, 0.0f), true}},
-    {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, 20.0f, 0.0f), false}},
+    {QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, -70.0f, 0.0f), true}},
+    {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, 28.0f, 0.0f), false}},
     {QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f), true}},
     {QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f), false}}
 };

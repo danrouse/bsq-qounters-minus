@@ -27,7 +27,7 @@ namespace QountersMinus {
 
     typedef struct _ScoreQounterConfig : QounterConfig {
         QounterPosition position = QounterPosition::BelowMultiplier;
-        bool enabled = true;
+        bool enabled = false; // TODO: default true once this is working
         int distance = 0;
         ScoreQounterMode mode = ScoreQounterMode::Original;
         int decimalPrecision = 2;
