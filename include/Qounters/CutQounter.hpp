@@ -21,6 +21,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounte
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, rightCutText);
     DECLARE_INSTANCE_FIELD(NoteCutInfosDictionary, noteCutInfos);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
+    DECLARE_INSTANCE_FIELD(GlobalNamespace::SwingSaberRatingDidFinishDelegate*, delegate);
 
     DECLARE_INSTANCE_FIELD(bool, separateCutValues);
     DECLARE_INSTANCE_FIELD(bool, separateSaberCounts);
@@ -34,6 +35,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounte
         REGISTER_FIELD(rightCutText);
         REGISTER_FIELD(noteCutInfos);
         REGISTER_FIELD(cutScores);
+        REGISTER_FIELD(delegate);
 
         REGISTER_FIELD(separateCutValues);
         REGISTER_FIELD(separateSaberCounts);
