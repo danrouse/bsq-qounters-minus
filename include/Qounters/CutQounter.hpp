@@ -12,11 +12,14 @@
 #include "GlobalNamespace/ISaberSwingRatingCounter.hpp"
 #include "GlobalNamespace/SwingSaberRatingDidFinishDelegate.hpp"
 #include "System/Collections/Generic/List_1.hpp"
+#include "System/Collections/Generic/Dictionary_2.hpp"
+
+typedef System::Collections::Generic::Dictionary_2<GlobalNamespace::ISaberSwingRatingCounter*, GlobalNamespace::NoteCutInfo*>* NoteCutInfosDictionary;
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounter,
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, leftCutText);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, rightCutText);
-    DECLARE_INSTANCE_FIELD(GlobalNamespace::NoteCutInfo*, prevNoteCutInfo);
+    DECLARE_INSTANCE_FIELD(NoteCutInfosDictionary, noteCutInfos);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
 
     DECLARE_INSTANCE_FIELD(bool, separateCutValues);
@@ -29,7 +32,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounte
     REGISTER_FUNCTION(CutQounter,
         REGISTER_FIELD(leftCutText);
         REGISTER_FIELD(rightCutText);
-        REGISTER_FIELD(prevNoteCutInfo);
+        REGISTER_FIELD(noteCutInfos);
         REGISTER_FIELD(cutScores);
 
         REGISTER_FIELD(separateCutValues);

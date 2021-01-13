@@ -31,6 +31,7 @@ void QountersMinus::Qounters::CutQounter::Configure(QountersMinus::CutQounterCon
     }
 
     cutScores = il2cpp_utils::New<System::Collections::Generic::List_1<int>*>().value();
+    noteCutInfos = il2cpp_utils::New<System::Collections::Generic::Dictionary_2<GlobalNamespace::ISaberSwingRatingCounter*, GlobalNamespace::NoteCutInfo*>*>().value();
 }
 
 void QountersMinus::Qounters::CutQounter::UpdateCutScores() {
@@ -90,18 +91,21 @@ void QountersMinus::Qounters::CutQounter::UpdateCutScores() {
 
 void QountersMinus::Qounters::CutQounter::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
     if (!info->get_allIsOK()) return;
-    prevNoteCutInfo = info;
-    info->swingRatingCounter->add_didFinishEvent(il2cpp_utils::MakeDelegate<GlobalNamespace::SwingSaberRatingDidFinishDelegate*>(
+    noteCutInfos->Add(info->swingRatingCounter, info);
+    static auto delegate = il2cpp_utils::MakeDelegate<GlobalNamespace::SwingSaberRatingDidFinishDelegate*>(
         classof(GlobalNamespace::SwingSaberRatingDidFinishDelegate*),
         this,
-        +[](QountersMinus::Qounters::CutQounter* self) {
+        +[](QountersMinus::Qounters::CutQounter* self, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
             int beforeCutScore, afterCutScore, cutDistanceScore;
-            GlobalNamespace::ScoreModel::RawScoreWithoutMultiplier(self->prevNoteCutInfo, beforeCutScore, afterCutScore, cutDistanceScore);
-            self->cutScores->Add((int)self->prevNoteCutInfo->saberType);
+            auto noteCutInfo = self->noteCutInfos->get_Item(swingRatingCounter);
+            GlobalNamespace::ScoreModel::RawScoreWithoutMultiplier(noteCutInfo, beforeCutScore, afterCutScore, cutDistanceScore);
+            self->cutScores->Add((int)noteCutInfo->saberType);
             self->cutScores->Add(beforeCutScore);
             self->cutScores->Add(afterCutScore);
             self->cutScores->Add(cutDistanceScore);
             self->UpdateCutScores();
+            self->noteCutInfos->Remove(swingRatingCounter);
         }
-    ));
+    );
+    info->swingRatingCounter->add_didFinishEvent(delegate);
 }
