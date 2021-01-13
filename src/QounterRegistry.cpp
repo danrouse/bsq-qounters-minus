@@ -12,20 +12,21 @@ using namespace QountersMinus;
     }
 
 extern QountersMinus::ModConfig config;
+static const float distanceUnit = 40.0f;
 
 struct QounterPositionData {
     std::string parentName;
-    UnityEngine::Vector3 localPosition;
+    UnityEngine::Vector2 anchoredPosition;
     bool distanceIsDown;
 };
 
 std::map<QounterPosition, QounterPositionData> QounterPositionData = {
-    {QounterPosition::BelowCombo, {"ComboPanel", UnityEngine::Vector3(-5.0f, -122.0f, 0.0f), true}},
-    {QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector3(-5.0f, 28.0f, 0.0f), false}},
-    {QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, -70.0f, 0.0f), true}},
-    {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, 28.0f, 0.0f), false}},
-    {QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f), true}},
-    {QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f), false}}
+    {QounterPosition::BelowCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 12.0f), true}},
+    {QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 50.0f), false}},
+    {QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 12.0f), true}},
+    {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 50.0f), false}},
+    {QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector2(310.0f, -120.0f), true}},
+    {QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector2(310.0f, 120.0f), false}}
 };
 
 // super slow way to find inactive game objects
@@ -44,21 +45,20 @@ UnityEngine::GameObject* GetParent(QounterPosition position) {
     if (!containerGO) {
         auto parentGO = GetGameObject(QounterPositionData[position].parentName);
         containerGO = UnityEngine::GameObject::New_ctor(containerName);
-        containerGO->AddComponent<UnityEngine::RectTransform*>();
+        auto rect = containerGO->AddComponent<UnityEngine::RectTransform*>();
         containerGO->get_transform()->SetParent(parentGO->get_transform(), false);
-        auto localPosition = QounterPositionData[position].localPosition;
+        auto anchoredPosition = QounterPositionData[position].anchoredPosition;
         if (position == QounterPosition::BelowCombo || position == QounterPosition::AboveCombo) {
-            localPosition.y *= 1.0f + config.comboOffset;
+            anchoredPosition.y *= 1.0f + (config.comboOffset * (distanceUnit * 0.2f) * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else if (position == QounterPosition::BelowMultiplier || position == QounterPosition::AboveMultiplier) {
-            localPosition.y *= 1.0f + config.multiplierOffset;
+            anchoredPosition.y *= 1.0f + (config.multiplierOffset * (distanceUnit * 0.2f) * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         }
-        containerGO->get_transform()->set_localPosition(localPosition);
+        rect->set_anchoredPosition(anchoredPosition);
     }
     return containerGO;
 }
 
 void SetPosition(UnityEngine::Transform* transform, QounterPosition position, int distance) {
-    static const float distanceUnit = 62.0f;
     const auto mult = QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f;
     const auto pivot = UnityEngine::Vector2(0.5f, QounterPositionData[position].distanceIsDown ? 1.0f : 0.0f);
     const auto anchoredPosition = UnityEngine::Vector2(0.0f, distance * distanceUnit * mult);

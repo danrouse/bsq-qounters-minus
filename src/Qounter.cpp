@@ -16,7 +16,7 @@ void QountersMinus::Qounter::OnDestroy() {
 TMPro::TextMeshProUGUI* QountersMinus::Qounter::CreateBasicTitle(std::string text) {
     auto titleText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), text, false);
     titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
-    titleText->set_fontSize(20.0f);
+    titleText->set_fontSize(27.0f);
     titleText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
     return titleText;
 }
