@@ -40,6 +40,8 @@ UnityEngine::Color ParseHexColor(std::string hexString) {
 }
 
 bool QountersMinus::LoadConfig() {
+    LOG_CALLER;
+
     bool foundEverything = true;
     getConfig().Load();
 
@@ -49,6 +51,7 @@ bool QountersMinus::LoadConfig() {
     LoadConfigVar(getConfig().config, "ItalicText", config.italicText, Bool);
     LoadConfigVar(getConfig().config, "ComboOffset", config.comboOffset, Double);
     LoadConfigVar(getConfig().config, "MultiplierOffset", config.multiplierOffset, Double);
+
 
     // Qounter-specific settings [ALL-QOUNTERS]
     if (getConfig().config.HasMember("CutConfig") && getConfig().config["CutConfig"].IsObject()) {
@@ -195,10 +198,13 @@ bool QountersMinus::LoadConfig() {
         foundEverything = false;
     }
 
+    LOG_DEBUG("Found all: %d", foundEverything);
     return foundEverything;
 }
 
 void QountersMinus::SaveConfig() {
+    LOG_CALLER;
+
     getConfig().config.RemoveAllMembers();
     getConfig().config.SetObject();
     rapidjson::Document::AllocatorType& allocator = getConfig().config.GetAllocator();
@@ -264,7 +270,7 @@ void QountersMinus::SaveConfig() {
     scoreQounterConfig.AddMember("DecimalPrecision", config.ScoreQounterConfig.decimalPrecision, allocator);
     scoreQounterConfig.AddMember("DisplayRank", config.ScoreQounterConfig.displayRank, allocator);
     scoreQounterConfig.AddMember("CustomRankColors", config.ScoreQounterConfig.customRankColors, allocator);
-    scoreQounterConfig.AddMember("SsColor", FormatColorToHex(config.ScoreQounterConfig.ssColor), allocator);
+    scoreQounterConfig.AddMember("SSColor", FormatColorToHex(config.ScoreQounterConfig.ssColor), allocator);
     scoreQounterConfig.AddMember("SColor", FormatColorToHex(config.ScoreQounterConfig.sColor), allocator);
     scoreQounterConfig.AddMember("AColor", FormatColorToHex(config.ScoreQounterConfig.aColor), allocator);
     scoreQounterConfig.AddMember("BColor", FormatColorToHex(config.ScoreQounterConfig.bColor), allocator);
@@ -280,7 +286,7 @@ void QountersMinus::SaveConfig() {
     pbQounterConfig.AddMember("Mode", LookupEnumString(config.PBQounterConfig.mode, QountersMinus::PBQounterModeLookup), allocator);
     pbQounterConfig.AddMember("DecimalPrecision", config.PBQounterConfig.decimalPrecision, allocator);
     pbQounterConfig.AddMember("TextSize", config.PBQounterConfig.textSize, allocator);
-    pbQounterConfig.AddMember("Underscore", config.PBQounterConfig.underScore, allocator);
+    pbQounterConfig.AddMember("UnderScore", config.PBQounterConfig.underScore, allocator);
     pbQounterConfig.AddMember("HideFirstScore", config.PBQounterConfig.hideFirstScore, allocator);
     pbQounterConfig.AddMember("BetterColor", FormatColorToHex(config.PBQounterConfig.betterColor), allocator);
     pbQounterConfig.AddMember("DefaultColor", FormatColorToHex(config.PBQounterConfig.defaultColor), allocator);
