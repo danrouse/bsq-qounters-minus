@@ -19,9 +19,12 @@ typedef System::Collections::Generic::Dictionary_2<GlobalNamespace::ISaberSwingR
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounter,
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, leftCutText);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, rightCutText);
-    DECLARE_INSTANCE_FIELD(NoteCutInfosDictionary, noteCutInfos);
-    DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
-    DECLARE_INSTANCE_FIELD(GlobalNamespace::SwingSaberRatingDidFinishDelegate*, delegate);
+    DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, leftCutScores);
+    DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, rightCutScores);
+    DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, leftCutDistanceScores);
+    DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, rightCutDistanceScores);
+    DECLARE_INSTANCE_FIELD(GlobalNamespace::SwingSaberRatingDidFinishDelegate*, leftCutDelegate);
+    DECLARE_INSTANCE_FIELD(GlobalNamespace::SwingSaberRatingDidFinishDelegate*, rightCutDelegate);
 
     DECLARE_INSTANCE_FIELD(bool, separateCutValues);
     DECLARE_INSTANCE_FIELD(bool, separateSaberCounts);
@@ -33,9 +36,12 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounte
     REGISTER_FUNCTION(CutQounter,
         REGISTER_FIELD(leftCutText);
         REGISTER_FIELD(rightCutText);
-        REGISTER_FIELD(noteCutInfos);
-        REGISTER_FIELD(cutScores);
-        REGISTER_FIELD(delegate);
+        REGISTER_FIELD(leftCutScores);
+        REGISTER_FIELD(rightCutScores);
+        REGISTER_FIELD(leftCutDistanceScores);
+        REGISTER_FIELD(rightCutDistanceScores);
+        REGISTER_FIELD(leftCutDelegate);
+        REGISTER_FIELD(rightCutDelegate);
 
         REGISTER_FIELD(separateCutValues);
         REGISTER_FIELD(separateSaberCounts);
