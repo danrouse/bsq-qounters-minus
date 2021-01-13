@@ -20,19 +20,29 @@ struct QounterPositionData {
 };
 
 std::map<QounterPosition, QounterPositionData> QounterPositionData = {
-    {QounterPosition::BelowCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(-5.0f, -122.0f, 0.0f), true}},
-    {QounterPosition::AboveCombo, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(-5.0f, 28.0f, 0.0f), false}},
-    {QounterPosition::BelowMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, -90.0f, 0.0f), true}},
-    {QounterPosition::AboveMultiplier, {"BasicGameHUD/RightPanel/MultiplierCanvas", UnityEngine::Vector3(0.0f, 20.0f, 0.0f), false}},
-    {QounterPosition::BelowEnergy, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f), true}},
-    {QounterPosition::AboveHighway, {"BasicGameHUD/LeftPanel/ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f), false}}
+    {QounterPosition::BelowCombo, {"ComboPanel", UnityEngine::Vector3(-5.0f, -122.0f, 0.0f), true}},
+    {QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector3(-5.0f, 28.0f, 0.0f), false}},
+    {QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, -90.0f, 0.0f), true}},
+    {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector3(0.0f, 20.0f, 0.0f), false}},
+    {QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector3(320.0f, -220.0f, 0.0f), true}},
+    {QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector3(320.0f, 160.0f, 0.0f), false}}
 };
+
+// super slow way to find inactive game objects
+// sometimes, the parent objects are not active immediately after CoreGameHUD.Start
+UnityEngine::GameObject* GetGameObject(std::string name) {
+    auto allObjects = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::GameObject*>();
+    for (int i = 0; i < allObjects->Length(); i++) {
+        if (to_utf8(csstrtostr(allObjects->values[i]->get_name())) == name) return allObjects->values[i];
+    }
+    return nullptr;
+}
 
 UnityEngine::GameObject* GetParent(QounterPosition position) {
     auto containerName = il2cpp_utils::createcsstr("QountersMinus_Container" + std::to_string((int)position));
     auto containerGO = UnityEngine::GameObject::Find(containerName);
     if (!containerGO) {
-        auto parentGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(QounterPositionData[position].parentName));
+        auto parentGO = GetGameObject(QounterPositionData[position].parentName);
         containerGO = UnityEngine::GameObject::New_ctor(containerName);
         containerGO->AddComponent<UnityEngine::RectTransform*>();
         containerGO->get_transform()->SetParent(parentGO->get_transform(), false);
