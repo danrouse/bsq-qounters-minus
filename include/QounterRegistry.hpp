@@ -9,6 +9,7 @@
 #include "UnityEngine/Animator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
+#include "GlobalNamespace/ISaberSwingRatingCounter.hpp"
 #include "TMPro/FontStyles.hpp"
 
 // [ALL-QOUNTERS]
@@ -37,6 +38,7 @@ namespace QountersMinus {
         void OnNoteMiss(GlobalNamespace::NoteData* data);
         void OnScoreUpdated(int modifiedScore);
         void OnMaxScoreUpdated(int maxModifiedScore);
+        void OnSwingRatingFinished(GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter);
 
         // [ALL-QOUNTERS]
         RegisterQounterType(CutQounter);

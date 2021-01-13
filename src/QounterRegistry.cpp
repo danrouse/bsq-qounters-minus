@@ -140,7 +140,6 @@ DefineQounterInitializer(ProgressQounter);
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
-    if (CutQounter) CutQounter->OnNoteCut(data, info);
     if (MissedQounter) MissedQounter->OnNoteCut(data, info);
     if (NotesQounter) NotesQounter->OnNoteCut(data, info);
     if (NotesLeftQounter) NotesLeftQounter->OnNoteCut(data, info);
@@ -157,4 +156,8 @@ void QountersMinus::QounterRegistry::OnScoreUpdated(int modifiedScore) {
 }
 
 void QountersMinus::QounterRegistry::OnMaxScoreUpdated(int maxModifiedScore) {
+}
+
+void QountersMinus::QounterRegistry::OnSwingRatingFinished(GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
+    if (CutQounter) CutQounter->OnSwingRatingFinished(info, swingRatingCounter);
 }

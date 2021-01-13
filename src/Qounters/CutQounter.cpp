@@ -30,52 +30,26 @@ void QountersMinus::Qounters::CutQounter::Configure(QountersMinus::CutQounterCon
         rightCutText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(xOffset, yOffset));
     }
 
-    leftCutScores = il2cpp_utils::New<System::Collections::Generic::List_1<int>*>().value();
-    rightCutScores = il2cpp_utils::New<System::Collections::Generic::List_1<int>*>().value();
-    leftCutDistanceScores = il2cpp_utils::New<System::Collections::Generic::List_1<int>*>().value();
-    rightCutDistanceScores = il2cpp_utils::New<System::Collections::Generic::List_1<int>*>().value();
-    leftCutDelegate = il2cpp_utils::MakeDelegate<GlobalNamespace::SwingSaberRatingDidFinishDelegate*>(
-        classof(GlobalNamespace::SwingSaberRatingDidFinishDelegate*),
-        this,
-        +[](QountersMinus::Qounters::CutQounter* self, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
-            self->leftCutScores->Add(static_cast<int>(0.5f + (70.0f * swingRatingCounter->get_beforeCutRating())));
-            self->leftCutScores->Add(static_cast<int>(0.5f + (30.0f * swingRatingCounter->get_afterCutRating())));
-            self->UpdateCutScores();
-        }
-    );
-    rightCutDelegate = il2cpp_utils::MakeDelegate<GlobalNamespace::SwingSaberRatingDidFinishDelegate*>(
-        classof(GlobalNamespace::SwingSaberRatingDidFinishDelegate*),
-        this,
-        +[](QountersMinus::Qounters::CutQounter* self, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
-            self->rightCutScores->Add(static_cast<int>(0.5f + (70.0f * swingRatingCounter->get_beforeCutRating())));
-            self->rightCutScores->Add(static_cast<int>(0.5f + (30.0f * swingRatingCounter->get_afterCutRating())));
-            self->UpdateCutScores();
-        }
-    );
+    cutScores = il2cpp_utils::New<System::Collections::Generic::List_1<int>*>().value();
 }
 
 void QountersMinus::Qounters::CutQounter::UpdateCutScores() {
     int leftBeforeSwingSum = 0, leftAfterSwingSum = 0, leftCutDistanceSum = 0, leftCount = 0,
         rightBeforeSwingSum = 0, rightAfterSwingSum = 0, rightCutDistanceSum = 0, rightCount = 0;
-    auto leftCutScoresArr = leftCutScores->items, rightCutScoresArr = rightCutScores->items,
-         leftCutDistanceScoresArr = leftCutDistanceScores->items, rightCutDistanceScoresArr = rightCutDistanceScores->items;
-    for (int i = 0, j = leftCutScores->get_Count(); i < j; i += 2) {
-        leftBeforeSwingSum += leftCutScoresArr->values[i];
-        leftAfterSwingSum += leftCutScoresArr->values[i + 1];
-        leftCount += 1;
+    auto cutScoresArr = cutScores->items;
+    for (int i = 0, j = cutScores->get_Count(); i < j; i += 4) {
+        if (cutScoresArr->values[i] == 0) {
+            leftBeforeSwingSum += cutScoresArr->values[i + 1];
+            leftAfterSwingSum += cutScoresArr->values[i + 2];
+            leftCutDistanceSum += cutScoresArr->values[i + 3];
+            leftCount += 1;
+        } else {
+            rightBeforeSwingSum += cutScoresArr->values[i + 1];
+            rightAfterSwingSum += cutScoresArr->values[i + 2];
+            rightCutDistanceSum += cutScoresArr->values[i + 3];
+            rightCount += 1;
+        }
     }
-    for (int i = 0, j = leftCutDistanceScores->get_Count(); i < j; i++) {
-        leftCutDistanceSum += leftCutDistanceScoresArr->values[i];
-    }
-    for (int i = 0, j = rightCutScores->get_Count(); i < j; i += 2) {
-        rightBeforeSwingSum += rightCutScoresArr->values[i];
-        rightAfterSwingSum += rightCutScoresArr->values[i + 1];
-        rightCount += 1;
-    }
-    for (int i = 0, j = rightCutDistanceScores->get_Count(); i < j; i++) {
-        rightCutDistanceSum += rightCutDistanceScoresArr->values[i];
-    }
-
     if (leftCount == 0) leftCount++;
     if (rightCount == 0) rightCount++;
 
@@ -114,14 +88,12 @@ void QountersMinus::Qounters::CutQounter::UpdateCutScores() {
     }
 }
 
-void QountersMinus::Qounters::CutQounter::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
-    if (!info->get_allIsOK()) return;
-    const int cutDistanceScore = static_cast<int>(0.5f + (15.0f * (1.0f - std::clamp(info->cutDistanceToCenter / 0.3f, 0.0f, 1.0f))));
-    if ((int)info->saberType == 0) {
-        leftCutDistanceScores->Add(cutDistanceScore);
-        info->swingRatingCounter->add_didFinishEvent(leftCutDelegate);
-    } else {
-        rightCutDistanceScores->Add(cutDistanceScore);
-        info->swingRatingCounter->add_didFinishEvent(rightCutDelegate);
-    }
+void QountersMinus::Qounters::CutQounter::OnSwingRatingFinished(GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
+    int beforeCutScore = 0, afterCutScore = 0, cutDistanceScore = 0;
+    GlobalNamespace::ScoreModel::RawScoreWithoutMultiplier(info, beforeCutScore, afterCutScore, cutDistanceScore);
+    cutScores->Add((int)info->saberType);
+    cutScores->Add(beforeCutScore);
+    cutScores->Add(afterCutScore);
+    cutScores->Add(cutDistanceScore);
+    UpdateCutScores();
 }

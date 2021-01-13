@@ -34,7 +34,13 @@ MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreControll
     ));
 }
 
+MAKE_HOOK_OFFSETLESS(CutScoreHandler_HandleSwingRatingCounterDidFinish, void, GlobalNamespace::BeatmapObjectExecutionRatingsRecorder::CutScoreHandler* self, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
+    CutScoreHandler_HandleSwingRatingCounterDidFinish(self, swingRatingCounter);
+    QountersMinus::QounterRegistry::OnSwingRatingFinished(self->noteCutInfo, swingRatingCounter);
+}
+
 void QountersMinus::InstallHooks() {
     INSTALL_HOOK_OFFSETLESS(getLogger(), CoreGameHUDController_Start, il2cpp_utils::FindMethodUnsafe("", "CoreGameHUDController", "Start", 0));
     INSTALL_HOOK_OFFSETLESS(getLogger(), ScoreController_Start, il2cpp_utils::FindMethodUnsafe("", "ScoreController", "Start", 0));
+    INSTALL_HOOK_OFFSETLESS(getLogger(), CutScoreHandler_HandleSwingRatingCounterDidFinish, il2cpp_utils::FindMethodUnsafe("", "BeatmapObjectExecutionRatingsRecorder/CutScoreHandler", "HandleSwingRatingCounterDidFinish", 1));
 }

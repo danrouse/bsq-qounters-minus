@@ -7,6 +7,8 @@
 
 #include "GlobalNamespace/CoreGameHUDController.hpp"
 #include "GlobalNamespace/ScoreController.hpp"
+#include "GlobalNamespace/BeatmapObjectExecutionRatingsRecorder_CutScoreHandler.hpp"
+#include "GlobalNamespace/ISaberSwingRatingCounter.hpp"
 #include "System/Action_3.hpp"
 #include "System/Action_2.hpp"
 
