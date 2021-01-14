@@ -35,10 +35,18 @@ HMUI::ImageView* CreateRing(UnityEngine::Transform* parent) {
     return newImage;
 }
 
+void ConfigureBaseGameObject(UnityEngine::Transform* parent) {
+    auto songProgressUIController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::SongProgressUIController*>();
+    songProgressUIController->get_gameObject()->SetActive(true);
+    songProgressUIController->get_transform()->set_position(parent->get_position());
+}
+
 void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::ProgressQounterConfig config) {
     mode = (int)config.mode;
     progressTimeLeft = config.progressTimeLeft;
     includeRing = config.includeRing;
+
+    if (mode == (int)QountersMinus::ProgressQounterMode::BaseGame) return ConfigureBaseGameObject(get_transform());
 
     CreateBasicText("0");
 
@@ -69,6 +77,7 @@ void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::Progress
 }
 
 void QountersMinus::Qounters::ProgressQounter::Update() {
+    if (mode == (int)QountersMinus::ProgressQounterMode::BaseGame) return;
     auto time = audioTimeSyncController->songTime;
     if (progressTimeLeft) time = length - time;
     if (time < 0.0f) return;

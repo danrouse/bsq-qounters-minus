@@ -15,6 +15,7 @@
 #include "GlobalNamespace/IBeatmapLevel.hpp"
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
 #include "GlobalNamespace/CoreGameHUDController.hpp"
+#include "GlobalNamespace/SongProgressUIController.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Material.hpp"
 #include "UnityEngine/Sprite.hpp"
