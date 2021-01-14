@@ -3,8 +3,8 @@
 using namespace QountersMinus;
 
 extern QountersMinus::ModConfig config;
-const float distanceUnit = 30.0f;
-const float distanceUnitOffsetMult = 0.2f;
+const float distanceUnit = 40.0f;
+const float distanceUnitOffsetMult = 0.15f;
 
 struct QounterPositionData {
     std::string parentName;
@@ -14,9 +14,9 @@ struct QounterPositionData {
 
 std::map<QounterPosition, QounterPositionData> QounterPositionData = {
     {QounterPosition::BelowCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 12.0f), true}},
-    {QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 50.0f), false}},
+    {QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 40.0f), false}},
     {QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 12.0f), true}},
-    {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 50.0f), false}},
+    {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 40.0f), false}},
     {QounterPosition::BelowEnergy, {"EnergyPanel", UnityEngine::Vector2(0.0f, -5.0f), true}},
     {QounterPosition::AboveHighway, {"EnergyPanel", UnityEngine::Vector2(0.0f, 180.0f), false}}
 };

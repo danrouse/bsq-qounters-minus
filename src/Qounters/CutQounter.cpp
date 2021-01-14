@@ -14,7 +14,7 @@ void QountersMinus::Qounters::CutQounter::Configure(QountersMinus::CutQounterCon
         defaultText = defaultText + "\n" + defaultText + "\n" + defaultText;
     }
     auto fontSize = separateCutValues ? 28.0f : 35.0f;
-    auto xOffset = separateSaberCounts ? 32.0f : 0.0f;
+    auto xOffset = separateSaberCounts ? 20.0f + (12.0f * averagePrecision) : 0.0f;
     auto yOffset = separateCutValues ? -60.0f : -30.0f;
 
     leftCutText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), defaultText, false);
