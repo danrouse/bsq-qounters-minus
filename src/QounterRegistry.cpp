@@ -7,6 +7,7 @@ using namespace QountersMinus;
         if (!config.enabled) return; \
         auto parent = GetParent(config.position); \
         type = parent->AddComponent<QountersMinus::Qounters::type*>(); \
+        if (!type->gameObject) LOG_DEBUG("no gameobject on init wtf"); \
         SetPosition(type->gameObject->get_transform(), config.position, config.distance); \
         type->Configure(config); \
     }

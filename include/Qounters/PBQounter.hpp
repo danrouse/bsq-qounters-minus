@@ -11,6 +11,7 @@
 
 #include "GlobalNamespace/ScoreModel.hpp"
 #include "GlobalNamespace/ScoreController.hpp"
+#include "GlobalNamespace/ScoreUIController.hpp"
 #include "GlobalNamespace/GameplayModifiersModelSO.hpp"
 #include "GlobalNamespace/GameplayCoreInstaller.hpp"
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
