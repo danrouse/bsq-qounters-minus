@@ -37,7 +37,7 @@ DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
     varName->Text->SetText(il2cpp_utils::createcsstr(enumMap[configVar]));
 
 #define CreateSubmenu(label, index, createFunc) \
-    containers->Add(createFunc(get_transform())); \
+    containers->Insert(index, createFunc(get_transform())); \
     containers->get_Item(index)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(false); \
     QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), label, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>( \
         classof(UnityEngine::Events::UnityAction*), this, +[](QountersMinus::QounterSettingsViewController* self) { \
