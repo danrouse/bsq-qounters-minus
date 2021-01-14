@@ -6,9 +6,6 @@ MAKE_HOOK_OFFSETLESS(CoreGameHUDController_Start, void, GlobalNamespace::CoreGam
     QountersMinus::QounterRegistry::Initialize();
 }
 
-// TODO: Hook to destroy?
-// TODO: Score changed, max score change hooks
-
 MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreController* self) {
     LOG_CALLER;
     ScoreController_Start(self);

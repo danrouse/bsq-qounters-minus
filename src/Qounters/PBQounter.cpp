@@ -32,7 +32,7 @@ void QountersMinus::Qounters::PBQounter::Configure(QountersMinus::PBQounterConfi
     if (config.underScore) {
         auto scoreUIController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::ScoreUIController*>();
         auto scorePosition = scoreUIController->scoreText->get_transform()->get_position();
-        pbText->get_transform()->set_position(UnityEngine::Vector3(scorePosition.x, scorePosition.y - 1.15f, scorePosition.z));
+        pbText->get_transform()->set_position(UnityEngine::Vector3(scorePosition.x, scorePosition.y - 1.08f, scorePosition.z));
     }
 
     SetPersonalBest((float)highScore / maxPossibleScore);
