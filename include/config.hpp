@@ -14,6 +14,7 @@
 #include "config/PBQounterConfig.hpp"
 #include "config/FailQounterConfig.hpp"
 #include "config/ProgressQounterConfig.hpp"
+#include "config/PPQounterConfig.hpp"
 
 Configuration& getConfig();
 
@@ -37,6 +38,7 @@ namespace QountersMinus {
         PBQounterConfig PBQounterConfig;
         FailQounterConfig FailQounterConfig;
         ProgressQounterConfig ProgressQounterConfig;
+        PPQounterConfig PPQounterConfig;
     } ModConfig;
 
     bool LoadConfig();

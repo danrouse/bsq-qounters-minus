@@ -402,6 +402,20 @@ UnityEngine::GameObject* CreateProgressQounterConfigView(UnityEngine::Transform*
     return container;
 }
 
+UnityEngine::GameObject* CreatePPQounterConfigView(UnityEngine::Transform* parent) {
+    auto container = CreateContentView(parent);
+    auto ppQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Progress Qounter");
+    ppQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    ppQounterTitle->set_fontSize(6.0f);
+
+    auto ppQounterEnabled = CreateConfigToggle(config.PPQounterConfig.enabled, "Enabled");
+    CreateConfigEnumIncrement(ppQounterPosition, config.PPQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+    auto ppQounterDistance = CreateConfigIntIncrement(config.PPQounterConfig.distance, "Distance");
+    auto ppQounterHideWhenUnranked = CreateConfigToggle(config.PPQounterConfig.hideWhenUnranked, "Hide When Unranked");
+    QuestUI::BeatSaberUI::AddHoverHint(ppQounterHideWhenUnranked->get_gameObject(), "Whether the Qounter should be shown at all in unranked songs.");
+    return container;
+}
+
 void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
     if (!firstActivation || !addedToHierarchy) return;
 
@@ -425,6 +439,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     CreateSubmenu("Score", 8, CreateScoreQounterConfigView);
     CreateSubmenu("Speed", 9, CreateSpeedQounterConfigView);
     CreateSubmenu("Spinometer", 10, CreateSpinometerConfigView);
+    CreateSubmenu("PP", 11, CreatePPQounterConfigView);
 
     containers->get_Item(0)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
 

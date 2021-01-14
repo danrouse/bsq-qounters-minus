@@ -200,6 +200,17 @@ bool QountersMinus::LoadConfig() {
     } else {
         foundEverything = false;
     }
+    if (getConfig().config.HasMember("PPConfig") && getConfig().config["PPConfig"].IsObject()) {
+        auto qounterConfig = getConfig().config["PPConfig"].GetObject();
+        std::string tmpQounterPosition;
+        LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
+        config.PPQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        LoadConfigVar(qounterConfig, "Enabled", config.PPQounterConfig.enabled, Bool);
+        LoadConfigVar(qounterConfig, "Distance", config.PPQounterConfig.distance, Int);
+        LoadConfigVar(qounterConfig, "HideWhenUnranked", config.PPQounterConfig.hideWhenUnranked, Bool);
+    } else {
+        foundEverything = false;
+    }
 
     LOG_DEBUG("Found all: %d", foundEverything);
     return foundEverything;
@@ -310,6 +321,13 @@ void QountersMinus::SaveConfig() {
     progressQounterConfig.AddMember("ProgressTimeLeft", config.ProgressQounterConfig.progressTimeLeft, allocator);
     progressQounterConfig.AddMember("IncludeRing", config.ProgressQounterConfig.includeRing, allocator);
     getConfig().config.AddMember("ProgressConfig", progressQounterConfig, allocator);
+
+    rapidjson::Value ppQounterConfig(rapidjson::kObjectType);
+    ppQounterConfig.AddMember("Enabled", config.PPQounterConfig.enabled, allocator);
+    ppQounterConfig.AddMember("Distance", config.PPQounterConfig.distance, allocator);
+    ppQounterConfig.AddMember("Position", LookupEnumString(config.PPQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    ppQounterConfig.AddMember("HideWhenUnranked", config.PPQounterConfig.hideWhenUnranked, allocator);
+    getConfig().config.AddMember("ProgressConfig", ppQounterConfig, allocator);
 
     getConfig().Write();
 }

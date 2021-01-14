@@ -23,6 +23,7 @@
 #include "Qounters/PBQounter.hpp"
 #include "Qounters/FailQounter.hpp"
 #include "Qounters/ProgressQounter.hpp"
+#include "Qounters/PPQounter.hpp"
 
 #define RegisterQounterType(type) \
     static QountersMinus::Qounters::type* type; \
