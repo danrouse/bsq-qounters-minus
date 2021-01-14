@@ -1,7 +1,7 @@
 #pragma once
 
 #include <map>
-#include "logger.hpp"
+#include "util/logger.hpp"
 #include "config.hpp"
 #include "Qounter.hpp"
 #include "custom-types/shared/macros.hpp"

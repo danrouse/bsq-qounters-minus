@@ -1,8 +1,8 @@
 #pragma once
 
-#include "logger.hpp"
-#include "format.hpp"
-#include "note_count.hpp"
+#include "util/logger.hpp"
+#include "util/format.hpp"
+#include "util/note_count.hpp"
 #include "Qounter.hpp"
 #include "config/PBQounterConfig.hpp"
 

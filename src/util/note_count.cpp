@@ -1,4 +1,4 @@
-#include "note_count.hpp"
+#include "util/note_count.hpp"
 
 int GetNoteCount() {
     static auto noteDataClass = il2cpp_utils::GetClassFromName("", "NoteData");

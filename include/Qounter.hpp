@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logger.hpp"
+#include "util/logger.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"

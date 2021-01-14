@@ -1,5 +1,5 @@
 #include "config.hpp"
-#include "logger.hpp"
+#include "util/logger.hpp"
 
 QountersMinus::ModConfig config;
 

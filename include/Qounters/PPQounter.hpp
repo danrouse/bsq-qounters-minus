@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logger.hpp"
+#include "util/logger.hpp"
 #include "Qounter.hpp"
 #include "config/PPQounterConfig.hpp"
 

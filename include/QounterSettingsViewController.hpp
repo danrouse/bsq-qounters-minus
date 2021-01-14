@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logger.hpp"
+#include "util/logger.hpp"
 #include "config.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/register.hpp"
