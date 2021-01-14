@@ -190,6 +190,9 @@ bool QountersMinus::LoadConfig() {
         std::string tmpQounterPosition;
         LoadConfigVar(qounterConfig, "Position", tmpQounterPosition, String);
         config.ProgressQounterConfig.position = QountersMinus::QounterPositionLookup[tmpQounterPosition];
+        std::string tmpMode;
+        LoadConfigVar(qounterConfig, "Mode", tmpMode, String);
+        config.ProgressQounterConfig.mode = QountersMinus::ProgressQounterModeLookup[tmpMode];
         LoadConfigVar(qounterConfig, "Enabled", config.ProgressQounterConfig.enabled, Bool);
         LoadConfigVar(qounterConfig, "Distance", config.ProgressQounterConfig.distance, Int);
         LoadConfigVar(qounterConfig, "ProgressTimeLeft", config.ProgressQounterConfig.progressTimeLeft, Bool);
@@ -303,6 +306,7 @@ void QountersMinus::SaveConfig() {
     progressQounterConfig.AddMember("Enabled", config.ProgressQounterConfig.enabled, allocator);
     progressQounterConfig.AddMember("Distance", config.ProgressQounterConfig.distance, allocator);
     progressQounterConfig.AddMember("Position", LookupEnumString(config.ProgressQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
+    progressQounterConfig.AddMember("Mode", LookupEnumString(config.ProgressQounterConfig.mode, QountersMinus::ProgressQounterModeLookup), allocator);
     progressQounterConfig.AddMember("ProgressTimeLeft", config.ProgressQounterConfig.progressTimeLeft, allocator);
     progressQounterConfig.AddMember("IncludeRing", config.ProgressQounterConfig.includeRing, allocator);
     getConfig().config.AddMember("ProgressConfig", progressQounterConfig, allocator);
