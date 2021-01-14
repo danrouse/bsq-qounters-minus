@@ -3,7 +3,7 @@
     {
       "defines": [
         "ID=\"qounters-minus\"",
-        "VERSION=\"0.1.0\"",
+        "VERSION=\"0.1.2\"",
         "__GNUC__",
         "__aarch64__"
       ],
