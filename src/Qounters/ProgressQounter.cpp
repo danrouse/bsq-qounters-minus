@@ -49,7 +49,9 @@ void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::Progress
     songBPM = reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(gameplayCoreInstaller->sceneSetupData->difficultyBeatmap->get_level())->get_beatsPerMinute();
 
     auto coreGameHUDController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
-    UnityEngine::Object::Destroy(coreGameHUDController->songProgressPanelGO);
+    // for compatibility with Intro Skip, avoid actually destroying the original element
+    coreGameHUDController->songProgressPanelGO->get_transform()->set_localScale(UnityEngine::Vector3(0.0f, 0.0f, 0.0f));
+    // UnityEngine::Object::Destroy(coreGameHUDController->songProgressPanelGO);
 
     if (mode != (int)QountersMinus::ProgressQounterMode::Percent) {
         auto backgroundImage = CreateRing(gameObject->get_transform());
