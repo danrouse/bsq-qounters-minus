@@ -101,6 +101,8 @@ void QountersMinus::QounterRegistry::Initialize() {
         UnityEngine::Object::Destroy(multiplierGO->GetComponent<UnityEngine::Animator*>());
         HideChildren(multiplierGO);
     }
+    // "Inherit" settings from base config instead of sharing with extern
+    config.ScoreQounterConfig.italicText = config.italicText;
 
     // [ALL-QOUNTERS]
     QounterRegistry::Initialize(config.CutQounterConfig);
@@ -110,7 +112,7 @@ void QountersMinus::QounterRegistry::Initialize() {
     QounterRegistry::Initialize(config.SpinometerConfig);
     QounterRegistry::Initialize(config.SpeedQounterConfig);
     QounterRegistry::Initialize(config.ScoreQounterConfig);
-    QounterRegistry::Initialize(config.PBQounterConfig);
+    QounterRegistry::Initialize(config.PBQounterConfig); // must be initialized after score qounter
     QounterRegistry::Initialize(config.FailQounterConfig);
     QounterRegistry::Initialize(config.ProgressQounterConfig);
 

@@ -26,6 +26,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD(int, mode);
     DECLARE_INSTANCE_FIELD(bool, customRankColors);
     DECLARE_INSTANCE_FIELD(int, decimalPrecision);
+    DECLARE_INSTANCE_FIELD(bool, italicText);
     DECLARE_INSTANCE_FIELD(UnityEngine::Color, ssColor);
     DECLARE_INSTANCE_FIELD(UnityEngine::Color, sColor);
     DECLARE_INSTANCE_FIELD(UnityEngine::Color, aColor);
@@ -46,6 +47,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
         REGISTER_FIELD(mode);
         REGISTER_FIELD(customRankColors);
         REGISTER_FIELD(decimalPrecision);
+        REGISTER_FIELD(italicText);
         REGISTER_FIELD(ssColor);
         REGISTER_FIELD(sColor);
         REGISTER_FIELD(aColor);

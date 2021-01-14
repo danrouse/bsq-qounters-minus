@@ -2,23 +2,17 @@
 
 DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
-// TODO: don't do this
-#include "config.hpp"
-extern QountersMinus::ModConfig config;
-
-void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounterConfig _config) {
-    mode = (int)_config.mode;
-    customRankColors = _config.customRankColors;
-    decimalPrecision = _config.decimalPrecision;
-    ssColor = _config.ssColor;
-    sColor = _config.sColor;
-    aColor = _config.aColor;
-    bColor = _config.bColor;
-    cColor = _config.cColor;
-    dColor = _config.dColor;
-    eColor = _config.eColor;
-
-    CreateBasicTitle("Score");
+void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounterConfig config) {
+    mode = (int)config.mode;
+    customRankColors = config.customRankColors;
+    decimalPrecision = config.decimalPrecision;
+    ssColor = config.ssColor;
+    sColor = config.sColor;
+    aColor = config.aColor;
+    bColor = config.bColor;
+    cColor = config.cColor;
+    dColor = config.dColor;
+    eColor = config.eColor;
 
     auto coreGameHUD = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
     relativeScoreText = coreGameHUD->relativeScoreGO->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
@@ -45,20 +39,10 @@ void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounte
     if (mode == (int)QountersMinus::ScoreQounterMode::RankOnly) UnityEngine::Object::Destroy(coreGameHUD->relativeScoreGO);
     if (mode == (int)QountersMinus::ScoreQounterMode::ScoreOnly) UnityEngine::Object::Destroy(coreGameHUD->immediateRankGO);
 
-    // HUDCanvas currentSettings = CanvasUtility.GetCanvasSettingsFromID(Settings.CanvasID);
-    // Vector2 anchoredPos = CanvasUtility.GetAnchoredPositionFromConfig(Settings) + (offset * (3f / currentSettings.PositionScale));
-    // scoreUIText.rectTransform.localPosition = anchoredPos * currentSettings.PositionScale;
-    // scoreUIText.rectTransform.localPosition = new Vector3(scoreUIText.rectTransform.localPosition.x, scoreUIText.rectTransform.localPosition.y, 0);
-    // scoreUIText.rectTransform.localEulerAngles = Vector3.zero;
-
-    // WIP porting that from above
-    // auto scoreUITextRect = scoreUIText->get_rectTransform();
-    // scoreUITextRect->set_localPosition(UnityEngine::Vector3(
-    //     scoreUITextRect->get_localPosition().x * anchoredPos * currentSettings.positionScale,
-    //     scoreUITextRect->get_localPosition().y * anchoredPos * currentSettings.positionScale,
-    //     0.0f
-    // ));
-    // scoreUITextRect->set_localEulerAngles(UnityEngine::Vector3::get_zero());
+    // instead of calculating original text position based on canvas like counters+,
+    // just slap that bad boy right on our unpopulated gameobject
+    auto basePosition = gameObject->get_transform()->get_position();
+    scoreUIText->get_transform()->set_position(basePosition);
 
     UnityEngine::Object::Destroy(coreGameHUD->GetComponentInChildren<GlobalNamespace::ImmediateRankUIPanel*>());
 
