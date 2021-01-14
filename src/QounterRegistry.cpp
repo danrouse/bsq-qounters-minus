@@ -2,18 +2,9 @@
 
 using namespace QountersMinus;
 
-#define DefineQounterInitializer(type) \
-    void QountersMinus::QounterRegistry::Initialize(type##Config config) { \
-        if (!config.enabled) return; \
-        auto parent = GetParent(config.position); \
-        type = parent->AddComponent<QountersMinus::Qounters::type*>(); \
-        if (!type->gameObject) LOG_DEBUG("no gameobject on init wtf"); \
-        SetPosition(type->gameObject->get_transform(), config.position, config.distance); \
-        type->Configure(config); \
-    }
-
 extern QountersMinus::ModConfig config;
-static const float distanceUnit = 40.0f;
+const float distanceUnit = 30.0f;
+const float distanceUnitOffsetMult = 0.2f;
 
 struct QounterPositionData {
     std::string parentName;
@@ -26,12 +17,24 @@ std::map<QounterPosition, QounterPositionData> QounterPositionData = {
     {QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 50.0f), false}},
     {QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 12.0f), true}},
     {QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 50.0f), false}},
-    {QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector2(310.0f, -120.0f), true}},
-    {QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector2(310.0f, 120.0f), false}}
+    {QounterPosition::BelowEnergy, {"EnergyPanel", UnityEngine::Vector2(0.0f, -5.0f), true}},
+    {QounterPosition::AboveHighway, {"EnergyPanel", UnityEngine::Vector2(0.0f, 180.0f), false}}
 };
 
+
+void DeactivateChildren(UnityEngine::GameObject* gameObject) {
+    auto parent = gameObject->get_transform();
+    for (int i = 0; i < parent->get_childCount(); i++) {
+        parent->GetChild(i)->get_gameObject()->SetActive(false);
+    }
+}
+
+void DeactivateChildren(std::string gameObjectName) {
+    DeactivateChildren(UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(gameObjectName)));
+}
+
 // super slow way to find inactive game objects
-// sometimes, the parent objects are not active immediately after CoreGameHUD.Start
+// sometimes, the position parent objects are not active immediately after CoreGameHUD.Start
 UnityEngine::GameObject* GetGameObject(std::string name) {
     auto allObjects = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::GameObject*>();
     for (int i = 0; i < allObjects->Length(); i++) {
@@ -45,14 +48,21 @@ UnityEngine::GameObject* GetParent(QounterPosition position) {
     auto containerGO = UnityEngine::GameObject::Find(containerName);
     if (!containerGO) {
         auto parentGO = GetGameObject(QounterPositionData[position].parentName);
+        if (!parentGO->get_activeSelf()) {
+            DeactivateChildren(parentGO);
+            parentGO->SetActive(true);
+        }
         containerGO = UnityEngine::GameObject::New_ctor(containerName);
         auto rect = containerGO->AddComponent<UnityEngine::RectTransform*>();
         containerGO->get_transform()->SetParent(parentGO->get_transform(), false);
         auto anchoredPosition = QounterPositionData[position].anchoredPosition;
         if (position == QounterPosition::BelowCombo || position == QounterPosition::AboveCombo) {
-            anchoredPosition.y *= 1.0f + (config.comboOffset * (distanceUnit * 0.2f) * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
+            anchoredPosition.y *= 1.0f + (config.comboOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else if (position == QounterPosition::BelowMultiplier || position == QounterPosition::AboveMultiplier) {
-            anchoredPosition.y *= 1.0f + (config.multiplierOffset * (distanceUnit * 0.2f) * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
+            anchoredPosition.y *= 1.0f + (config.multiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
+        } else {
+            rect->set_localPosition(UnityEngine::Vector3(0.0f, 0.0f, 5.0f));
+            rect->set_localScale(UnityEngine::Vector3(0.8f, 0.8f, 0.8f));
         }
         rect->set_anchoredPosition(anchoredPosition);
     }
@@ -66,18 +76,6 @@ void SetPosition(UnityEngine::Transform* transform, QounterPosition position, in
     reinterpret_cast<UnityEngine::RectTransform*>(transform)->set_pivot(pivot);
     reinterpret_cast<UnityEngine::RectTransform*>(transform)->set_anchoredPosition(anchoredPosition);
 }
-
-void HideChildren(UnityEngine::GameObject* gameObject) {
-    auto parent = gameObject->get_transform();
-    for (int i = 0; i < parent->get_childCount(); i++) {
-        parent->GetChild(i)->get_gameObject()->SetActive(false);
-    }
-}
-
-void HideChildren(std::string gameObjectName) {
-    HideChildren(UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(gameObjectName)));
-}
-
 
 // Register all Qounter types with custom_types [ALL-QOUNTERS]
 void QountersMinus::QounterRegistry::RegisterTypes() {
@@ -96,11 +94,11 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
 
 void QountersMinus::QounterRegistry::Initialize() {
     if (!config.enabled) return;
-    if (config.hideCombo) HideChildren("BasicGameHUD/LeftPanel/ComboPanel");
+    if (config.hideCombo) DeactivateChildren("LeftPanel/ComboPanel");
     if (config.hideMultiplier) {
-        auto multiplierGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("BasicGameHUD/RightPanel/MultiplierCanvas"));
-        UnityEngine::Object::Destroy(multiplierGO->GetComponent<UnityEngine::Animator*>());
-        HideChildren(multiplierGO);
+        auto multiplierGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("RightPanel/MultiplierCanvas"));
+        multiplierGO->GetComponent<UnityEngine::Animator*>()->set_enabled(false);
+        DeactivateChildren(multiplierGO);
     }
     // "Inherit" settings from base config instead of sharing with extern
     config.ScoreQounterConfig.italicText = config.italicText;
@@ -127,6 +125,17 @@ void QountersMinus::QounterRegistry::Initialize() {
         }
     }
 }
+
+
+#define DefineQounterInitializer(type) \
+    void QountersMinus::QounterRegistry::Initialize(type##Config config) { \
+        if (!config.enabled) return; \
+        auto parent = GetParent(config.position); \
+        type = parent->AddComponent<QountersMinus::Qounters::type*>(); \
+        if (!type->gameObject) LOG_DEBUG("no gameobject on init wtf"); \
+        SetPosition(type->gameObject->get_transform(), config.position, config.distance); \
+        type->Configure(config); \
+    }
 
 // [ALL-QOUNTERS]
 DefineQounterInitializer(CutQounter);
