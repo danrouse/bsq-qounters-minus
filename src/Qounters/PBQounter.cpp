@@ -69,7 +69,7 @@ void QountersMinus::Qounters::PBQounter::OnScoreUpdated(int modifiedScore) {
             pbText->set_color(UnityEngine::Color::Lerp(
                 UnityEngine::Color::get_white(),
                 defaultColor,
-                modifiedScore / (float)highScore
+                (float)modifiedScore / (highScore == 0 ? 1 : highScore)
             ));
         }
     }
