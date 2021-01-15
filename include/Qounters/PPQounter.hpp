@@ -4,6 +4,7 @@
 #include "util/current_song_id.hpp"
 #include "util/pp.hpp"
 #include "util/format.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/PPQounterConfig.hpp"
 
@@ -22,8 +23,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter
     DECLARE_INSTANCE_FIELD(float, maxPP);
     DECLARE_INSTANCE_FIELD(float, multiplier);
 
-    DECLARE_INSTANCE_FIELD(bool, hideWhenUnranked);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnScoreUpdated, int modifiedScore);
 
     REGISTER_FUNCTION(PPQounter,
@@ -32,11 +33,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter
         REGISTER_FIELD(maxPP);
         REGISTER_FIELD(multiplier);
 
-        REGISTER_FIELD(hideWhenUnranked);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(OnScoreUpdated);
     )
-
-    public:
-        void Configure(QountersMinus::PPQounterConfig config);
 )

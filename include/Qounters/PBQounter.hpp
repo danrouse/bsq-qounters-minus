@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "util/note_count.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/PBQounterConfig.hpp"
 
@@ -27,12 +28,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
     DECLARE_INSTANCE_FIELD_DEFAULT(int, highScore, 0);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::RelativeScoreAndImmediateRankCounter*, relativeScoreAndImmediateRankCounter);
 
-    DECLARE_INSTANCE_FIELD(int, mode);
-    DECLARE_INSTANCE_FIELD(int, decimalPrecision);
-    DECLARE_INSTANCE_FIELD(bool, hideFirstScore);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, betterColor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, defaultColor);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnScoreUpdated, int modifiedScore);
     DECLARE_METHOD(void, SetPersonalBest, float ratioOfMaxScore);
 
@@ -42,16 +39,9 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
         REGISTER_FIELD(highScore);
         REGISTER_FIELD(relativeScoreAndImmediateRankCounter);
 
-        REGISTER_FIELD(mode);
-        REGISTER_FIELD(decimalPrecision);
-        REGISTER_FIELD(hideFirstScore);
-        REGISTER_FIELD(betterColor);
-        REGISTER_FIELD(defaultColor);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(OnScoreUpdated);
         REGISTER_METHOD(SetPersonalBest);
     )
-
-    public:
-        void Configure(QountersMinus::PBQounterConfig config);
 )

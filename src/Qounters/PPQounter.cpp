@@ -1,14 +1,20 @@
 #include "Qounters/PPQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::PPQounter);
-
-
+extern QountersMinus::ModConfig config;
 static const float MULT_DISAPPEARINGARROWS_ORIGINAL = 0.07f;
 static const float MULT_DISAPPEARINGARROWS_SCORESABER = 0.02f;
 static const float MULT_GHOSTNOTES_ORIGINAL = 0.11f;
 static const float MULT_GHOSTNOTES_SCORESABER = 0.04f;
 static const float MULT_FASTERSONG_ORIGINAL = 0.08f;
 static const float MULT_FASTERSONG_SCORESABER = 0.08f;
+
+DEFINE_CLASS(QountersMinus::Qounters::PPQounter);
+
+QountersMinus::Qounter* QountersMinus::Qounters::PPQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PPQounter*>(
+        config.PPQounterConfig.position, config.PPQounterConfig.distance
+    );
+}
 
 GlobalNamespace::GameplayModifiers* RemovePositiveModifiers(GlobalNamespace::GameplayModifiers* modifiers) {
     return GlobalNamespace::GameplayModifiers::New_ctor(
@@ -47,13 +53,11 @@ float CalculateMultiplier(std::string songID) {
     return multiplier;
 }
 
-void QountersMinus::Qounters::PPQounter::Configure(QountersMinus::PPQounterConfig config) {
-    hideWhenUnranked = config.hideWhenUnranked;
-
+void QountersMinus::Qounters::PPQounter::Start() {
     auto songID = GetCurrentSongID();
     auto ppData = QountersMinus::PP::BeatmapMaxPP(songID.hash, songID.difficulty);
     isRanked = ppData.has_value();
-    if (hideWhenUnranked && !isRanked) return;
+    if (config.PPQounterConfig.hideWhenUnranked && !isRanked) return;
 
     if (isRanked) maxPP = ppData.has_value() ? ppData.value() : 0.0f;
     relativeScoreAndImmediateRankCounter = UnityEngine::Object::FindObjectOfType<GlobalNamespace::RelativeScoreAndImmediateRankCounter*>();
@@ -63,7 +67,7 @@ void QountersMinus::Qounters::PPQounter::Configure(QountersMinus::PPQounterConfi
 }
 
 void QountersMinus::Qounters::PPQounter::OnScoreUpdated(int modifiedScore) {
-    if (hideWhenUnranked && !isRanked) return;
+    if (config.PPQounterConfig.hideWhenUnranked && !isRanked) return;
     if (maxPP > 0.0f) {
         auto accuracy = relativeScoreAndImmediateRankCounter->relativeScore * multiplier;
         auto currentPP = QountersMinus::PP::CalculatePP(maxPP, accuracy);

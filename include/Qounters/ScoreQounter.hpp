@@ -2,6 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/format.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/ScoreQounterConfig.hpp"
 
@@ -23,18 +24,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD(GlobalNamespace::RelativeScoreAndImmediateRankCounter*, relativeScoreAndImmediateRankCounter);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::RankModel::Rank, prevImmediateRank);
 
-    DECLARE_INSTANCE_FIELD(int, mode);
-    DECLARE_INSTANCE_FIELD(bool, customRankColors);
-    DECLARE_INSTANCE_FIELD(int, decimalPrecision);
-    DECLARE_INSTANCE_FIELD(bool, italicText);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, ssColor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, sColor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, aColor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, bColor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, cColor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, dColor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, eColor);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, UpdateText);
     DECLARE_METHOD(UnityEngine::Color, GetRankColor, GlobalNamespace::RankModel::Rank);
 
@@ -44,22 +35,9 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
         REGISTER_FIELD(relativeScoreAndImmediateRankCounter);
         REGISTER_FIELD(prevImmediateRank);
 
-        REGISTER_FIELD(mode);
-        REGISTER_FIELD(customRankColors);
-        REGISTER_FIELD(decimalPrecision);
-        REGISTER_FIELD(italicText);
-        REGISTER_FIELD(ssColor);
-        REGISTER_FIELD(sColor);
-        REGISTER_FIELD(aColor);
-        REGISTER_FIELD(bColor);
-        REGISTER_FIELD(cColor);
-        REGISTER_FIELD(dColor);
-        REGISTER_FIELD(eColor);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(UpdateText);
         REGISTER_METHOD(GetRankColor);
     )
-
-    public:
-        void Configure(QountersMinus::ScoreQounterConfig config);
 )

@@ -2,6 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/format.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/NotesQounterConfig.hpp"
 
@@ -14,9 +15,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD_DEFAULT(int, allCuts, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, goodCuts, 0);
 
-    DECLARE_INSTANCE_FIELD(bool, showPercentage);
-    DECLARE_INSTANCE_FIELD(int, decimalPrecision);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
     DECLARE_METHOD(void, OnNoteMiss, GlobalNamespace::NoteData* data);
     DECLARE_METHOD(void, UpdateValue);
@@ -25,14 +25,10 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
         REGISTER_FIELD(allCuts);
         REGISTER_FIELD(goodCuts);
 
-        REGISTER_FIELD(showPercentage);
-        REGISTER_FIELD(decimalPrecision);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(OnNoteCut);
         REGISTER_METHOD(OnNoteMiss);
         REGISTER_METHOD(UpdateValue);
     )
-
-    public:
-        void Configure(QountersMinus::NotesQounterConfig config);
 )

@@ -2,6 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/format.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/SpinometerConfig.hpp"
 
@@ -24,8 +25,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
     DECLARE_INSTANCE_FIELD_DEFAULT(float, timeSinceLastUpdate, 0.0f);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, highestSpin, 0.0f);
 
-    DECLARE_INSTANCE_FIELD(int, mode);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(Spinometer,
@@ -37,11 +38,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
         REGISTER_FIELD(timeSinceLastUpdate);
         REGISTER_FIELD(highestSpin);
 
-        REGISTER_FIELD(mode);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);
     )
-
-    public:
-        void Configure(QountersMinus::SpinometerConfig config);
 )

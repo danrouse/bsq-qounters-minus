@@ -1,22 +1,27 @@
 #include "Qounters/NotesQounter.hpp"
 
+extern QountersMinus::ModConfig config;
+
 DEFINE_CLASS(QountersMinus::Qounters::NotesQounter);
 
-void QountersMinus::Qounters::NotesQounter::Configure(QountersMinus::NotesQounterConfig config) {
-    showPercentage = config.showPercentage;
-    decimalPrecision = config.decimalPrecision;
+QountersMinus::Qounter* QountersMinus::Qounters::NotesQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::NotesQounter*>(
+        config.NotesQounterConfig.position, config.NotesQounterConfig.distance
+    );
+}
 
+void QountersMinus::Qounters::NotesQounter::Start() {
     CreateBasicTitle("Notes");
 
     std::string defaultText = "0";
-    if (showPercentage) defaultText += " - " + FormatNumber(100.0f, decimalPrecision) + "%";
+    if (config.NotesQounterConfig.showPercentage) defaultText += " - " + FormatNumber(100.0f, config.NotesQounterConfig.decimalPrecision) + "%";
     CreateBasicText(defaultText);
 }
 
 void QountersMinus::Qounters::NotesQounter::UpdateValue() {
     auto text = std::to_string(goodCuts) + "/" + std::to_string(allCuts);
-    if (showPercentage) {
-        text += " - " + FormatNumber((100.0f * goodCuts) / allCuts, decimalPrecision) + "%";
+    if (config.NotesQounterConfig.showPercentage) {
+        text += " - " + FormatNumber((100.0f * goodCuts) / allCuts, config.NotesQounterConfig.decimalPrecision) + "%";
     }
     basicText->set_text(il2cpp_utils::createcsstr(text));
 }

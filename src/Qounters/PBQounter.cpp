@@ -1,14 +1,16 @@
 #include "Qounters/PBQounter.hpp"
 
+extern QountersMinus::ModConfig config;
+
 DEFINE_CLASS(QountersMinus::Qounters::PBQounter);
 
-void QountersMinus::Qounters::PBQounter::Configure(QountersMinus::PBQounterConfig config) {
-    mode = (int)config.mode;
-    decimalPrecision = config.decimalPrecision;
-    hideFirstScore = config.hideFirstScore;
-    betterColor = config.betterColor;
-    defaultColor = config.defaultColor;
+QountersMinus::Qounter* QountersMinus::Qounters::PBQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PBQounter*>(
+        config.PBQounterConfig.position, config.PBQounterConfig.distance
+    );
+}
 
+void QountersMinus::Qounters::PBQounter::Start() {
     int noteCount = GetNoteCount();
     int maxRawScore = GlobalNamespace::ScoreModel::MaxRawScoreForNumberOfNotes(noteCount);
 
@@ -26,10 +28,10 @@ void QountersMinus::Qounters::PBQounter::Configure(QountersMinus::PBQounterConfi
 
     pbText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "", false);
     pbText->set_alignment(TMPro::TextAlignmentOptions::Top);
-    pbText->set_fontSize(config.textSize * 10.0f);
+    pbText->set_fontSize(config.PBQounterConfig.textSize * 10.0f);
     pbText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
 
-    if (config.underScore) {
+    if (config.PBQounterConfig.underScore) {
         auto scoreUIController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::ScoreUIController*>();
         auto scorePosition = scoreUIController->scoreText->get_transform()->get_position();
         pbText->get_transform()->set_position(UnityEngine::Vector3(scorePosition.x, scorePosition.y - 1.08f, scorePosition.z));
@@ -40,10 +42,10 @@ void QountersMinus::Qounters::PBQounter::Configure(QountersMinus::PBQounterConfi
 }
 
 void QountersMinus::Qounters::PBQounter::SetPersonalBest(float ratioOfMaxScore) {
-    if (hideFirstScore && highScore == 0) {
+    if (config.PBQounterConfig.hideFirstScore && highScore == 0) {
         pbText->set_text(il2cpp_utils::createcsstr("PB: --"));
     } else {
-        pbText->set_text(il2cpp_utils::createcsstr("PB: " + FormatNumber(ratioOfMaxScore * 100.0f, decimalPrecision) + "%"));
+        pbText->set_text(il2cpp_utils::createcsstr("PB: " + FormatNumber(ratioOfMaxScore * 100.0f, config.PBQounterConfig.decimalPrecision) + "%"));
     }
 }
 
@@ -54,21 +56,21 @@ void QountersMinus::Qounters::PBQounter::OnScoreUpdated(int modifiedScore) {
         }
     }
 
-    if (mode == (int)PBQounterMode::Relative) {
+    if (config.PBQounterConfig.mode == PBQounterMode::Relative) {
         if (relativeScoreAndImmediateRankCounter->relativeScore > ((float)highScore / maxPossibleScore)) {
-            pbText->set_color(betterColor);
+            pbText->set_color(config.PBQounterConfig.betterColor);
         } else {
-            pbText->set_color(defaultColor);
+            pbText->set_color(config.PBQounterConfig.defaultColor);
         }
     } else {
         if (modifiedScore > highScore) {
-            if (!(hideFirstScore && highScore == 0)) {
-                pbText->set_color(betterColor);
+            if (!(config.PBQounterConfig.hideFirstScore && highScore == 0)) {
+                pbText->set_color(config.PBQounterConfig.betterColor);
             }
         } else {
             pbText->set_color(UnityEngine::Color::Lerp(
                 UnityEngine::Color::get_white(),
-                defaultColor,
+                config.PBQounterConfig.defaultColor,
                 (float)modifiedScore / (highScore == 0 ? 1 : highScore)
             ));
         }

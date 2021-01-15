@@ -1,19 +1,24 @@
 #include "Qounters/FailQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::FailQounter);
-
+extern QountersMinus::ModConfig config;
 int QountersMinus::Qounters::FailQounter::restarts = 0;
 Il2CppString* QountersMinus::Qounters::FailQounter::prevBeatmapHash = nullptr;
 
-void QountersMinus::Qounters::FailQounter::Configure(QountersMinus::FailQounterConfig config) {
-    showRestartsInstead = config.showRestartsInstead;
+DEFINE_CLASS(QountersMinus::Qounters::FailQounter);
 
-    CreateBasicTitle(showRestartsInstead ? "Restarts" : "Fails");
+QountersMinus::Qounter* QountersMinus::Qounters::FailQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::FailQounter*>(
+        config.FailQounterConfig.position, config.FailQounterConfig.distance
+    );
+}
+
+void QountersMinus::Qounters::FailQounter::Start() {
+    CreateBasicTitle(config.FailQounterConfig.showRestartsInstead ? "Restarts" : "Fails");
 
     auto songID = GetCurrentSongID();
     auto currentBeatmapHash = songID.hash + "_" + std::to_string(songID.difficulty);
 
-    if (showRestartsInstead) {
+    if (config.FailQounterConfig.showRestartsInstead) {
         if (prevBeatmapHash != nullptr && to_utf8(csstrtostr(prevBeatmapHash)) == currentBeatmapHash) {
             restarts++;
             count = restarts;

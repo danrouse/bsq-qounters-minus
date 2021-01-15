@@ -8,10 +8,7 @@ extern "C" void setup(ModInfo& info) {
 extern "C" void load() {
     il2cpp_functions::Init();
     QuestUI::Init();
-
-    LOG_DEBUG("Registering types");
-    QountersMinus::QounterRegistry::RegisterTypes();
-    QountersMinus::QounterSettingsViewController::Register();
+    QountersMinus::RegisterEverything();
 
     LOG_DEBUG("Installing hooks");
     QountersMinus::InstallHooks();

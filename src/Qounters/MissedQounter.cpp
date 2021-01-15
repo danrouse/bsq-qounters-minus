@@ -1,10 +1,16 @@
 #include "Qounters/MissedQounter.hpp"
 
+extern QountersMinus::ModConfig config;
+
 DEFINE_CLASS(QountersMinus::Qounters::MissedQounter);
 
-void QountersMinus::Qounters::MissedQounter::Configure(QountersMinus::MissedQounterConfig config) {
-    countBadCuts = config.countBadCuts;
+QountersMinus::Qounter* QountersMinus::Qounters::MissedQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::MissedQounter*>(
+        config.MissedQounterConfig.position, config.MissedQounterConfig.distance
+    );
+}
 
+void QountersMinus::Qounters::MissedQounter::Start() {
     CreateBasicTitle("Misses");
     CreateBasicText("0");
 }
@@ -14,7 +20,7 @@ void QountersMinus::Qounters::MissedQounter::UpdateValue() {
 }
 
 void QountersMinus::Qounters::MissedQounter::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {
-    if (countBadCuts && !info->get_allIsOK() && data->colorType != GlobalNamespace::ColorType::None) {
+    if (config.MissedQounterConfig.countBadCuts && !info->get_allIsOK() && data->colorType != GlobalNamespace::ColorType::None) {
         misses++;
         UpdateValue();
     }

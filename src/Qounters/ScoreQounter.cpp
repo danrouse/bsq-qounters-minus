@@ -1,19 +1,16 @@
 #include "Qounters/ScoreQounter.hpp"
 
+extern QountersMinus::ModConfig config;
+
 DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
-void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounterConfig config) {
-    mode = (int)config.mode;
-    customRankColors = config.customRankColors;
-    decimalPrecision = config.decimalPrecision;
-    ssColor = config.ssColor;
-    sColor = config.sColor;
-    aColor = config.aColor;
-    bColor = config.bColor;
-    cColor = config.cColor;
-    dColor = config.dColor;
-    eColor = config.eColor;
+QountersMinus::Qounter* QountersMinus::Qounters::ScoreQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ScoreQounter*>(
+        config.ScoreQounterConfig.position, config.ScoreQounterConfig.distance
+    );
+}
 
+void QountersMinus::Qounters::ScoreQounter::Start() {
     auto coreGameHUD = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
     relativeScoreText = coreGameHUD->relativeScoreGO->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
     relativeScoreText->set_color(UnityEngine::Color::get_white());
@@ -36,8 +33,10 @@ void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounte
         rankText->get_rectTransform()->set_localPosition(UnityEngine::Vector3(0.0f, localPosition2.y, localPosition2.z));
     }
 
-    if (mode == (int)QountersMinus::ScoreQounterMode::RankOnly) UnityEngine::Object::Destroy(coreGameHUD->relativeScoreGO);
-    if (mode == (int)QountersMinus::ScoreQounterMode::ScoreOnly) UnityEngine::Object::Destroy(coreGameHUD->immediateRankGO);
+    if (config.ScoreQounterConfig.mode == QountersMinus::ScoreQounterMode::RankOnly)
+        UnityEngine::Object::Destroy(coreGameHUD->relativeScoreGO);
+    if (config.ScoreQounterConfig.mode == QountersMinus::ScoreQounterMode::ScoreOnly)
+        UnityEngine::Object::Destroy(coreGameHUD->immediateRankGO);
 
     // instead of calculating original text position based on canvas like counters+,
     // just slap that bad boy right on our unpopulated gameobject
@@ -57,13 +56,13 @@ void QountersMinus::Qounters::ScoreQounter::Configure(QountersMinus::ScoreQounte
 
 UnityEngine::Color QountersMinus::Qounters::ScoreQounter::GetRankColor(GlobalNamespace::RankModel::Rank rank) {
     switch (rank) {
-        case GlobalNamespace::RankModel::Rank::S: return sColor;
-        case GlobalNamespace::RankModel::Rank::A: return aColor;
-        case GlobalNamespace::RankModel::Rank::B: return bColor;
-        case GlobalNamespace::RankModel::Rank::C: return cColor;
-        case GlobalNamespace::RankModel::Rank::D: return dColor;
-        case GlobalNamespace::RankModel::Rank::E: return eColor;
-        default: return ssColor;
+        case GlobalNamespace::RankModel::Rank::S: return config.ScoreQounterConfig.sColor;
+        case GlobalNamespace::RankModel::Rank::A: return config.ScoreQounterConfig.aColor;
+        case GlobalNamespace::RankModel::Rank::B: return config.ScoreQounterConfig.bColor;
+        case GlobalNamespace::RankModel::Rank::C: return config.ScoreQounterConfig.cColor;
+        case GlobalNamespace::RankModel::Rank::D: return config.ScoreQounterConfig.dColor;
+        case GlobalNamespace::RankModel::Rank::E: return config.ScoreQounterConfig.eColor;
+        default: return config.ScoreQounterConfig.ssColor;
     }
 }
 
@@ -72,8 +71,8 @@ void QountersMinus::Qounters::ScoreQounter::UpdateText() {
     if (immediateRank != prevImmediateRank) {
         rankText->set_text(GlobalNamespace::RankModel::GetRankName(immediateRank));
         prevImmediateRank = immediateRank;
-        rankText->set_color(customRankColors ? GetRankColor(immediateRank) : UnityEngine::Color::get_white());
+        rankText->set_color(config.ScoreQounterConfig.customRankColors ? GetRankColor(immediateRank) : UnityEngine::Color::get_white());
     }
     float relativeScore = relativeScoreAndImmediateRankCounter->relativeScore * 100.0f;
-    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, decimalPrecision) + "%"));
+    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, config.ScoreQounterConfig.decimalPrecision) + "%"));
 }

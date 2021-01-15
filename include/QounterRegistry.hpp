@@ -5,53 +5,52 @@
 #include "config.hpp"
 #include "Qounter.hpp"
 #include "custom-types/shared/macros.hpp"
-#include "custom-types/shared/register.hpp"
 #include "UnityEngine/Animator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
-#include "GlobalNamespace/ISaberSwingRatingCounter.hpp"
 #include "TMPro/FontStyles.hpp"
-
-// [ALL-QOUNTERS]
-#include "Qounters/CutQounter.hpp"
-#include "Qounters/MissedQounter.hpp"
-#include "Qounters/NotesQounter.hpp"
-#include "Qounters/NotesLeftQounter.hpp"
-#include "Qounters/Spinometer.hpp"
-#include "Qounters/SpeedQounter.hpp"
-#include "Qounters/ScoreQounter.hpp"
-#include "Qounters/PBQounter.hpp"
-#include "Qounters/FailQounter.hpp"
-#include "Qounters/ProgressQounter.hpp"
-#include "Qounters/PPQounter.hpp"
-
-#define RegisterQounterType(type) \
-    static QountersMinus::Qounters::type* type; \
-    void Initialize(type##Config config);
 
 namespace QountersMinus {
     namespace QounterRegistry {
-        void RegisterTypes();
+        enum Event {
+            NoteCut,
+            NoteMiss,
+            ScoreUpdated,
+            MaxScoreUpdated,
+            SwingRatingFinished,
+        };
+        typedef struct _EventHandlerSignature {
+            Event event;
+            std::string methodName;
+            int numArgs;
+        } EventHandlerSignature;
+        inline const std::vector<EventHandlerSignature> eventHandlerSignatures = {
+            {Event::NoteCut, "OnNoteCut", 2},
+            {Event::NoteMiss, "OnNoteMiss", 1},
+            {Event::ScoreUpdated, "OnScoreUpdated", 1},
+            {Event::MaxScoreUpdated, "OnMaxScoreUpdated", 1},
+            {Event::SwingRatingFinished, "OnSwingRatingFinished", 2},
+        };
+        typedef struct _RegistryEntry {
+            std::string namespaze;
+            std::string klass;
+            QountersMinus::Qounter* instance;
+            const MethodInfo* initializer;
+            std::map<Event, const MethodInfo*> eventHandlers;
+        } RegistryEntry;
+        inline std::vector<RegistryEntry> registry;
+
+        void Register(std::string _namespace, std::string type);
         void Initialize();
         void DestroyAll();
 
-        void OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
-        void OnNoteMiss(GlobalNamespace::NoteData* data);
-        void OnScoreUpdated(int modifiedScore);
-        void OnMaxScoreUpdated(int maxModifiedScore);
-        void OnSwingRatingFinished(GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter);
-
-        // [ALL-QOUNTERS]
-        RegisterQounterType(CutQounter);
-        RegisterQounterType(FailQounter);
-        RegisterQounterType(MissedQounter);
-        RegisterQounterType(NotesLeftQounter);
-        RegisterQounterType(NotesQounter);
-        RegisterQounterType(PBQounter);
-        RegisterQounterType(ProgressQounter);
-        RegisterQounterType(ScoreQounter);
-        RegisterQounterType(SpeedQounter);
-        RegisterQounterType(Spinometer);
-        RegisterQounterType(PPQounter);
+        template <typename... TArgs>
+        void BroadcastEvent(Event event, TArgs&&... args) {
+            for (auto def : registry) {
+                if (def.instance && def.eventHandlers[event]) {
+                    il2cpp_utils::RunMethodUnsafe(def.instance, def.eventHandlers[event], args...);
+                }
+            }
+        }
     };
 };

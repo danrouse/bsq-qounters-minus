@@ -3,9 +3,7 @@
 #include "util/logger.hpp"
 #include "config.hpp"
 #include "custom-types/shared/macros.hpp"
-#include "custom-types/shared/register.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
 #include "GlobalNamespace/BeatmapLevelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
@@ -21,7 +19,4 @@ DECLARE_CLASS_CODEGEN(QountersMinus, QounterSettingsViewController, HMUI::ViewCo
         REGISTER_FIELD(containers);
         REGISTER_METHOD(DidActivate);
     )
-
-    public:
-        static void Register();
 )

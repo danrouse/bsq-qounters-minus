@@ -1,6 +1,14 @@
 #include "Qounters/ProgressQounter.hpp"
 
+extern QountersMinus::ModConfig config;
+
 DEFINE_CLASS(QountersMinus::Qounters::ProgressQounter);
+
+QountersMinus::Qounter* QountersMinus::Qounters::ProgressQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ProgressQounter*>(
+        config.ProgressQounterConfig.position, config.ProgressQounterConfig.distance
+    );
+}
 
 HMUI::ImageView* CreateRing(UnityEngine::Transform* parent) {
     auto imageGameObject = UnityEngine::GameObject::New_ctor(il2cpp_utils::createcsstr("QountersMinusRingImage"));
@@ -41,12 +49,8 @@ void ConfigureBaseGameObject(UnityEngine::Transform* parent) {
     songProgressUIController->get_transform()->set_position(parent->get_position());
 }
 
-void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::ProgressQounterConfig config) {
-    mode = (int)config.mode;
-    progressTimeLeft = config.progressTimeLeft;
-    includeRing = config.includeRing;
-
-    if (mode == (int)QountersMinus::ProgressQounterMode::BaseGame) return ConfigureBaseGameObject(get_transform());
+void QountersMinus::Qounters::ProgressQounter::Start() {
+    if (config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::BaseGame) return ConfigureBaseGameObject(get_transform());
 
     CreateBasicText("0");
 
@@ -61,7 +65,7 @@ void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::Progress
     coreGameHUDController->songProgressPanelGO->get_transform()->set_localScale(UnityEngine::Vector3(0.0f, 0.0f, 0.0f));
     // UnityEngine::Object::Destroy(coreGameHUDController->songProgressPanelGO);
 
-    if (mode != (int)QountersMinus::ProgressQounterMode::Percent) {
+    if (config.ProgressQounterConfig.mode != QountersMinus::ProgressQounterMode::Percent) {
         auto backgroundImage = CreateRing(gameObject->get_transform());
         auto anchoredPosition = basicText->get_rectTransform()->get_anchoredPosition();
         backgroundImage->get_rectTransform()->set_anchoredPosition(anchoredPosition);
@@ -77,12 +81,14 @@ void QountersMinus::Qounters::ProgressQounter::Configure(QountersMinus::Progress
 }
 
 void QountersMinus::Qounters::ProgressQounter::Update() {
-    if (mode == (int)QountersMinus::ProgressQounterMode::BaseGame) return;
+    if (config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::BaseGame) return;
     auto time = audioTimeSyncController->songTime;
-    if (progressTimeLeft) time = length - time;
+    if (config.ProgressQounterConfig.progressTimeLeft) time = length - time;
     if (time < 0.0f) return;
-    if (mode == (int)QountersMinus::ProgressQounterMode::Original || mode == (int)QountersMinus::ProgressQounterMode::TimeInBeats) {
-        if (mode == (int)QountersMinus::ProgressQounterMode::TimeInBeats) {
+    if (
+        config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::Original ||
+        config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::TimeInBeats) {
+        if (config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::TimeInBeats) {
             auto beats = std::roundf(songBPM / 60 * time / 0.25f) * 0.25f;
             basicText->set_text(il2cpp_utils::createcsstr(FormatNumber(beats, 2)));
         } else {
@@ -93,7 +99,7 @@ void QountersMinus::Qounters::ProgressQounter::Update() {
                 (seconds < 10 ? "0" : "") + std::to_string(seconds)
             ));
         }
-        progressRing->set_fillAmount((includeRing ? time : audioTimeSyncController->songTime) / length);
+        progressRing->set_fillAmount((config.ProgressQounterConfig.includeRing ? time : audioTimeSyncController->songTime) / length);
         progressRing->SetVerticesDirty();
     } else {
         basicText->set_text(il2cpp_utils::createcsstr(FormatNumber(100.0f * time / length, 2) + "%"));

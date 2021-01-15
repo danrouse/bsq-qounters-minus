@@ -40,8 +40,6 @@ UnityEngine::Color ParseHexColor(std::string hexString) {
 }
 
 bool QountersMinus::LoadConfig() {
-    LOG_CALLER;
-
     bool foundEverything = true;
     getConfig().Load();
 

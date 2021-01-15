@@ -2,6 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/format.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/SpeedQounterConfig.hpp"
 
@@ -24,9 +25,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD_DEFAULT(float, lastUpdated, 0.0f);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, lastUpdatedFastest, 0.0f);
 
-    DECLARE_INSTANCE_FIELD(int, mode);
-    DECLARE_INSTANCE_FIELD(int, decimalPrecision);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(SpeedQounter,
@@ -39,12 +39,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
         REGISTER_FIELD(lastUpdated);
         REGISTER_FIELD(lastUpdatedFastest);
 
-        REGISTER_FIELD(mode);
-        REGISTER_FIELD(decimalPrecision);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);
     )
-
-    public:
-        void Configure(QountersMinus::SpeedQounterConfig config);
 )

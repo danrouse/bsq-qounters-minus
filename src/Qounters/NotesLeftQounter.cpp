@@ -1,14 +1,20 @@
 #include "Qounters/NotesLeftQounter.hpp"
 
+extern QountersMinus::ModConfig config;
+
 DEFINE_CLASS(QountersMinus::Qounters::NotesLeftQounter);
 
-void QountersMinus::Qounters::NotesLeftQounter::Configure(QountersMinus::NotesLeftQounterConfig config) {
-    labelAboveCount = config.labelAboveCount;
+QountersMinus::Qounter* QountersMinus::Qounters::NotesLeftQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::NotesLeftQounter*>(
+        config.NotesLeftQounterConfig.position, config.NotesLeftQounterConfig.distance
+    );
+}
 
-    if (labelAboveCount) CreateBasicTitle("Notes Remaining");
+void QountersMinus::Qounters::NotesLeftQounter::Start() {
+    if (config.NotesLeftQounterConfig.labelAboveCount) CreateBasicTitle("Notes Remaining");
     CreateBasicText("");
-    float yOffset = labelAboveCount ? -30.0f : 0.0;
-    float fontSize = labelAboveCount ? 35.0f : 25.0f;
+    float yOffset = config.NotesLeftQounterConfig.labelAboveCount ? -30.0f : 0.0;
+    float fontSize = config.NotesLeftQounterConfig.labelAboveCount ? 35.0f : 25.0f;
     basicText->set_fontSize(fontSize);
     basicText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, yOffset));
 
@@ -18,7 +24,7 @@ void QountersMinus::Qounters::NotesLeftQounter::Configure(QountersMinus::NotesLe
 
 void QountersMinus::Qounters::NotesLeftQounter::UpdateValue() {
     basicText->set_text(il2cpp_utils::createcsstr(
-        (labelAboveCount ? "" : "Notes Remaining: ") + std::to_string(notesLeft)
+        (config.NotesLeftQounterConfig.labelAboveCount ? "" : "Notes Remaining: ") + std::to_string(notesLeft)
     ));
 }
 

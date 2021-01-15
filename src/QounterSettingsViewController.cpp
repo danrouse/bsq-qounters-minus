@@ -449,10 +449,3 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     testButton->GetComponent<UnityEngine::RectTransform*>()->set_anchoredPosition(UnityEngine::Vector2(-52.0f, -27.5f));
     testButton->GetComponent<UnityEngine::RectTransform*>()->set_sizeDelta(UnityEngine::Vector2(27.0f, 10.0f));
 }
-
-void QountersMinus::QounterSettingsViewController::Register() {
-    custom_types::Register::RegisterType<QountersMinus::QounterSettingsViewController>();
-    QuestUI::Register::RegisterModSettingsViewController<QountersMinus::QounterSettingsViewController*>(
-        (ModInfo){"Qounters-", VERSION}, "Qounters-"
-    );
-}

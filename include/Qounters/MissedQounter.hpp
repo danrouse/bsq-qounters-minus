@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/logger.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/MissedQounterConfig.hpp"
 
@@ -12,8 +13,8 @@
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissedQounter, QountersMinus::Qounter,
     DECLARE_INSTANCE_FIELD_DEFAULT(int, misses, 0);
 
-    DECLARE_INSTANCE_FIELD(bool, countBadCuts);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
     DECLARE_METHOD(void, OnNoteMiss, GlobalNamespace::NoteData* data);
     DECLARE_METHOD(void, UpdateValue);
@@ -21,13 +22,10 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissedQounter, QountersMinus::Qou
     REGISTER_FUNCTION(MissedQounter,
         REGISTER_FIELD(misses);
 
-        REGISTER_FIELD(countBadCuts);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(OnNoteCut);
         REGISTER_METHOD(OnNoteMiss);
         REGISTER_METHOD(UpdateValue);
     )
-
-    public:
-        void Configure(QountersMinus::MissedQounterConfig config);
 )

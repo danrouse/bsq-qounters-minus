@@ -1,6 +1,14 @@
 #include "Qounters/SpeedQounter.hpp"
 
+extern QountersMinus::ModConfig config;
+
 DEFINE_CLASS(QountersMinus::Qounters::SpeedQounter);
+
+QountersMinus::Qounter* QountersMinus::Qounters::SpeedQounter::Initialize() {
+    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::SpeedQounter*>(
+        config.SpeedQounterConfig.position, config.SpeedQounterConfig.distance
+    );
+}
 
 float Max(System::Collections::Generic::List_1<float>* list) {
     float max = 0.0f;
@@ -19,11 +27,8 @@ float Average(System::Collections::Generic::List_1<float>* list) {
     return sum / count;
 }
 
-void QountersMinus::Qounters::SpeedQounter::Configure(QountersMinus::SpeedQounterConfig config) {
-    mode = (int)config.mode;
-    decimalPrecision = config.decimalPrecision;
-
-    if (config.mode != QountersMinus::SpeedQounterMode::Top5Sec) {
+void QountersMinus::Qounters::SpeedQounter::Start() {
+    if (config.SpeedQounterConfig.mode != QountersMinus::SpeedQounterMode::Top5Sec) {
         CreateBasicTitle("Average Speed");
 
         averageText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "0", false);
@@ -31,11 +36,11 @@ void QountersMinus::Qounters::SpeedQounter::Configure(QountersMinus::SpeedQounte
         averageText->set_fontSize(35.0f);
         averageText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, -30.0f));
     }
-    if (config.mode != QountersMinus::SpeedQounterMode::Average && config.mode != QountersMinus::SpeedQounterMode::SplitAverage) {
+    if (config.SpeedQounterConfig.mode != QountersMinus::SpeedQounterMode::Average && config.SpeedQounterConfig.mode != QountersMinus::SpeedQounterMode::SplitAverage) {
         auto titleText = CreateBasicTitle("Recent Top Speed");
         auto titleYOffset = 0.0f;
         auto textYOffset = -30.0f;
-        if (config.mode == QountersMinus::SpeedQounterMode::Both || config.mode == QountersMinus::SpeedQounterMode::SplitBoth) {
+        if (config.SpeedQounterConfig.mode == QountersMinus::SpeedQounterMode::Both || config.SpeedQounterConfig.mode == QountersMinus::SpeedQounterMode::SplitBoth) {
             titleYOffset = -60.0f;
             textYOffset = -90.0f;
         }
@@ -59,29 +64,29 @@ void QountersMinus::Qounters::SpeedQounter::Update() {
     lastUpdated += dt;
     if (lastUpdated > 0.25f) {
         lastUpdated = 0.0f;
-        switch (mode) {
-            case (int)QountersMinus::SpeedQounterMode::Average:
+        switch (config.SpeedQounterConfig.mode) {
+            case QountersMinus::SpeedQounterMode::Average:
                 rightSpeeds->Add((saberManager->rightSaber->get_bladeSpeed() + saberManager->leftSaber->get_bladeSpeed()) / 2.0f);
-                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(rightSpeeds), decimalPrecision)));
+                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(rightSpeeds), config.SpeedQounterConfig.decimalPrecision)));
                 break;
-            case (int)QountersMinus::SpeedQounterMode::Top5Sec:
+            case QountersMinus::SpeedQounterMode::Top5Sec:
                 fastestSpeeds->Add((saberManager->rightSaber->get_bladeSpeed() + saberManager->leftSaber->get_bladeSpeed()) / 2.0f);
                 break;
-            case (int)QountersMinus::SpeedQounterMode::Both:
+            case QountersMinus::SpeedQounterMode::Both:
                 fastestSpeeds->Add((saberManager->rightSaber->get_bladeSpeed() + saberManager->leftSaber->get_bladeSpeed()) / 2.0f);
                 rightSpeeds->Add((saberManager->rightSaber->get_bladeSpeed() + saberManager->leftSaber->get_bladeSpeed()) / 2.0f);
-                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(rightSpeeds), decimalPrecision)));
+                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(rightSpeeds), config.SpeedQounterConfig.decimalPrecision)));
                 break;
-            case (int)QountersMinus::SpeedQounterMode::SplitAverage:
+            case QountersMinus::SpeedQounterMode::SplitAverage:
                 rightSpeeds->Add(saberManager->rightSaber->get_bladeSpeed());
                 leftSpeeds->Add(saberManager->leftSaber->get_bladeSpeed());
-                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(leftSpeeds), decimalPrecision) + " | " + FormatNumber(Average(rightSpeeds), decimalPrecision)));
+                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(leftSpeeds), config.SpeedQounterConfig.decimalPrecision) + " | " + FormatNumber(Average(rightSpeeds), config.SpeedQounterConfig.decimalPrecision)));
                 break;
-            case (int)QountersMinus::SpeedQounterMode::SplitBoth:
+            case QountersMinus::SpeedQounterMode::SplitBoth:
                 fastestSpeeds->Add((saberManager->rightSaber->get_bladeSpeed() + saberManager->leftSaber->get_bladeSpeed()) / 2.0f);
                 rightSpeeds->Add(saberManager->rightSaber->get_bladeSpeed());
                 leftSpeeds->Add(saberManager->leftSaber->get_bladeSpeed());
-                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(leftSpeeds), decimalPrecision) + " | " + FormatNumber(Average(rightSpeeds), decimalPrecision)));
+                averageText->set_text(il2cpp_utils::createcsstr(FormatNumber(Average(leftSpeeds), config.SpeedQounterConfig.decimalPrecision) + " | " + FormatNumber(Average(rightSpeeds), config.SpeedQounterConfig.decimalPrecision)));
                 break;
         }
     }
@@ -92,7 +97,7 @@ void QountersMinus::Qounters::SpeedQounter::Update() {
         if (fastestText) {
             auto top = Max(fastestSpeeds);
             fastestSpeeds->Clear();
-            fastestText->set_text(il2cpp_utils::createcsstr(FormatNumber(top, decimalPrecision)));
+            fastestText->set_text(il2cpp_utils::createcsstr(FormatNumber(top, config.SpeedQounterConfig.decimalPrecision)));
         }
     }
 }

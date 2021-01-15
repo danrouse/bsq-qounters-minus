@@ -2,6 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/format.hpp"
+#include "config.hpp"
 #include "Qounter.hpp"
 #include "config/ProgressQounterConfig.hpp"
 
@@ -27,10 +28,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ProgressQounter, QountersMinus::Q
     DECLARE_INSTANCE_FIELD_DEFAULT(float, songBPM, 0.0f);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::AudioTimeSyncController*, audioTimeSyncController);
 
-    DECLARE_INSTANCE_FIELD(int, mode);
-    DECLARE_INSTANCE_FIELD(bool, progressTimeLeft);
-    DECLARE_INSTANCE_FIELD(bool, includeRing);
-
+    DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(ProgressQounter,
@@ -39,13 +38,8 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ProgressQounter, QountersMinus::Q
         REGISTER_FIELD(songBPM);
         REGISTER_FIELD(audioTimeSyncController);
 
-        REGISTER_FIELD(mode);
-        REGISTER_FIELD(progressTimeLeft);
-        REGISTER_FIELD(includeRing);
-
+        REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);
     )
-
-    public:
-        void Configure(QountersMinus::ProgressQounterConfig config);
 )
