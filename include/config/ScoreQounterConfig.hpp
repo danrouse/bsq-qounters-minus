@@ -33,7 +33,6 @@ namespace QountersMinus {
         int decimalPrecision = 2;
         bool displayRank = true; // unused?
         bool customRankColors = true;
-        bool italicText = false;
         UnityEngine::Color ssColor = UnityEngine::Color(0.0f, 1.0f, 1.0f, 1.0f);
         UnityEngine::Color sColor = UnityEngine::Color(1.0f, 1.0f, 1.0f, 1.0f);
         UnityEngine::Color aColor = UnityEngine::Color(0.0f, 1.0f, 0.0f, 1.0f);

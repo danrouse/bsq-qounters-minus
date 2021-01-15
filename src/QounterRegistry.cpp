@@ -2,8 +2,6 @@
 
 using namespace QountersMinus;
 
-extern QountersMinus::ModConfig config;
-
 void _DeactivateChildren(UnityEngine::GameObject* gameObject) {
     auto parent = gameObject->get_transform();
     for (int i = 0; i < parent->get_childCount(); i++) {
@@ -32,6 +30,7 @@ void QountersMinus::QounterRegistry::Register(std::string _namespace, std::strin
 }
 
 void QountersMinus::QounterRegistry::Initialize() {
+    for (auto&& def : registry) def.instance = nullptr;
     if (!config.enabled) return;
     if (config.hideCombo) _DeactivateChildren("LeftPanel/ComboPanel");
     if (config.hideMultiplier) {
@@ -39,10 +38,6 @@ void QountersMinus::QounterRegistry::Initialize() {
         multiplierGO->GetComponent<UnityEngine::Animator*>()->set_enabled(false);
         _DeactivateChildren(multiplierGO);
     }
-
-    // TODO: relocate this
-    // "Inherit" settings from base config instead of sharing with extern
-    config.ScoreQounterConfig.italicText = config.italicText;
 
     for (auto&& def : registry) {
         def.instance = il2cpp_utils::RunStaticMethodUnsafe<Qounter*>(def.initializer).value();

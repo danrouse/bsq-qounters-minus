@@ -10,6 +10,8 @@
 #include "UnityEngine/Transform.hpp"
 #include "TMPro/FontStyles.hpp"
 
+extern QountersMinus::ModConfig config;
+
 namespace QountersMinus {
     namespace QounterRegistry {
         enum Event {
@@ -46,6 +48,7 @@ namespace QountersMinus {
 
         template <typename... TArgs>
         void BroadcastEvent(Event event, TArgs&&... args) {
+            if (!config.enabled) return;
             for (auto def : registry) {
                 if (def.instance && def.eventHandlers[event]) {
                     il2cpp_utils::RunMethodUnsafe(def.instance, def.eventHandlers[event], args...);
