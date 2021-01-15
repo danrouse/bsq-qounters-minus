@@ -52,5 +52,6 @@ namespace QountersMinus {
         RegisterQounterType(ScoreQounter);
         RegisterQounterType(SpeedQounter);
         RegisterQounterType(Spinometer);
+        RegisterQounterType(PPQounter);
     };
 };

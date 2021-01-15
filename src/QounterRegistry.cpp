@@ -90,6 +90,7 @@ void QountersMinus::QounterRegistry::RegisterTypes() {
     custom_types::Register::RegisterType<Qounters::PBQounter>();
     custom_types::Register::RegisterType<Qounters::FailQounter>();
     custom_types::Register::RegisterType<Qounters::ProgressQounter>();
+    custom_types::Register::RegisterType<Qounters::PPQounter>();
 }
 
 void QountersMinus::QounterRegistry::Initialize() {
@@ -114,6 +115,7 @@ void QountersMinus::QounterRegistry::Initialize() {
     QounterRegistry::Initialize(config.PBQounterConfig); // must be initialized after score qounter
     QounterRegistry::Initialize(config.FailQounterConfig);
     QounterRegistry::Initialize(config.ProgressQounterConfig);
+    QounterRegistry::Initialize(config.PPQounterConfig);
 
     if (config.italicText) {
         auto qounters = UnityEngine::Resources::FindObjectsOfTypeAll<Qounter*>();
@@ -148,6 +150,7 @@ DefineQounterInitializer(ScoreQounter);
 DefineQounterInitializer(PBQounter);
 DefineQounterInitializer(FailQounter);
 DefineQounterInitializer(ProgressQounter);
+DefineQounterInitializer(PPQounter);
 
 
 // Call event handlers for qounter types to each as necessary [ALL-QOUNTERS]
@@ -165,6 +168,7 @@ void QountersMinus::QounterRegistry::OnNoteMiss(GlobalNamespace::NoteData* data)
 
 void QountersMinus::QounterRegistry::OnScoreUpdated(int modifiedScore) {
     if (PBQounter) PBQounter->OnScoreUpdated(modifiedScore);
+    if (PPQounter) PPQounter->OnScoreUpdated(modifiedScore);
 }
 
 void QountersMinus::QounterRegistry::OnMaxScoreUpdated(int maxModifiedScore) {

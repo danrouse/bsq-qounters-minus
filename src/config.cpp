@@ -327,7 +327,7 @@ void QountersMinus::SaveConfig() {
     ppQounterConfig.AddMember("Distance", config.PPQounterConfig.distance, allocator);
     ppQounterConfig.AddMember("Position", LookupEnumString(config.PPQounterConfig.position, QountersMinus::QounterPositionLookup), allocator);
     ppQounterConfig.AddMember("HideWhenUnranked", config.PPQounterConfig.hideWhenUnranked, allocator);
-    getConfig().config.AddMember("ProgressConfig", ppQounterConfig, allocator);
+    getConfig().config.AddMember("PPConfig", ppQounterConfig, allocator);
 
     getConfig().Write();
 }

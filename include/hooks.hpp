@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/logger.hpp"
+#include "util/pp.hpp"
 #include "QounterRegistry.hpp"
 
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"

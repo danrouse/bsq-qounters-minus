@@ -1,23 +1,18 @@
 #pragma once
 
 #include "util/logger.hpp"
+#include "util/current_song_id.hpp"
 #include "Qounter.hpp"
 #include "config/FailQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 
-#include "GlobalNamespace/GameplayCoreInstaller.hpp"
-#include "GlobalNamespace/IDifficultyBeatmap.hpp"
-#include "GlobalNamespace/IBeatmapLevel.hpp"
-#include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
-#include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/PlayerDataModel.hpp"
 #include "GlobalNamespace/PlayerData.hpp"
 #include "GlobalNamespace/PlayerAllOverallStatsData.hpp"
 #include "GlobalNamespace/PlayerAllOverallStatsData_PlayerOverallStatsData.hpp"
 #include "GlobalNamespace/GameEnergyCounter.hpp"
-#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Time.hpp"
 #include "System/Action.hpp"
