@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::NotesQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::NotesQounter::Initialize() {
+    if (!config.NotesQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::NotesQounter*>(
         config.NotesQounterConfig.position, config.NotesQounterConfig.distance
     );

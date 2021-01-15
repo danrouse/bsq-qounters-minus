@@ -7,6 +7,7 @@ Il2CppString* QountersMinus::Qounters::FailQounter::prevBeatmapHash = nullptr;
 DEFINE_CLASS(QountersMinus::Qounters::FailQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::FailQounter::Initialize() {
+    if (!config.FailQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::FailQounter*>(
         config.FailQounterConfig.position, config.FailQounterConfig.distance
     );

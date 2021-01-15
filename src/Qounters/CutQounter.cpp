@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::CutQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::CutQounter::Initialize() {
+    if (!config.CutQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::CutQounter*>(
         config.CutQounterConfig.position, config.CutQounterConfig.distance
     );

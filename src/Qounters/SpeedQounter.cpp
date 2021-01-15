@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::SpeedQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::SpeedQounter::Initialize() {
+    if (!config.SpeedQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::SpeedQounter*>(
         config.SpeedQounterConfig.position, config.SpeedQounterConfig.distance
     );

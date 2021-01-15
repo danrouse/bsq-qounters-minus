@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::ProgressQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::ProgressQounter::Initialize() {
+    if (!config.ProgressQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ProgressQounter*>(
         config.ProgressQounterConfig.position, config.ProgressQounterConfig.distance
     );

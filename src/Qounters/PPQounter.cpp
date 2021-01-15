@@ -11,6 +11,7 @@ static const float MULT_FASTERSONG_SCORESABER = 0.08f;
 DEFINE_CLASS(QountersMinus::Qounters::PPQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::PPQounter::Initialize() {
+    if (!config.PPQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PPQounter*>(
         config.PPQounterConfig.position, config.PPQounterConfig.distance
     );

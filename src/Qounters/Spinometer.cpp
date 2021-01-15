@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::Spinometer);
 
 QountersMinus::Qounter* QountersMinus::Qounters::Spinometer::Initialize() {
+    if (!config.SpinometerConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::Spinometer*>(
         config.SpinometerConfig.position, config.SpinometerConfig.distance
     );

@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::MissedQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::MissedQounter::Initialize() {
+    if (!config.MissedQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::MissedQounter*>(
         config.MissedQounterConfig.position, config.MissedQounterConfig.distance
     );

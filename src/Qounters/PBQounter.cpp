@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::PBQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::PBQounter::Initialize() {
+    if (!config.PBQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PBQounter*>(
         config.PBQounterConfig.position, config.PBQounterConfig.distance
     );

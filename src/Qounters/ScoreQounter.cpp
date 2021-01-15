@@ -5,6 +5,7 @@ extern QountersMinus::ModConfig config;
 DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
 QountersMinus::Qounter* QountersMinus::Qounters::ScoreQounter::Initialize() {
+    if (!config.ScoreQounterConfig.enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ScoreQounter*>(
         config.ScoreQounterConfig.position, config.ScoreQounterConfig.distance
     );
