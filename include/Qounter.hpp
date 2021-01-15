@@ -3,6 +3,7 @@
 #include "config.hpp"
 #include "config/QounterConfig.hpp"
 #include "util/logger.hpp"
+#include "InjectedComponents.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
@@ -21,6 +22,7 @@ void SetPosition(UnityEngine::Transform* transform, QountersMinus::QounterPositi
 DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, gameObject);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, basicText);
+    DECLARE_INSTANCE_FIELD(QountersMinus::InjectedComponents*, refs);
 
     DECLARE_METHOD(void, Awake);
     DECLARE_METHOD(void, OnDestroy);
@@ -28,6 +30,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
     REGISTER_FUNCTION(Qounter,
         REGISTER_FIELD(gameObject);
         REGISTER_FIELD(basicText);
+        REGISTER_FIELD(refs);
 
         REGISTER_METHOD(Awake);
         REGISTER_METHOD(OnDestroy);

@@ -81,6 +81,7 @@ void QountersMinus::Qounter::Awake() {
     gameObject = UnityEngine::GameObject::New_ctor(gameObjectName);
     gameObject->get_transform()->SetParent(get_transform(), false);
     gameObject->AddComponent<UnityEngine::RectTransform*>();
+    refs = gameObject->AddComponent<QountersMinus::InjectedComponents*>();
 }
 
 void QountersMinus::Qounter::OnDestroy() {

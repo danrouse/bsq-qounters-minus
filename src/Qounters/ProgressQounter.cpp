@@ -58,12 +58,10 @@ void QountersMinus::Qounters::ProgressQounter::Start() {
     audioTimeSyncController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::AudioTimeSyncController*>();
     length = audioTimeSyncController->get_songLength();
 
-    auto gameplayCoreInstaller = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayCoreInstaller*>()->values[0];
-    songBPM = reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(gameplayCoreInstaller->sceneSetupData->difficultyBeatmap->get_level())->get_beatsPerMinute();
+    songBPM = reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(refs->difficultyBeatmap->get_level())->get_beatsPerMinute();
 
-    auto coreGameHUDController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
     // for compatibility with Intro Skip, avoid actually destroying the original element
-    coreGameHUDController->songProgressPanelGO->get_transform()->set_localScale(UnityEngine::Vector3(0.0f, 0.0f, 0.0f));
+    refs->coreGameHUDController->songProgressPanelGO->get_transform()->set_localScale(UnityEngine::Vector3(0.0f, 0.0f, 0.0f));
     // UnityEngine::Object::Destroy(coreGameHUDController->songProgressPanelGO);
 
     if (config.ProgressQounterConfig.mode != QountersMinus::ProgressQounterMode::Percent) {

@@ -1,16 +1,13 @@
 #pragma once
 
-#include "GlobalNamespace/GameplayCoreInstaller.hpp"
-#include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/IDifficultyBeatmap.hpp"
 #include "GlobalNamespace/IBeatmapLevel.hpp"
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
 #include "GlobalNamespace/BeatmapDifficulty.hpp"
-#include "UnityEngine/Resources.hpp"
 
-typedef struct _CurrentSongID {
+typedef struct _SongID {
     std::string hash;
     GlobalNamespace::BeatmapDifficulty difficulty;
-} CurrentSongID;
+} SongID;
 
-CurrentSongID GetCurrentSongID();
+SongID GetSongID(GlobalNamespace::IDifficultyBeatmap* beatmap);

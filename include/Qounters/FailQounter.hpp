@@ -1,7 +1,7 @@
 #pragma once
 
 #include "util/logger.hpp"
-#include "util/current_song_id.hpp"
+#include "util/song_id.hpp"
 #include "config.hpp"
 #include "Qounter.hpp"
 #include "config/FailQounterConfig.hpp"
@@ -9,8 +9,6 @@
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 
-#include "GlobalNamespace/PlayerDataModel.hpp"
-#include "GlobalNamespace/PlayerData.hpp"
 #include "GlobalNamespace/PlayerAllOverallStatsData.hpp"
 #include "GlobalNamespace/PlayerAllOverallStatsData_PlayerOverallStatsData.hpp"
 #include "GlobalNamespace/GameEnergyCounter.hpp"

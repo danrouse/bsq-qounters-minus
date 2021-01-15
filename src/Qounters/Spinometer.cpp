@@ -34,14 +34,12 @@ void QountersMinus::Qounters::Spinometer::Start() {
     rightQuaternions = il2cpp_utils::New<System::Collections::Generic::List_1<UnityEngine::Quaternion>*>().value();
     leftAngles = il2cpp_utils::New<System::Collections::Generic::List_1<float>*>().value();
     rightAngles = il2cpp_utils::New<System::Collections::Generic::List_1<float>*>().value();
-
-    saberManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::SaberManager*>();
 }
 
 void QountersMinus::Qounters::Spinometer::Update() {
     timeSinceLastUpdate += UnityEngine::Time::get_deltaTime();
-    leftQuaternions->Add(saberManager->leftSaber->get_transform()->get_rotation());
-    rightQuaternions->Add(saberManager->rightSaber->get_transform()->get_rotation());
+    leftQuaternions->Add(refs->saberManager->leftSaber->get_transform()->get_rotation());
+    rightQuaternions->Add(refs->saberManager->rightSaber->get_transform()->get_rotation());
     auto leftQuaternionsCount = leftQuaternions->get_Count();
     auto rightQuaternionsCount = rightQuaternions->get_Count();
     if (leftQuaternionsCount >= 2 && rightQuaternionsCount >= 2) {

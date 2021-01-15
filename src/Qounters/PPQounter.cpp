@@ -37,8 +37,7 @@ GlobalNamespace::GameplayModifiers* RemovePositiveModifiers(GlobalNamespace::Gam
     );
 }
 
-float CalculateMultiplier(std::string songID) {
-    auto scoreController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::ScoreController*>();
+float CalculateMultiplier(std::string songID, GlobalNamespace::ScoreController* scoreController) {
     auto modifiers = QountersMinus::PP::SongAllowsPositiveModifiers(songID) ?
         scoreController->gameplayModifiers : RemovePositiveModifiers(scoreController->gameplayModifiers);
     auto multiplier = scoreController->gameplayModifiersModel->GetTotalMultiplier(modifiers);
@@ -55,14 +54,13 @@ float CalculateMultiplier(std::string songID) {
 }
 
 void QountersMinus::Qounters::PPQounter::Start() {
-    auto songID = GetCurrentSongID();
+    auto songID = GetSongID(refs->difficultyBeatmap);
     auto ppData = QountersMinus::PP::BeatmapMaxPP(songID.hash, songID.difficulty);
     isRanked = ppData.has_value();
     if (config.PPQounterConfig.hideWhenUnranked && !isRanked) return;
 
     if (isRanked) maxPP = ppData.has_value() ? ppData.value() : 0.0f;
-    relativeScoreAndImmediateRankCounter = UnityEngine::Object::FindObjectOfType<GlobalNamespace::RelativeScoreAndImmediateRankCounter*>();
-    multiplier = CalculateMultiplier(songID.hash);
+    multiplier = CalculateMultiplier(songID.hash, refs->scoreController);
     CreateBasicText("PP: --");
     basicText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
 }
@@ -70,7 +68,7 @@ void QountersMinus::Qounters::PPQounter::Start() {
 void QountersMinus::Qounters::PPQounter::OnScoreUpdated(int modifiedScore) {
     if (config.PPQounterConfig.hideWhenUnranked && !isRanked) return;
     if (maxPP > 0.0f) {
-        auto accuracy = relativeScoreAndImmediateRankCounter->relativeScore * multiplier;
+        auto accuracy = refs->relativeScoreAndImmediateRankCounter->relativeScore * multiplier;
         auto currentPP = QountersMinus::PP::CalculatePP(maxPP, accuracy);
         basicText->set_text(il2cpp_utils::createcsstr("PP: " + FormatNumber(currentPP, 2)));
     }

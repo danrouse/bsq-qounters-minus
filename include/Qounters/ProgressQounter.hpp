@@ -10,12 +10,8 @@
 #include "questui/shared/BeatSaberUI.hpp"
 
 #include "GlobalNamespace/AudioTimeSyncController.hpp"
-#include "GlobalNamespace/GameplayCoreInstaller.hpp"
-#include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
-#include "GlobalNamespace/IDifficultyBeatmap.hpp"
 #include "GlobalNamespace/IBeatmapLevel.hpp"
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
-#include "GlobalNamespace/CoreGameHUDController.hpp"
 #include "GlobalNamespace/SongProgressUIController.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Material.hpp"

@@ -16,7 +16,7 @@ QountersMinus::Qounter* QountersMinus::Qounters::FailQounter::Initialize() {
 void QountersMinus::Qounters::FailQounter::Start() {
     CreateBasicTitle(config.FailQounterConfig.showRestartsInstead ? "Restarts" : "Fails");
 
-    auto songID = GetCurrentSongID();
+    auto songID = GetSongID(refs->difficultyBeatmap);
     auto currentBeatmapHash = songID.hash + "_" + std::to_string(songID.difficulty);
 
     if (config.FailQounterConfig.showRestartsInstead) {
@@ -28,8 +28,7 @@ void QountersMinus::Qounters::FailQounter::Start() {
             prevBeatmapHash = il2cpp_utils::createcsstr(currentBeatmapHash, il2cpp_utils::StringType::Manual);
         }
     } else {
-        auto playerDataModel = UnityEngine::Object::FindObjectOfType<GlobalNamespace::PlayerDataModel*>();
-        count = playerDataModel->playerData->playerAllOverallStatsData->get_allOverallStatsData()->failedLevelsCount;
+        count = refs->playerData->playerAllOverallStatsData->get_allOverallStatsData()->failedLevelsCount;
         auto gameEnergyCounter = UnityEngine::Object::FindObjectOfType<GlobalNamespace::GameEnergyCounter*>();
         gameEnergyCounter->add_gameEnergyDidReach0Event(il2cpp_utils::MakeDelegate<System::Action*>(
             classof(System::Action*), this, +[](QountersMinus::Qounters::FailQounter* self) {

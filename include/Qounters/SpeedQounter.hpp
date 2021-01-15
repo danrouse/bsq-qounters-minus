@@ -11,14 +11,12 @@
 
 #include "UnityEngine/Time.hpp"
 #include "GlobalNamespace/Saber.hpp"
-#include "GlobalNamespace/SaberManager.hpp"
 #include "System/Collections/Generic/List_1.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qounter,
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, averageText);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, fastestText);
-    DECLARE_INSTANCE_FIELD(GlobalNamespace::SaberManager*, saberManager);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<float>*, leftSpeeds);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<float>*, rightSpeeds);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<float>*, fastestSpeeds);
@@ -32,7 +30,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
     REGISTER_FUNCTION(SpeedQounter,
         REGISTER_FIELD(averageText);
         REGISTER_FIELD(fastestText);
-        REGISTER_FIELD(saberManager);
         REGISTER_FIELD(leftSpeeds);
         REGISTER_FIELD(rightSpeeds);
         REGISTER_FIELD(fastestSpeeds);

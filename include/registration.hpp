@@ -2,6 +2,7 @@
 
 #include "custom-types/shared/register.hpp"
 #include "questui/shared/QuestUI.hpp"
+#include "InjectedComponents.hpp"
 #include "QounterSettingsViewController.hpp"
 #include "Qounter.hpp"
 #include "Qounters/CutQounter.hpp"
@@ -18,6 +19,7 @@
 
 namespace QountersMinus {
     inline void RegisterEverything() {
+        custom_types::Register::RegisterType<QountersMinus::InjectedComponents>();
         custom_types::Register::RegisterType<QountersMinus::Qounter>();
 
         custom_types::Register::RegisterType<QountersMinus::Qounters::CutQounter>();

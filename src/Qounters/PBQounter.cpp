@@ -15,16 +15,11 @@ void QountersMinus::Qounters::PBQounter::Start() {
     int noteCount = GetNoteCount();
     int maxRawScore = GlobalNamespace::ScoreModel::MaxRawScoreForNumberOfNotes(noteCount);
 
-    auto gameplayCoreInstaller = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayCoreInstaller*>()->values[0];
-    auto playerDataModel = UnityEngine::Object::FindObjectOfType<GlobalNamespace::PlayerDataModel*>();
-    auto scoreController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::ScoreController*>();
-    relativeScoreAndImmediateRankCounter = UnityEngine::Object::FindObjectOfType<GlobalNamespace::RelativeScoreAndImmediateRankCounter*>();
-
     maxPossibleScore = GlobalNamespace::ScoreModel::GetModifiedScoreForGameplayModifiersScoreMultiplier(
         maxRawScore,
-        scoreController->gameplayModifiersModel->GetTotalMultiplier(scoreController->gameplayModifiers)
+        refs->scoreController->gameplayModifiersModel->GetTotalMultiplier(refs->scoreController->gameplayModifiers)
     );
-    auto playerLevelStats = playerDataModel->playerData->GetPlayerLevelStatsData(gameplayCoreInstaller->sceneSetupData->difficultyBeatmap);
+    auto playerLevelStats = refs->playerData->GetPlayerLevelStatsData(refs->difficultyBeatmap);
     highScore = playerLevelStats->highScore;
 
     pbText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "", false);
@@ -58,7 +53,7 @@ void QountersMinus::Qounters::PBQounter::OnScoreUpdated(int modifiedScore) {
     }
 
     if (config.PBQounterConfig.mode == PBQounterMode::Relative) {
-        if (relativeScoreAndImmediateRankCounter->relativeScore > ((float)highScore / maxPossibleScore)) {
+        if (refs->relativeScoreAndImmediateRankCounter->relativeScore > ((float)highScore / maxPossibleScore)) {
             pbText->set_color(config.PBQounterConfig.betterColor);
         } else {
             pbText->set_color(config.PBQounterConfig.defaultColor);
