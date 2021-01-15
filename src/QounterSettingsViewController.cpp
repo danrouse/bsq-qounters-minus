@@ -404,7 +404,7 @@ UnityEngine::GameObject* CreateProgressQounterConfigView(UnityEngine::Transform*
 
 UnityEngine::GameObject* CreatePPQounterConfigView(UnityEngine::Transform* parent) {
     auto container = CreateContentView(parent);
-    auto ppQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Progress Qounter");
+    auto ppQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "PP Qounter");
     ppQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
     ppQounterTitle->set_fontSize(6.0f);
 
