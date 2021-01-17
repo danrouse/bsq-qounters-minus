@@ -58,7 +58,7 @@ void QountersMinus::Qounters::ProgressQounter::Start() {
     audioTimeSyncController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::AudioTimeSyncController*>();
     length = audioTimeSyncController->get_songLength();
 
-    songBPM = reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(refs->difficultyBeatmap->get_level())->get_beatsPerMinute();
+    songBPM = il2cpp_utils::RunMethod<float>(refs->difficultyBeatmap->get_level(), "get_beatsPerMinute").value();
 
     // for compatibility with Intro Skip, avoid actually destroying the original element
     refs->coreGameHUDController->songProgressPanelGO->get_transform()->set_localScale(UnityEngine::Vector3(0.0f, 0.0f, 0.0f));
