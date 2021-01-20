@@ -1,33 +1,38 @@
 #include "Qounters/CutQounter.hpp"
 
-extern QountersMinus::ModConfig config;
-
 DEFINE_CLASS(QountersMinus::Qounters::CutQounter);
 
+bool QountersMinus::Qounters::CutQounter::Enabled = false;
+int QountersMinus::Qounters::CutQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveHighway);
+int QountersMinus::Qounters::CutQounter::Distance = 1;
+bool QountersMinus::Qounters::CutQounter::SeparateSaberCounts = false;
+bool QountersMinus::Qounters::CutQounter::SeparateCutValues = false;
+int QountersMinus::Qounters::CutQounter::AveragePrecision = 1;
+
 QountersMinus::Qounter* QountersMinus::Qounters::CutQounter::Initialize() {
-    if (!config.CutQounterConfig.enabled) return nullptr;
+    if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::CutQounter*>(
-        config.CutQounterConfig.position, config.CutQounterConfig.distance
+        static_cast<QountersMinus::QounterPosition>(Position), Distance
     );
 }
 
 void QountersMinus::Qounters::CutQounter::Start() {
     CreateBasicTitle("Average Cut");
 
-    auto defaultText = FormatNumber(0.0f, config.CutQounterConfig.averagePrecision);
-    if (config.CutQounterConfig.separateCutValues) {
+    auto defaultText = FormatNumber(0.0f, AveragePrecision);
+    if (SeparateCutValues) {
         defaultText = defaultText + "\n" + defaultText + "\n" + defaultText;
     }
-    auto fontSize = config.CutQounterConfig.separateCutValues ? 28.0f : 35.0f;
-    auto xOffset = config.CutQounterConfig.separateSaberCounts ? 20.0f + (12.0f * config.CutQounterConfig.averagePrecision) : 0.0f;
-    auto yOffset = config.CutQounterConfig.separateCutValues ? -60.0f : -30.0f;
+    auto fontSize = SeparateCutValues ? 28.0f : 35.0f;
+    auto xOffset = SeparateSaberCounts ? 20.0f + (12.0f * AveragePrecision) : 0.0f;
+    auto yOffset = SeparateCutValues ? -60.0f : -30.0f;
 
     leftCutText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), defaultText, false);
     leftCutText->set_alignment(TMPro::TextAlignmentOptions::Center);
     leftCutText->set_fontSize(fontSize);
     leftCutText->set_lineSpacing(-40.0f);
     leftCutText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(xOffset * -1.0f, yOffset));
-    if (config.CutQounterConfig.separateSaberCounts) {
+    if (SeparateSaberCounts) {
         rightCutText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), defaultText, false);
         rightCutText->set_alignment(TMPro::TextAlignmentOptions::Center);
         rightCutText->set_fontSize(fontSize);
@@ -58,36 +63,36 @@ void QountersMinus::Qounters::CutQounter::UpdateCutScores() {
     if (leftCount == 0) leftCount++;
     if (rightCount == 0) rightCount++;
 
-    if (config.CutQounterConfig.separateCutValues) {
-        if (config.CutQounterConfig.separateSaberCounts) {
+    if (SeparateCutValues) {
+        if (SeparateSaberCounts) {
             leftCutText->set_text(il2cpp_utils::createcsstr(
-                FormatNumber((float)leftBeforeSwingSum / leftCount, config.CutQounterConfig.averagePrecision) + "\n" +
-                FormatNumber((float)leftAfterSwingSum / leftCount, config.CutQounterConfig.averagePrecision) + "\n" +
-                FormatNumber((float)leftCutDistanceSum / leftCount, config.CutQounterConfig.averagePrecision)
+                FormatNumber((float)leftBeforeSwingSum / leftCount, AveragePrecision) + "\n" +
+                FormatNumber((float)leftAfterSwingSum / leftCount, AveragePrecision) + "\n" +
+                FormatNumber((float)leftCutDistanceSum / leftCount, AveragePrecision)
             ));
             rightCutText->set_text(il2cpp_utils::createcsstr(
-                FormatNumber((float)rightBeforeSwingSum / rightCount, config.CutQounterConfig.averagePrecision) + "\n" +
-                FormatNumber((float)rightAfterSwingSum / rightCount, config.CutQounterConfig.averagePrecision) + "\n" +
-                FormatNumber((float)rightCutDistanceSum / rightCount, config.CutQounterConfig.averagePrecision)
+                FormatNumber((float)rightBeforeSwingSum / rightCount, AveragePrecision) + "\n" +
+                FormatNumber((float)rightAfterSwingSum / rightCount, AveragePrecision) + "\n" +
+                FormatNumber((float)rightCutDistanceSum / rightCount, AveragePrecision)
             ));
         } else {
             leftCutText->set_text(il2cpp_utils::createcsstr(
-                FormatNumber((float)(leftBeforeSwingSum + rightBeforeSwingSum) / (leftCount + rightCount), config.CutQounterConfig.averagePrecision) + "\n" +
-                FormatNumber((float)(leftAfterSwingSum + rightAfterSwingSum) / (leftCount + rightCount), config.CutQounterConfig.averagePrecision) + "\n" +
-                FormatNumber((float)(leftCutDistanceSum + rightCutDistanceSum) / (leftCount + rightCount), config.CutQounterConfig.averagePrecision)
+                FormatNumber((float)(leftBeforeSwingSum + rightBeforeSwingSum) / (leftCount + rightCount), AveragePrecision) + "\n" +
+                FormatNumber((float)(leftAfterSwingSum + rightAfterSwingSum) / (leftCount + rightCount), AveragePrecision) + "\n" +
+                FormatNumber((float)(leftCutDistanceSum + rightCutDistanceSum) / (leftCount + rightCount), AveragePrecision)
             ));
         }
     } else {
-        if (config.CutQounterConfig.separateSaberCounts) {
+        if (SeparateSaberCounts) {
             leftCutText->set_text(il2cpp_utils::createcsstr(
-                FormatNumber((float)(leftBeforeSwingSum + leftAfterSwingSum + leftCutDistanceSum) / leftCount, config.CutQounterConfig.averagePrecision)
+                FormatNumber((float)(leftBeforeSwingSum + leftAfterSwingSum + leftCutDistanceSum) / leftCount, AveragePrecision)
             ));
             rightCutText->set_text(il2cpp_utils::createcsstr(
-                FormatNumber((float)(rightBeforeSwingSum + rightAfterSwingSum + rightCutDistanceSum) / rightCount, config.CutQounterConfig.averagePrecision)
+                FormatNumber((float)(rightBeforeSwingSum + rightAfterSwingSum + rightCutDistanceSum) / rightCount, AveragePrecision)
             ));
         } else {
             leftCutText->set_text(il2cpp_utils::createcsstr(
-                FormatNumber((float)(leftBeforeSwingSum + leftAfterSwingSum + leftCutDistanceSum + rightBeforeSwingSum + rightAfterSwingSum + rightCutDistanceSum) / (leftCount + rightCount), config.CutQounterConfig.averagePrecision)
+                FormatNumber((float)(leftBeforeSwingSum + leftAfterSwingSum + leftCutDistanceSum + rightBeforeSwingSum + rightAfterSwingSum + rightCutDistanceSum) / (leftCount + rightCount), AveragePrecision)
             ));
         }
     }

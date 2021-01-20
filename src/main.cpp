@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "config.hpp"
 
 extern "C" void setup(ModInfo& info) {
     info.id = ID;
@@ -13,6 +14,7 @@ extern "C" void load() {
     LOG_DEBUG("Installing hooks");
     QountersMinus::InstallHooks();
 
+    // TODO: Move this to hooks
     LOG_DEBUG("Loading config");
     if (!QountersMinus::LoadConfig()) QountersMinus::SaveConfig();
 }

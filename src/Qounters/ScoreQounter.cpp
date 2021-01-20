@@ -1,13 +1,28 @@
 #include "Qounters/ScoreQounter.hpp"
 
-extern QountersMinus::ModConfig config;
-
 DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
+extern QountersMinus::MainConfig mainConfig;
+
+bool QountersMinus::Qounters::ScoreQounter::Enabled = true;
+int QountersMinus::Qounters::ScoreQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
+int QountersMinus::Qounters::ScoreQounter::Distance = 0;
+int QountersMinus::Qounters::ScoreQounter::Mode = static_cast<int>(QountersMinus::ScoreQounterMode::Original);
+int QountersMinus::Qounters::ScoreQounter::DecimalPrecision = 2;
+bool QountersMinus::Qounters::ScoreQounter::DisplayRank = true;
+bool QountersMinus::Qounters::ScoreQounter::CustomRankColors = true;
+UnityEngine::Color QountersMinus::Qounters::ScoreQounter::SSColor = UnityEngine::Color(0.0f, 1.0f, 1.0f, 1.0f);
+UnityEngine::Color QountersMinus::Qounters::ScoreQounter::SColor = UnityEngine::Color(1.0f, 1.0f, 1.0f, 1.0f);
+UnityEngine::Color QountersMinus::Qounters::ScoreQounter::AColor = UnityEngine::Color(0.0f, 1.0f, 0.0f, 1.0f);
+UnityEngine::Color QountersMinus::Qounters::ScoreQounter::BColor = UnityEngine::Color(1.0f, 0.92f, 0.016f, 1.0f);
+UnityEngine::Color QountersMinus::Qounters::ScoreQounter::CColor = UnityEngine::Color(1.0f, 0.5f, 0.0f, 1.0f);
+UnityEngine::Color QountersMinus::Qounters::ScoreQounter::DColor = UnityEngine::Color(1.0f, 0.0f, 0.0f, 1.0f);
+UnityEngine::Color QountersMinus::Qounters::ScoreQounter::EColor = UnityEngine::Color(1.0f, 0.0f, 0.0f, 1.0f);
+
 QountersMinus::Qounter* QountersMinus::Qounters::ScoreQounter::Initialize() {
-    if (!config.ScoreQounterConfig.enabled) return nullptr;
+    if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ScoreQounter*>(
-        config.ScoreQounterConfig.position, config.ScoreQounterConfig.distance
+        static_cast<QountersMinus::QounterPosition>(Position), Distance
     );
 }
 
@@ -23,7 +38,7 @@ void QountersMinus::Qounters::ScoreQounter::Start() {
     refs->coreGameHUDController->relativeScoreGO->get_transform()->SetParent(scoreUIText->get_transform(), true);
     refs->coreGameHUDController->immediateRankGO->get_transform()->SetParent(scoreUIText->get_transform(), true);
 
-    if (!config.italicText) {
+    if (!mainConfig.italicText) {
         scoreUIText->set_fontStyle(TMPro::FontStyles::Normal);
         relativeScoreText->set_fontStyle(TMPro::FontStyles::Normal);
         rankText->set_fontStyle(TMPro::FontStyles::Normal);
@@ -33,9 +48,9 @@ void QountersMinus::Qounters::ScoreQounter::Start() {
         rankText->get_rectTransform()->set_localPosition(UnityEngine::Vector3(0.0f, localPosition2.y, localPosition2.z));
     }
 
-    if (config.ScoreQounterConfig.mode == QountersMinus::ScoreQounterMode::RankOnly)
+    if (Mode == static_cast<int>(QountersMinus::ScoreQounterMode::RankOnly))
         UnityEngine::Object::Destroy(refs->coreGameHUDController->relativeScoreGO);
-    if (config.ScoreQounterConfig.mode == QountersMinus::ScoreQounterMode::ScoreOnly)
+    if (Mode == static_cast<int>(QountersMinus::ScoreQounterMode::ScoreOnly))
         UnityEngine::Object::Destroy(refs->coreGameHUDController->immediateRankGO);
 
     // instead of calculating original text position based on canvas like counters+,
@@ -55,13 +70,13 @@ void QountersMinus::Qounters::ScoreQounter::Start() {
 
 UnityEngine::Color QountersMinus::Qounters::ScoreQounter::GetRankColor(GlobalNamespace::RankModel::Rank rank) {
     switch (rank) {
-        case GlobalNamespace::RankModel::Rank::S: return config.ScoreQounterConfig.sColor;
-        case GlobalNamespace::RankModel::Rank::A: return config.ScoreQounterConfig.aColor;
-        case GlobalNamespace::RankModel::Rank::B: return config.ScoreQounterConfig.bColor;
-        case GlobalNamespace::RankModel::Rank::C: return config.ScoreQounterConfig.cColor;
-        case GlobalNamespace::RankModel::Rank::D: return config.ScoreQounterConfig.dColor;
-        case GlobalNamespace::RankModel::Rank::E: return config.ScoreQounterConfig.eColor;
-        default: return config.ScoreQounterConfig.ssColor;
+        case GlobalNamespace::RankModel::Rank::S: return SColor;
+        case GlobalNamespace::RankModel::Rank::A: return AColor;
+        case GlobalNamespace::RankModel::Rank::B: return BColor;
+        case GlobalNamespace::RankModel::Rank::C: return CColor;
+        case GlobalNamespace::RankModel::Rank::D: return DColor;
+        case GlobalNamespace::RankModel::Rank::E: return EColor;
+        default: return SSColor;
     }
 }
 
@@ -70,8 +85,8 @@ void QountersMinus::Qounters::ScoreQounter::UpdateText() {
     if (immediateRank != prevImmediateRank) {
         rankText->set_text(GlobalNamespace::RankModel::GetRankName(immediateRank));
         prevImmediateRank = immediateRank;
-        rankText->set_color(config.ScoreQounterConfig.customRankColors ? GetRankColor(immediateRank) : UnityEngine::Color::get_white());
+        rankText->set_color(CustomRankColors ? GetRankColor(immediateRank) : UnityEngine::Color::get_white());
     }
     float relativeScore = refs->relativeScoreAndImmediateRankCounter->relativeScore * 100.0f;
-    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, config.ScoreQounterConfig.decimalPrecision) + "%"));
+    relativeScoreText->set_text(il2cpp_utils::createcsstr(FormatNumber(relativeScore, DecimalPrecision) + "%"));
 }

@@ -2,9 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/format.hpp"
-#include "config.hpp"
 #include "Qounter.hpp"
-#include "config/SpinometerConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -15,7 +13,31 @@
 #include "GlobalNamespace/Saber.hpp"
 #include "System/Collections/Generic/List_1.hpp"
 
+namespace QountersMinus {
+    enum class SpinometerMode {
+        Average,
+        SplitAverage,
+        Highest
+    };
+    static int SpinometerModeCount = 3;
+    static std::map<SpinometerMode, std::string> SpinometerModeNames = {
+        {SpinometerMode::Average, "Average"},
+        {SpinometerMode::SplitAverage, "Split Average"},
+        {SpinometerMode::Highest, "Highest"}
+    };
+    static std::map<std::string, SpinometerMode> SpinometerModeLookup = {
+        {"Average", SpinometerMode::Average},
+        {"SplitAverage", SpinometerMode::SplitAverage},
+        {"Highest", SpinometerMode::Highest}
+    };
+}
+
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounter,
+    DECLARE_STATIC_FIELD(bool, Enabled);
+    DECLARE_STATIC_FIELD(int, Position);
+    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(int, Mode);
+
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<UnityEngine::Quaternion>*, leftQuaternions);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<UnityEngine::Quaternion>*, rightQuaternions);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<float>*, leftAngles);
@@ -28,6 +50,11 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(Spinometer,
+        REGISTER_FIELD(Enabled);
+        REGISTER_FIELD(Position);
+        REGISTER_FIELD(Distance);
+        REGISTER_FIELD(Mode);
+
         REGISTER_FIELD(leftQuaternions);
         REGISTER_FIELD(rightQuaternions);
         REGISTER_FIELD(leftAngles);

@@ -2,9 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/song_id.hpp"
-#include "config.hpp"
 #include "Qounter.hpp"
-#include "config/FailQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -17,6 +15,11 @@
 #include "System/Action.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qounter,
+    DECLARE_STATIC_FIELD(bool, Enabled);
+    DECLARE_STATIC_FIELD(int, Position);
+    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(bool, ShowRestartsInstead);
+
     DECLARE_STATIC_FIELD(Il2CppString*, prevBeatmapHash);
     DECLARE_STATIC_FIELD(int, restarts);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, count, 0);
@@ -27,6 +30,11 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qount
     DECLARE_METHOD(void, Update);
 
     REGISTER_FUNCTION(FailQounter,
+        REGISTER_FIELD(Enabled);
+        REGISTER_FIELD(Position);
+        REGISTER_FIELD(Distance);
+        REGISTER_FIELD(ShowRestartsInstead);
+
         REGISTER_FIELD(prevBeatmapHash);
         REGISTER_FIELD(restarts);
         REGISTER_FIELD(count);

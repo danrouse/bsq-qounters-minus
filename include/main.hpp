@@ -4,6 +4,5 @@
 #include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
 
 #include "util/logger.hpp"
-#include "config.hpp"
 #include "hooks.hpp"
 #include "registration.hpp"

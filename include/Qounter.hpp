@@ -1,7 +1,7 @@
 #pragma once
 
-#include "config.hpp"
-#include "config/QounterConfig.hpp"
+#include <map>
+#include "MainConfig.hpp"
 #include "util/logger.hpp"
 #include "InjectedComponents.hpp"
 #include "custom-types/shared/macros.hpp"
@@ -15,6 +15,34 @@
 #include "GlobalNamespace/NoteData.hpp"
 #include "GlobalNamespace/NoteCutInfo.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
+
+namespace QountersMinus {
+    enum class QounterPosition {
+        BelowCombo,
+        AboveCombo,
+        BelowMultiplier,
+        AboveMultiplier,
+        BelowEnergy,
+        AboveHighway
+    };
+    static int QounterPositionCount = 6;
+    static std::map<int, std::string> QounterPositionNames = {
+        {static_cast<int>(QounterPosition::BelowCombo), "Below Combo"},
+        {static_cast<int>(QounterPosition::AboveCombo), "Above Combo"},
+        {static_cast<int>(QounterPosition::BelowMultiplier), "Below Multiplier"},
+        {static_cast<int>(QounterPosition::AboveMultiplier), "Above Multiplier"},
+        {static_cast<int>(QounterPosition::BelowEnergy), "Below Energy"},
+        {static_cast<int>(QounterPosition::AboveHighway), "Over Highway"}
+    };
+    static std::map<std::string, int> QounterPositionLookup = {
+        {"BelowCombo", static_cast<int>(QounterPosition::BelowCombo)},
+        {"AboveCombo", static_cast<int>(QounterPosition::AboveCombo)},
+        {"BelowMultiplier", static_cast<int>(QounterPosition::BelowMultiplier)},
+        {"AboveMultiplier", static_cast<int>(QounterPosition::AboveMultiplier)},
+        {"BelowEnergy", static_cast<int>(QounterPosition::BelowEnergy)},
+        {"AboveHighway", static_cast<int>(QounterPosition::AboveHighway)}
+    };
+}
 
 UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position);
 void SetPosition(UnityEngine::Transform* transform, QountersMinus::QounterPosition position, int distance);

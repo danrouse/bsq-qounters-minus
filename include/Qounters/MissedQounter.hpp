@@ -1,9 +1,7 @@
 #pragma once
 
 #include "util/logger.hpp"
-#include "config.hpp"
 #include "Qounter.hpp"
-#include "config/MissedQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -11,6 +9,11 @@
 #include "GlobalNamespace/ColorType.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissedQounter, QountersMinus::Qounter,
+    DECLARE_STATIC_FIELD(bool, Enabled);
+    DECLARE_STATIC_FIELD(int, Position);
+    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(bool, CountBadCuts);
+
     DECLARE_INSTANCE_FIELD_DEFAULT(int, misses, 0);
 
     DECLARE_METHOD(static Qounter*, Initialize);
@@ -20,6 +23,11 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissedQounter, QountersMinus::Qou
     DECLARE_METHOD(void, UpdateValue);
 
     REGISTER_FUNCTION(MissedQounter,
+        REGISTER_FIELD(Enabled);
+        REGISTER_FIELD(Position);
+        REGISTER_FIELD(Distance);
+        REGISTER_FIELD(CountBadCuts);
+
         REGISTER_FIELD(misses);
 
         REGISTER_METHOD(Initialize);

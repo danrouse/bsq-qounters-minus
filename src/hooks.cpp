@@ -1,11 +1,12 @@
 #include "hooks.hpp"
 
 using namespace QountersMinus;
+extern MainConfig mainConfig;
 
 MAKE_HOOK_OFFSETLESS(CoreGameHUDController_Start, void, GlobalNamespace::CoreGameHUDController* self) {
     LOG_CALLER;
     CoreGameHUDController_Start(self);
-    QounterRegistry::Initialize();
+    QounterRegistry::Initialize(mainConfig.enabled, mainConfig.hideCombo, mainConfig.hideMultiplier, mainConfig.italicText);
 }
 
 MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreController* self) {
@@ -40,6 +41,11 @@ MAKE_HOOK_OFFSETLESS(CutScoreHandler_HandleSwingRatingCounterDidFinish, void, Gl
 
 MAKE_HOOK_OFFSETLESS(HealthWarningFlowCoordinator_DidActivate, void, Il2CppObject* self, bool a, bool b, bool c) {
     HealthWarningFlowCoordinator_DidActivate(self, a, b, c);
+
+    // Defer config loading to this point to allow everything to be registered
+    // LOG_DEBUG("Loading config");
+    // if (!QountersMinus::LoadConfig()) QountersMinus::SaveConfig();
+
     PP::Initialize();
 }
 

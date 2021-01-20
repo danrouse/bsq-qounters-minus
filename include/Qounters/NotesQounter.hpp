@@ -2,9 +2,7 @@
 
 #include "util/logger.hpp"
 #include "util/format.hpp"
-#include "config.hpp"
 #include "Qounter.hpp"
-#include "config/NotesQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -12,6 +10,12 @@
 #include "GlobalNamespace/ColorType.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qounter,
+    DECLARE_STATIC_FIELD(bool, Enabled);
+    DECLARE_STATIC_FIELD(int, Position);
+    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(bool, ShowPercentage);
+    DECLARE_STATIC_FIELD(int, DecimalPrecision);
+
     DECLARE_INSTANCE_FIELD_DEFAULT(int, allCuts, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, goodCuts, 0);
 
@@ -22,6 +26,12 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
     DECLARE_METHOD(void, UpdateValue);
 
     REGISTER_FUNCTION(NotesQounter,
+        REGISTER_FIELD(Enabled);
+        REGISTER_FIELD(Position);
+        REGISTER_FIELD(Distance);
+        REGISTER_FIELD(ShowPercentage);
+        REGISTER_FIELD(DecimalPrecision);
+
         REGISTER_FIELD(allCuts);
         REGISTER_FIELD(goodCuts);
 

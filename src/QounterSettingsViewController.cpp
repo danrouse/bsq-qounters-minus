@@ -1,8 +1,10 @@
 #include "QounterSettingsViewController.hpp"
 
-extern QountersMinus::ModConfig config;
+extern QountersMinus::MainConfig mainConfig;
 
 DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
+
+using namespace QountersMinus;
 
 #define CreateConfigToggle(configVar, label) \
     QuestUI::BeatSaberUI::CreateToggle(container->get_transform(), label, configVar, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>( \
@@ -141,26 +143,26 @@ UnityEngine::GameObject* CreateMainConfigView(UnityEngine::Transform* parent) {
     mainTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
     mainTitle->set_fontSize(6.0f);
 
-    auto globalEnabled = CreateConfigToggle(config.enabled, "Enabled");
+    auto globalEnabled = CreateConfigToggle(mainConfig.enabled, "Enabled");
     QuestUI::BeatSaberUI::AddHoverHint(globalEnabled->get_gameObject(), "Toggles Qounters-.");
-    auto hideCombo = CreateConfigToggle(config.hideCombo, "Hide Combo");
+    auto hideCombo = CreateConfigToggle(mainConfig.hideCombo, "Hide Combo");
     QuestUI::BeatSaberUI::AddHoverHint(hideCombo->get_gameObject(), "Hides the Combo counter.");
-    auto hideMultiplier = CreateConfigToggle(config.hideMultiplier, "Hide Multiplier");
+    auto hideMultiplier = CreateConfigToggle(mainConfig.hideMultiplier, "Hide Multiplier");
     QuestUI::BeatSaberUI::AddHoverHint(hideMultiplier->get_gameObject(), "Hides the Multiplier.");
-    auto italicText = CreateConfigToggle(config.italicText, "Use Italic Text");
+    auto italicText = CreateConfigToggle(mainConfig.italicText, "Use Italic Text");
     QuestUI::BeatSaberUI::AddHoverHint(italicText->get_gameObject(), "Text elements will be italicized to match the base game.");
-    auto comboOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Combo Offset", 1, 0.1f, config.comboOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+    auto comboOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Combo Offset", 1, 0.1f, mainConfig.comboOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
         classof(UnityEngine::Events::UnityAction_1<float>*), container, +[](UnityEngine::GameObject* container, float val) {
-            LOG_DEBUG("SET config.comboOffset = %.2f", val);
-            config.comboOffset = val;
+            LOG_DEBUG("SET mainConfig.comboOffset = %.2f", val);
+            mainConfig.comboOffset = val;
             QountersMinus::SaveConfig();
         }
     ));
     QuestUI::BeatSaberUI::AddHoverHint(comboOffset->get_gameObject(), "Applies additional offset to qounters situated above or below the Combo.");
-    auto multiplierOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Multiplier Offset", 1, 0.1f, config.multiplierOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+    auto multiplierOffset = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), "Multiplier Offset", 1, 0.1f, mainConfig.multiplierOffset, 0.0f, 10.0f, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
         classof(UnityEngine::Events::UnityAction_1<float>*), container, +[](UnityEngine::GameObject* container, float val) {
-            LOG_DEBUG("SET config.multiplierOffset = %.2f", val);
-            config.multiplierOffset = val;
+            LOG_DEBUG("SET mainConfig.multiplierOffset = %.2f", val);
+            mainConfig.multiplierOffset = val;
             QountersMinus::SaveConfig();
         }
     ));
@@ -168,253 +170,236 @@ UnityEngine::GameObject* CreateMainConfigView(UnityEngine::Transform* parent) {
     return container;
 }
 
-UnityEngine::GameObject* CreateCutQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto cutQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Cut Qounter");
-    cutQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    cutQounterTitle->set_fontSize(6.0f);
 
-    auto cutQounterEnabled = CreateConfigToggle(config.CutQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(cutQounterPosition, config.CutQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto cutQounterDistance = CreateConfigIntIncrement(config.CutQounterConfig.distance, "Distance");
-    auto cutQounterSeparateSaberCounts = CreateConfigToggle(config.CutQounterConfig.separateSaberCounts, "Separate Saber Cuts");
-    QuestUI::BeatSaberUI::AddHoverHint(cutQounterSeparateSaberCounts->get_gameObject(), "Shows the average cut for the left and right sabers separately.");
-    auto cutQounterSeparateCutValues = CreateConfigToggle(config.CutQounterConfig.separateCutValues, "Separate Cut Values");
-    QuestUI::BeatSaberUI::AddHoverHint(cutQounterSeparateCutValues->get_gameObject(), "Show separate averages for angle before cut (0-70), angle after cut (0-30) and distance to center (0-15).");
-    auto cutQounterAveragePrecision = CreateConfigIntIncrement(config.CutQounterConfig.averagePrecision, "Average Cut Precision");
-    QuestUI::BeatSaberUI::AddHoverHint(cutQounterAveragePrecision->get_gameObject(), "How many decimals should be shown on the average cuts?");
-    return container;
-}
+// UnityEngine::GameObject* CreateMissedQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto missedQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Miss Qounter");
+//     missedQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     missedQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateMissedQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto missedQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Miss Qounter");
-    missedQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    missedQounterTitle->set_fontSize(6.0f);
+//     auto missedQounterEnabled = CreateConfigToggle(config.MissedQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(missedQounterPosition, config.MissedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto missedQounterDistance = CreateConfigIntIncrement(config.MissedQounterConfig.distance, "Distance");
+//     auto missedQounterCountBadCuts = CreateConfigToggle(config.MissedQounterConfig.countBadCuts, "Include Bad Cuts");
+//     QuestUI::BeatSaberUI::AddHoverHint(missedQounterCountBadCuts->get_gameObject(), "Bad cuts count towards the Missed counter.");
+//     return container;
+// }
 
-    auto missedQounterEnabled = CreateConfigToggle(config.MissedQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(missedQounterPosition, config.MissedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto missedQounterDistance = CreateConfigIntIncrement(config.MissedQounterConfig.distance, "Distance");
-    auto missedQounterCountBadCuts = CreateConfigToggle(config.MissedQounterConfig.countBadCuts, "Include Bad Cuts");
-    QuestUI::BeatSaberUI::AddHoverHint(missedQounterCountBadCuts->get_gameObject(), "Bad cuts count towards the Missed counter.");
-    return container;
-}
+// UnityEngine::GameObject* CreateNotesQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto notesQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Notes Qounter");
+//     notesQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     notesQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateNotesQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto notesQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Notes Qounter");
-    notesQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    notesQounterTitle->set_fontSize(6.0f);
+//     auto notesQounterEnabled = CreateConfigToggle(config.NotesQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(notesQounterPosition, config.NotesQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto notesQounterDistance = CreateConfigIntIncrement(config.NotesQounterConfig.distance, "Distance");
+//     auto notesQounterShowPercentage = CreateConfigToggle(config.NotesQounterConfig.showPercentage, "Show Percentage");
+//     QuestUI::BeatSaberUI::AddHoverHint(notesQounterShowPercentage->get_gameObject(), "Toggles the percentage of notes hit over total notes.");
+//     auto notesQounterDecimalPrecision = CreateConfigIntIncrement(config.NotesQounterConfig.decimalPrecision, "Percentage Precision");
+//     QuestUI::BeatSaberUI::AddHoverHint(notesQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
+//     return container;
+// }
 
-    auto notesQounterEnabled = CreateConfigToggle(config.NotesQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(notesQounterPosition, config.NotesQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto notesQounterDistance = CreateConfigIntIncrement(config.NotesQounterConfig.distance, "Distance");
-    auto notesQounterShowPercentage = CreateConfigToggle(config.NotesQounterConfig.showPercentage, "Show Percentage");
-    QuestUI::BeatSaberUI::AddHoverHint(notesQounterShowPercentage->get_gameObject(), "Toggles the percentage of notes hit over total notes.");
-    auto notesQounterDecimalPrecision = CreateConfigIntIncrement(config.NotesQounterConfig.decimalPrecision, "Percentage Precision");
-    QuestUI::BeatSaberUI::AddHoverHint(notesQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
-    return container;
-}
+// UnityEngine::GameObject* CreateNotesLeftQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto notesLeftQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Notes Left Qounter");
+//     notesLeftQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     notesLeftQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateNotesLeftQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto notesLeftQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Notes Left Qounter");
-    notesLeftQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    notesLeftQounterTitle->set_fontSize(6.0f);
+//     auto notesLeftQounterEnabled = CreateConfigToggle(config.NotesLeftQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(notesLeftQounterPosition, config.NotesLeftQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto notesLeftQounterDistance = CreateConfigIntIncrement(config.NotesLeftQounterConfig.distance, "Distance");
+//     auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.NotesLeftQounterConfig.labelAboveCount, "Label Above Qounter");
+//     QuestUI::BeatSaberUI::AddHoverHint(notesLeftQounterLabelAboveCount->get_gameObject(), "Put the label above the number, similar to a usual Qounters- qounter.");
+//     return container;
+// }
 
-    auto notesLeftQounterEnabled = CreateConfigToggle(config.NotesLeftQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(notesLeftQounterPosition, config.NotesLeftQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto notesLeftQounterDistance = CreateConfigIntIncrement(config.NotesLeftQounterConfig.distance, "Distance");
-    auto notesLeftQounterLabelAboveCount = CreateConfigToggle(config.NotesLeftQounterConfig.labelAboveCount, "Label Above Qounter");
-    QuestUI::BeatSaberUI::AddHoverHint(notesLeftQounterLabelAboveCount->get_gameObject(), "Put the label above the number, similar to a usual Qounters- qounter.");
-    return container;
-}
+// UnityEngine::GameObject* CreateSpinometerConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto spinometerTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Spinometer");
+//     spinometerTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     spinometerTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateSpinometerConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto spinometerTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Spinometer");
-    spinometerTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    spinometerTitle->set_fontSize(6.0f);
+//     auto spinometerEnabled = CreateConfigToggle(config.SpinometerConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(spinometerPosition, config.SpinometerConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto spinometerDistance = CreateConfigIntIncrement(config.SpinometerConfig.distance, "Distance");
+//     CreateConfigEnumIncrement(spinometerMode, config.SpinometerConfig.mode, "Mode", QountersMinus::SpinometerMode, QountersMinus::SpinometerModeCount, QountersMinus::SpinometerModeNames);
+//     QuestUI::BeatSaberUI::AddHoverHint(spinometerMode->get_gameObject(), "How should self Qounter display data?");
+//     return container;
+// }
 
-    auto spinometerEnabled = CreateConfigToggle(config.SpinometerConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(spinometerPosition, config.SpinometerConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto spinometerDistance = CreateConfigIntIncrement(config.SpinometerConfig.distance, "Distance");
-    CreateConfigEnumIncrement(spinometerMode, config.SpinometerConfig.mode, "Mode", QountersMinus::SpinometerMode, QountersMinus::SpinometerModeCount, QountersMinus::SpinometerModeNames);
-    QuestUI::BeatSaberUI::AddHoverHint(spinometerMode->get_gameObject(), "How should self Qounter display data?");
-    return container;
-}
+// UnityEngine::GameObject* CreateSpeedQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto speedQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Speed Qounter");
+//     speedQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     speedQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateSpeedQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto speedQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Speed Qounter");
-    speedQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    speedQounterTitle->set_fontSize(6.0f);
+//     auto speedQounterEnabled = CreateConfigToggle(config.SpeedQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(speedQounterPosition, config.SpeedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto speedQounterDistance = CreateConfigIntIncrement(config.SpeedQounterConfig.distance, "Distance");
+//     auto speedQounterDecimalPrecision = CreateConfigIntIncrement(config.SpeedQounterConfig.decimalPrecision, "Percentage Precision");
+//     QuestUI::BeatSaberUI::AddHoverHint(speedQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
+//     CreateConfigEnumIncrement(speedQounterMode, config.SpeedQounterConfig.mode, "Mode", QountersMinus::SpeedQounterMode, QountersMinus::SpeedQounterModeCount, QountersMinus::SpeedQounterModeNames);
+//     QuestUI::BeatSaberUI::AddHoverHint(speedQounterMode->get_gameObject(), "How should self Qounter display data?");
+//     return container;
+// }
 
-    auto speedQounterEnabled = CreateConfigToggle(config.SpeedQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(speedQounterPosition, config.SpeedQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto speedQounterDistance = CreateConfigIntIncrement(config.SpeedQounterConfig.distance, "Distance");
-    auto speedQounterDecimalPrecision = CreateConfigIntIncrement(config.SpeedQounterConfig.decimalPrecision, "Percentage Precision");
-    QuestUI::BeatSaberUI::AddHoverHint(speedQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
-    CreateConfigEnumIncrement(speedQounterMode, config.SpeedQounterConfig.mode, "Mode", QountersMinus::SpeedQounterMode, QountersMinus::SpeedQounterModeCount, QountersMinus::SpeedQounterModeNames);
-    QuestUI::BeatSaberUI::AddHoverHint(speedQounterMode->get_gameObject(), "How should self Qounter display data?");
-    return container;
-}
+// UnityEngine::GameObject* CreateScoreQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto scoreQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Score Qounter");
+//     scoreQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     scoreQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateScoreQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto scoreQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Score Qounter");
-    scoreQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    scoreQounterTitle->set_fontSize(6.0f);
+//     auto scoreQounterEnabled = CreateConfigToggle(config.ScoreQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(scoreQounterPosition, config.ScoreQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto scoreQounterDistance = CreateConfigIntIncrement(config.ScoreQounterConfig.distance, "Distance");
+//     CreateConfigEnumIncrement(scoreQounterMode, config.ScoreQounterConfig.mode, "Mode", QountersMinus::ScoreQounterMode, QountersMinus::ScoreQounterModeCount, QountersMinus::ScoreQounterModeNames);
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterMode->get_gameObject(), "How should self Qounter display data?");
+//     auto scoreQounterDecimalPrecision = CreateConfigIntIncrement(config.ScoreQounterConfig.decimalPrecision, "Percentage Precision");
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
+//     auto scoreQounterCustomRankColors = CreateConfigToggle(config.ScoreQounterConfig.customRankColors, "Custom Rank Colors");
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterCustomRankColors->get_gameObject(), "Colors your Score Qounter depending on the rank you have in a song.");
+//     auto scoreQounterSSColor = CreateColorPickerButton(container->get_transform(), "SS Color", config.ScoreQounterConfig.ssColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.ScoreQounterConfig.ssColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.ScoreQounterConfig.ssColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterSSColor, "Change the rank color for the SS rank.");
+//     auto scoreQounterSColor = CreateColorPickerButton(container->get_transform(), "S Color", config.ScoreQounterConfig.sColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.ScoreQounterConfig.sColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.ScoreQounterConfig.sColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterSColor, "Change the rank color for the S rank.");
+//     auto scoreQounterAColor = CreateColorPickerButton(container->get_transform(), "A Color", config.ScoreQounterConfig.aColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.ScoreQounterConfig.aColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.ScoreQounterConfig.aColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterAColor, "Change the rank color for the A rank.");
+//     auto scoreQounterBColor = CreateColorPickerButton(container->get_transform(), "B Color", config.ScoreQounterConfig.bColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.ScoreQounterConfig.bColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.ScoreQounterConfig.bColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterBColor, "Change the rank color for the B rank.");
+//     auto scoreQounterCColor = CreateColorPickerButton(container->get_transform(), "C Color", config.ScoreQounterConfig.cColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.ScoreQounterConfig.cColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.ScoreQounterConfig.cColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterCColor, "Change the rank color for the C rank.");
+//     auto scoreQounterDColor = CreateColorPickerButton(container->get_transform(), "D Color", config.ScoreQounterConfig.dColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.ScoreQounterConfig.dColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.ScoreQounterConfig.dColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterDColor, "Change the rank color for the D rank.");
+//     auto scoreQounterEColor = CreateColorPickerButton(container->get_transform(), "E Color", config.ScoreQounterConfig.eColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.ScoreQounterConfig.eColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.ScoreQounterConfig.eColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     QuestUI::BeatSaberUI::AddHoverHint(scoreQounterEColor, "Change the rank color for the E rank.");
+//     return container;
+// }
 
-    auto scoreQounterEnabled = CreateConfigToggle(config.ScoreQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(scoreQounterPosition, config.ScoreQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto scoreQounterDistance = CreateConfigIntIncrement(config.ScoreQounterConfig.distance, "Distance");
-    CreateConfigEnumIncrement(scoreQounterMode, config.ScoreQounterConfig.mode, "Mode", QountersMinus::ScoreQounterMode, QountersMinus::ScoreQounterModeCount, QountersMinus::ScoreQounterModeNames);
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterMode->get_gameObject(), "How should self Qounter display data?");
-    auto scoreQounterDecimalPrecision = CreateConfigIntIncrement(config.ScoreQounterConfig.decimalPrecision, "Percentage Precision");
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
-    auto scoreQounterCustomRankColors = CreateConfigToggle(config.ScoreQounterConfig.customRankColors, "Custom Rank Colors");
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterCustomRankColors->get_gameObject(), "Colors your Score Qounter depending on the rank you have in a song.");
-    auto scoreQounterSSColor = CreateColorPickerButton(container->get_transform(), "SS Color", config.ScoreQounterConfig.ssColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.ScoreQounterConfig.ssColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.ScoreQounterConfig.ssColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterSSColor, "Change the rank color for the SS rank.");
-    auto scoreQounterSColor = CreateColorPickerButton(container->get_transform(), "S Color", config.ScoreQounterConfig.sColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.ScoreQounterConfig.sColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.ScoreQounterConfig.sColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterSColor, "Change the rank color for the S rank.");
-    auto scoreQounterAColor = CreateColorPickerButton(container->get_transform(), "A Color", config.ScoreQounterConfig.aColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.ScoreQounterConfig.aColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.ScoreQounterConfig.aColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterAColor, "Change the rank color for the A rank.");
-    auto scoreQounterBColor = CreateColorPickerButton(container->get_transform(), "B Color", config.ScoreQounterConfig.bColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.ScoreQounterConfig.bColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.ScoreQounterConfig.bColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterBColor, "Change the rank color for the B rank.");
-    auto scoreQounterCColor = CreateColorPickerButton(container->get_transform(), "C Color", config.ScoreQounterConfig.cColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.ScoreQounterConfig.cColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.ScoreQounterConfig.cColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterCColor, "Change the rank color for the C rank.");
-    auto scoreQounterDColor = CreateColorPickerButton(container->get_transform(), "D Color", config.ScoreQounterConfig.dColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.ScoreQounterConfig.dColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.ScoreQounterConfig.dColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterDColor, "Change the rank color for the D rank.");
-    auto scoreQounterEColor = CreateColorPickerButton(container->get_transform(), "E Color", config.ScoreQounterConfig.eColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.ScoreQounterConfig.eColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.ScoreQounterConfig.eColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    QuestUI::BeatSaberUI::AddHoverHint(scoreQounterEColor, "Change the rank color for the E rank.");
-    return container;
-}
+// UnityEngine::GameObject* CreatePBQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto pbQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "PB Qounter");
+//     pbQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     pbQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreatePBQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto pbQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "PB Qounter");
-    pbQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    pbQounterTitle->set_fontSize(6.0f);
+//     auto pbQounterEnabled = CreateConfigToggle(config.PBQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(pbQounterPosition, config.PBQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto pbQounterDistance = CreateConfigIntIncrement(config.PBQounterConfig.distance, "Distance");
+//     CreateConfigEnumIncrement(pbQounterMode, config.PBQounterConfig.mode, "Mode", QountersMinus::PBQounterMode, QountersMinus::PBQounterModeCount, QountersMinus::PBQounterModeNames);
+//     QuestUI::BeatSaberUI::AddHoverHint(pbQounterMode->get_gameObject(), "Change color based on absolute (song maximum) or relative (current maximum) score.");
+//     auto pbQounterBetterColor = CreateColorPickerButton(container->get_transform(), "Better Color", config.PBQounterConfig.betterColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.PBQounterConfig.betterColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.PBQounterConfig.betterColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     auto pbQounterDefaultColor = CreateColorPickerButton(container->get_transform(), "Default Color", config.PBQounterConfig.defaultColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
+//         classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+//             LOG_DEBUG("SET config.PBQounterConfig.defaultColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
+//             config.PBQounterConfig.defaultColor = val;
+//             QountersMinus::SaveConfig();
+//         })
+//     );
+//     auto pbQounterDecimalPrecision = CreateConfigIntIncrement(config.PBQounterConfig.decimalPrecision, "Percentage Precision");
+//     QuestUI::BeatSaberUI::AddHoverHint(pbQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
+//     auto pbQounterTextSize = CreateConfigIntIncrement(config.PBQounterConfig.textSize, "Text Size");
+//     QuestUI::BeatSaberUI::AddHoverHint(pbQounterTextSize->get_gameObject(), "How large should the text be?");
+//     auto pbQounterUnderscore = CreateConfigToggle(config.PBQounterConfig.underScore, "Below Score Qounter");
+//     QuestUI::BeatSaberUI::AddHoverHint(pbQounterUnderscore->get_gameObject(), "Will the Personal Best counter instead be positioned below the Score Qounter?");
+//     auto pbQounterHideFirstScore = CreateConfigToggle(config.PBQounterConfig.hideFirstScore, "Hide First Score");
+//     QuestUI::BeatSaberUI::AddHoverHint(pbQounterHideFirstScore->get_gameObject(), "Hides Personal Best if you play a map that doesnt yet have a personal best set.");
+//     return container;
+// }
 
-    auto pbQounterEnabled = CreateConfigToggle(config.PBQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(pbQounterPosition, config.PBQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto pbQounterDistance = CreateConfigIntIncrement(config.PBQounterConfig.distance, "Distance");
-    CreateConfigEnumIncrement(pbQounterMode, config.PBQounterConfig.mode, "Mode", QountersMinus::PBQounterMode, QountersMinus::PBQounterModeCount, QountersMinus::PBQounterModeNames);
-    QuestUI::BeatSaberUI::AddHoverHint(pbQounterMode->get_gameObject(), "Change color based on absolute (song maximum) or relative (current maximum) score.");
-    auto pbQounterBetterColor = CreateColorPickerButton(container->get_transform(), "Better Color", config.PBQounterConfig.betterColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.PBQounterConfig.betterColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.PBQounterConfig.betterColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    auto pbQounterDefaultColor = CreateColorPickerButton(container->get_transform(), "Default Color", config.PBQounterConfig.defaultColor, il2cpp_utils::MakeDelegate<ColorChangeDelegate>(
-        classof(ColorChangeDelegate), container, +[](UnityEngine::GameObject* container, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-            LOG_DEBUG("SET config.PBQounterConfig.defaultColor = %.2f,%.2f,%2.f", val.r, val.g, val.b);
-            config.PBQounterConfig.defaultColor = val;
-            QountersMinus::SaveConfig();
-        })
-    );
-    auto pbQounterDecimalPrecision = CreateConfigIntIncrement(config.PBQounterConfig.decimalPrecision, "Percentage Precision");
-    QuestUI::BeatSaberUI::AddHoverHint(pbQounterDecimalPrecision->get_gameObject(), "How precise should the percentage be?");
-    auto pbQounterTextSize = CreateConfigIntIncrement(config.PBQounterConfig.textSize, "Text Size");
-    QuestUI::BeatSaberUI::AddHoverHint(pbQounterTextSize->get_gameObject(), "How large should the text be?");
-    auto pbQounterUnderscore = CreateConfigToggle(config.PBQounterConfig.underScore, "Below Score Qounter");
-    QuestUI::BeatSaberUI::AddHoverHint(pbQounterUnderscore->get_gameObject(), "Will the Personal Best counter instead be positioned below the Score Qounter?");
-    auto pbQounterHideFirstScore = CreateConfigToggle(config.PBQounterConfig.hideFirstScore, "Hide First Score");
-    QuestUI::BeatSaberUI::AddHoverHint(pbQounterHideFirstScore->get_gameObject(), "Hides Personal Best if you play a map that doesnt yet have a personal best set.");
-    return container;
-}
+// UnityEngine::GameObject* CreateFailQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto failQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Fail Qounter");
+//     failQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     failQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateFailQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto failQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Fail Qounter");
-    failQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    failQounterTitle->set_fontSize(6.0f);
+//     auto failQounterEnabled = CreateConfigToggle(config.FailQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(failQounterPosition, config.FailQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto failQounterDistance = CreateConfigIntIncrement(config.FailQounterConfig.distance, "Distance");
+//     auto failQounterShowRestartsInstead = CreateConfigToggle(config.FailQounterConfig.showRestartsInstead, "Track Restarts");
+//     QuestUI::BeatSaberUI::AddHoverHint(failQounterShowRestartsInstead->get_gameObject(), "Instead of showing global fail count, show the amount of times you have restarted the same song.");
+//     return container;
+// }
 
-    auto failQounterEnabled = CreateConfigToggle(config.FailQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(failQounterPosition, config.FailQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto failQounterDistance = CreateConfigIntIncrement(config.FailQounterConfig.distance, "Distance");
-    auto failQounterShowRestartsInstead = CreateConfigToggle(config.FailQounterConfig.showRestartsInstead, "Track Restarts");
-    QuestUI::BeatSaberUI::AddHoverHint(failQounterShowRestartsInstead->get_gameObject(), "Instead of showing global fail count, show the amount of times you have restarted the same song.");
-    return container;
-}
+// UnityEngine::GameObject* CreateProgressQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto progressQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Progress Qounter");
+//     progressQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     progressQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreateProgressQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto progressQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "Progress Qounter");
-    progressQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    progressQounterTitle->set_fontSize(6.0f);
+//     auto progressQounterEnabled = CreateConfigToggle(config.ProgressQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(progressQounterPosition, config.ProgressQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto progressQounterDistance = CreateConfigIntIncrement(config.ProgressQounterConfig.distance, "Distance");
+//     auto progressQounterProgressTimeLeft = CreateConfigToggle(config.ProgressQounterConfig.progressTimeLeft, "Show Time Left");
+//     QuestUI::BeatSaberUI::AddHoverHint(progressQounterProgressTimeLeft->get_gameObject(), "Starts the counter from the end of the song and decreases while the song is played.");
+//     CreateConfigEnumIncrement(progressQounterMode, config.ProgressQounterConfig.mode, "Mode", QountersMinus::ProgressQounterMode, QountersMinus::ProgressQounterModeCount, QountersMinus::ProgressQounterModeNames);
+//     QuestUI::BeatSaberUI::AddHoverHint(progressQounterMode->get_gameObject(), "How should self Qounter display data?");
+//     auto progressQounterIncludeRing = CreateConfigToggle(config.ProgressQounterConfig.includeRing, "Include Progress Ring");
+//     QuestUI::BeatSaberUI::AddHoverHint(progressQounterIncludeRing->get_gameObject(), "Whether or not the Progress Ring will also be affected by the \"Show Time Left\" setting. Only active in \"Original\" mode.");
+//     return container;
+// }
 
-    auto progressQounterEnabled = CreateConfigToggle(config.ProgressQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(progressQounterPosition, config.ProgressQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto progressQounterDistance = CreateConfigIntIncrement(config.ProgressQounterConfig.distance, "Distance");
-    auto progressQounterProgressTimeLeft = CreateConfigToggle(config.ProgressQounterConfig.progressTimeLeft, "Show Time Left");
-    QuestUI::BeatSaberUI::AddHoverHint(progressQounterProgressTimeLeft->get_gameObject(), "Starts the counter from the end of the song and decreases while the song is played.");
-    CreateConfigEnumIncrement(progressQounterMode, config.ProgressQounterConfig.mode, "Mode", QountersMinus::ProgressQounterMode, QountersMinus::ProgressQounterModeCount, QountersMinus::ProgressQounterModeNames);
-    QuestUI::BeatSaberUI::AddHoverHint(progressQounterMode->get_gameObject(), "How should self Qounter display data?");
-    auto progressQounterIncludeRing = CreateConfigToggle(config.ProgressQounterConfig.includeRing, "Include Progress Ring");
-    QuestUI::BeatSaberUI::AddHoverHint(progressQounterIncludeRing->get_gameObject(), "Whether or not the Progress Ring will also be affected by the \"Show Time Left\" setting. Only active in \"Original\" mode.");
-    return container;
-}
+// UnityEngine::GameObject* CreatePPQounterConfigView(UnityEngine::Transform* parent) {
+//     auto container = CreateContentView(parent);
+//     auto ppQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "PP Qounter");
+//     ppQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+//     ppQounterTitle->set_fontSize(6.0f);
 
-UnityEngine::GameObject* CreatePPQounterConfigView(UnityEngine::Transform* parent) {
-    auto container = CreateContentView(parent);
-    auto ppQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), "PP Qounter");
-    ppQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    ppQounterTitle->set_fontSize(6.0f);
-
-    auto ppQounterEnabled = CreateConfigToggle(config.PPQounterConfig.enabled, "Enabled");
-    CreateConfigEnumIncrement(ppQounterPosition, config.PPQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
-    auto ppQounterDistance = CreateConfigIntIncrement(config.PPQounterConfig.distance, "Distance");
-    auto ppQounterHideWhenUnranked = CreateConfigToggle(config.PPQounterConfig.hideWhenUnranked, "Hide When Unranked");
-    QuestUI::BeatSaberUI::AddHoverHint(ppQounterHideWhenUnranked->get_gameObject(), "Whether the Qounter should be shown at all in unranked songs.");
-    return container;
-}
+//     auto ppQounterEnabled = CreateConfigToggle(config.PPQounterConfig.enabled, "Enabled");
+//     CreateConfigEnumIncrement(ppQounterPosition, config.PPQounterConfig.position, "Position", QountersMinus::QounterPosition, QountersMinus::QounterPositionCount, QountersMinus::QounterPositionNames);
+//     auto ppQounterDistance = CreateConfigIntIncrement(config.PPQounterConfig.distance, "Distance");
+//     auto ppQounterHideWhenUnranked = CreateConfigToggle(config.PPQounterConfig.hideWhenUnranked, "Hide When Unranked");
+//     QuestUI::BeatSaberUI::AddHoverHint(ppQounterHideWhenUnranked->get_gameObject(), "Whether the Qounter should be shown at all in unranked songs.");
+//     return container;
+// }
 
 void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
     if (!firstActivation || !addedToHierarchy) return;
@@ -429,17 +414,32 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     containers = il2cpp_utils::New<System::Collections::Generic::List_1<UnityEngine::GameObject*>*>().value();
 
     CreateSubmenu("Main", 0, CreateMainConfigView);
-    CreateSubmenu("Cut", 1, CreateCutQounterConfigView);
-    CreateSubmenu("Fail", 2, CreateFailQounterConfigView);
-    CreateSubmenu("Missed", 3, CreateMissedQounterConfigView);
-    CreateSubmenu("Notes Left", 4, CreateNotesLeftQounterConfigView);
-    CreateSubmenu("Notes", 5, CreateNotesQounterConfigView);
-    CreateSubmenu("Personal Best", 6, CreatePBQounterConfigView);
-    CreateSubmenu("Progress", 7, CreateProgressQounterConfigView);
-    CreateSubmenu("Score", 8, CreateScoreQounterConfigView);
-    CreateSubmenu("Speed", 9, CreateSpeedQounterConfigView);
-    CreateSubmenu("Spinometer", 10, CreateSpinometerConfigView);
-    CreateSubmenu("PP", 11, CreatePPQounterConfigView);
+    for (auto def : QountersMinus::QounterRegistry::registry) {
+        auto container = CreateQounterConfigView(get_transform(), def.second.displayName, def.first.first, def.first.second, def.second.configMetadata);
+        containers->Add(container);
+        container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(false);
+        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.second.displayName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
+            classof(UnityEngine::Events::UnityAction*), container, +[](UnityEngine::GameObject* container) {
+                // for (int i = 0; i < self->containers->get_Count(); i++)
+                //     self->containers->get_Item(i)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(false);
+                // self->containers->get_Item(index)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
+                container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
+            }
+        ));
+    }
+
+
+    // CreateSubmenu("Cut", 1, CreateCutQounterConfigView);
+    // CreateSubmenu("Fail", 2, CreateFailQounterConfigView);
+    // CreateSubmenu("Missed", 3, CreateMissedQounterConfigView);
+    // CreateSubmenu("Notes Left", 4, CreateNotesLeftQounterConfigView);
+    // CreateSubmenu("Notes", 5, CreateNotesQounterConfigView);
+    // CreateSubmenu("Personal Best", 6, CreatePBQounterConfigView);
+    // CreateSubmenu("Progress", 7, CreateProgressQounterConfigView);
+    // CreateSubmenu("Score", 8, CreateScoreQounterConfigView);
+    // CreateSubmenu("Speed", 9, CreateSpeedQounterConfigView);
+    // CreateSubmenu("Spinometer", 10, CreateSpinometerConfigView);
+    // CreateSubmenu("PP", 11, CreatePPQounterConfigView);
 
     containers->get_Item(0)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
 
@@ -448,4 +448,64 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     ));
     testButton->GetComponent<UnityEngine::RectTransform*>()->set_anchoredPosition(UnityEngine::Vector2(-52.0f, -27.5f));
     testButton->GetComponent<UnityEngine::RectTransform*>()->set_sizeDelta(UnityEngine::Vector2(27.0f, 10.0f));
+}
+
+UnityEngine::GameObject* CreateQounterConfigView(UnityEngine::Transform* parent, std::string title, std::string namespaze, std::string klass, std::vector<QountersMinus::QounterRegistry::ConfigMetadata> configMetadata) {
+    auto container = CreateContentView(parent);
+    auto cutQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), title);
+    cutQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
+    cutQounterTitle->set_fontSize(6.0f);
+
+    for (auto config : configMetadata) {
+        UnityEngine::GameObject* gameObject;
+        auto label = config.displayName == "" ? config.field : config.displayName;
+        auto fieldInfo = il2cpp_utils::FindField(namespaze, klass, config.field);
+        switch (fieldInfo->type->type) {
+            case Il2CppTypeEnum::IL2CPP_TYPE_BOOLEAN: {
+                auto toggle = QuestUI::BeatSaberUI::CreateToggle(container->get_transform(), label, *(bool*)config.ptr, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
+                    classof(UnityEngine::Events::UnityAction_1<bool>*), config.ptr, +[](void* ptr, bool val) {
+                        *(bool*)ptr = val;
+                        QountersMinus::SaveConfig();
+                    }
+                ));
+                gameObject = toggle->get_gameObject();
+                break;
+            }
+            case Il2CppTypeEnum::IL2CPP_TYPE_I4: {
+                if (config.enumNumElements == 0) {
+                    auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), label, 0, static_cast<float>(config.intStep), static_cast<float>(*(int*)config.ptr), true, true, static_cast<float>(config.intMin), static_cast<float>(config.intMax), UnityEngine::Vector2(0.0f, 0.0f), il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+                        classof(UnityEngine::Events::UnityAction_1<float>*), config.ptr, +[](void* ptr, float val) {
+                            *(int*)ptr = static_cast<int>(val);
+                            QountersMinus::SaveConfig();
+                        }
+                    ));
+                    gameObject = increment->get_gameObject();
+                } else {
+                    auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), label, 0, 1.0f, static_cast<float>(*(int*)config.ptr), UnityEngine::Vector2(0.0f, 0.0f), nullptr);
+                    increment->OnValueChange = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+                        classof(UnityEngine::Events::UnityAction_1<float>*), &config, +[](void* configPtr, float rawVal) {
+                            auto config = static_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(configPtr);
+                            auto intVal = static_cast<int>(rawVal) % config->enumNumElements;
+                            if (intVal < 0) intVal = config->enumNumElements - (intVal * -1);
+                            *(int*)config->ptr = intVal;
+                            LOG_DEBUG("set enum to %d", intVal);
+                            QountersMinus::SaveConfig();
+                            // self->Text->SetText(il2cpp_utils::createcsstr(enumMap[configVar]));
+                        }
+                    );
+                    increment->Text->SetText(il2cpp_utils::createcsstr(config.enumDisplayNames[*(int*)config.ptr]));
+                    gameObject = increment->get_gameObject();
+                }
+                break;
+            }
+            default:
+                //FormatColorToHex
+                LOG_DEBUG("Unknown config type %d", fieldInfo->type->type);
+        }
+        if (config.helpText != "" && gameObject != nullptr) {
+            QuestUI::BeatSaberUI::AddHoverHint(gameObject, config.helpText);
+        }
+    }
+
+    return container;
 }

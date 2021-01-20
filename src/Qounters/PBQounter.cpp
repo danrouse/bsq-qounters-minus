@@ -1,13 +1,22 @@
 #include "Qounters/PBQounter.hpp"
 
-extern QountersMinus::ModConfig config;
-
 DEFINE_CLASS(QountersMinus::Qounters::PBQounter);
 
+bool QountersMinus::Qounters::PBQounter::Enabled = true;
+int QountersMinus::Qounters::PBQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
+int QountersMinus::Qounters::PBQounter::Distance = 1;
+int QountersMinus::Qounters::PBQounter::Mode = static_cast<int>(QountersMinus::PBQounterMode::Absolute);
+UnityEngine::Color QountersMinus::Qounters::PBQounter::BetterColor = UnityEngine::Color(1.0f, 0.0f, 0.0f, 1.0f);
+UnityEngine::Color QountersMinus::Qounters::PBQounter::DefaultColor = UnityEngine::Color(1.0f, 0.647f, 0.0f, 1.0f);
+int QountersMinus::Qounters::PBQounter::DecimalPrecision = 2;
+int QountersMinus::Qounters::PBQounter::TextSize = 2;
+bool QountersMinus::Qounters::PBQounter::UnderScore = true;
+bool QountersMinus::Qounters::PBQounter::HideFirstScore = false;
+
 QountersMinus::Qounter* QountersMinus::Qounters::PBQounter::Initialize() {
-    if (!config.PBQounterConfig.enabled) return nullptr;
+    if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PBQounter*>(
-        config.PBQounterConfig.position, config.PBQounterConfig.distance
+        static_cast<QountersMinus::QounterPosition>(Position), Distance
     );
 }
 
@@ -24,10 +33,10 @@ void QountersMinus::Qounters::PBQounter::Start() {
 
     pbText = QuestUI::BeatSaberUI::CreateText(gameObject->get_transform(), "", false);
     pbText->set_alignment(TMPro::TextAlignmentOptions::Top);
-    pbText->set_fontSize(config.PBQounterConfig.textSize * 10.0f);
+    pbText->set_fontSize(TextSize * 10.0f);
     pbText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
 
-    if (config.PBQounterConfig.underScore) {
+    if (UnderScore) {
         auto scoreUIController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::ScoreUIController*>();
         auto scorePosition = scoreUIController->scoreText->get_transform()->get_position();
         pbText->get_transform()->set_position(UnityEngine::Vector3(scorePosition.x, scorePosition.y - 1.08f, scorePosition.z));
@@ -38,10 +47,10 @@ void QountersMinus::Qounters::PBQounter::Start() {
 }
 
 void QountersMinus::Qounters::PBQounter::SetPersonalBest(float ratioOfMaxScore) {
-    if (config.PBQounterConfig.hideFirstScore && highScore == 0) {
+    if (HideFirstScore && highScore == 0) {
         pbText->set_text(il2cpp_utils::createcsstr("PB: --"));
     } else {
-        pbText->set_text(il2cpp_utils::createcsstr("PB: " + FormatNumber(ratioOfMaxScore * 100.0f, config.PBQounterConfig.decimalPrecision) + "%"));
+        pbText->set_text(il2cpp_utils::createcsstr("PB: " + FormatNumber(ratioOfMaxScore * 100.0f, DecimalPrecision) + "%"));
     }
 }
 
@@ -52,21 +61,21 @@ void QountersMinus::Qounters::PBQounter::OnScoreUpdated(int modifiedScore) {
         }
     }
 
-    if (config.PBQounterConfig.mode == PBQounterMode::Relative) {
+    if (Mode == static_cast<int>(PBQounterMode::Relative)) {
         if (refs->relativeScoreAndImmediateRankCounter->relativeScore > ((float)highScore / maxPossibleScore)) {
-            pbText->set_color(config.PBQounterConfig.betterColor);
+            pbText->set_color(BetterColor);
         } else {
-            pbText->set_color(config.PBQounterConfig.defaultColor);
+            pbText->set_color(DefaultColor);
         }
     } else {
         if (modifiedScore > highScore) {
-            if (!(config.PBQounterConfig.hideFirstScore && highScore == 0)) {
-                pbText->set_color(config.PBQounterConfig.betterColor);
+            if (!(HideFirstScore && highScore == 0)) {
+                pbText->set_color(BetterColor);
             }
         } else {
             pbText->set_color(UnityEngine::Color::Lerp(
                 UnityEngine::Color::get_white(),
-                config.PBQounterConfig.defaultColor,
+                DefaultColor,
                 (float)modifiedScore / (highScore == 0 ? 1 : highScore)
             ));
         }

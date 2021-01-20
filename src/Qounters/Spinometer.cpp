@@ -1,13 +1,16 @@
 #include "Qounters/Spinometer.hpp"
 
-extern QountersMinus::ModConfig config;
-
 DEFINE_CLASS(QountersMinus::Qounters::Spinometer);
 
+bool QountersMinus::Qounters::Spinometer::Enabled = true;
+int QountersMinus::Qounters::Spinometer::Position = static_cast<int>(QountersMinus::QounterPosition::AboveMultiplier);
+int QountersMinus::Qounters::Spinometer::Distance = 0;
+int QountersMinus::Qounters::Spinometer::Mode = static_cast<int>(QountersMinus::SpinometerMode::SplitAverage);
+
 QountersMinus::Qounter* QountersMinus::Qounters::Spinometer::Initialize() {
-    if (!config.SpinometerConfig.enabled) return nullptr;
+    if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::Spinometer*>(
-        config.SpinometerConfig.position, config.SpinometerConfig.distance
+        static_cast<QountersMinus::QounterPosition>(Position), Distance
     );
 }
 
@@ -66,11 +69,11 @@ void QountersMinus::Qounters::Spinometer::Update() {
     if (rightSpeed > highestSpin) highestSpin = rightSpeed;
 
     std::string nextText;
-    if (config.SpinometerConfig.mode == QountersMinus::SpinometerMode::Average) {
+    if (Mode == static_cast<int>(QountersMinus::SpinometerMode::Average)) {
         nextText = "<color=" + SpeedToColor(averageSpeed) + ">" + std::to_string((int)roundf(averageSpeed)) + "</color>";
-    } else if (config.SpinometerConfig.mode == QountersMinus::SpinometerMode::Highest) {
+    } else if (Mode == static_cast<int>(QountersMinus::SpinometerMode::Highest)) {
         nextText = "<color=" + SpeedToColor(highestSpin) + ">" + std::to_string((int)roundf(highestSpin)) + "</color>";
-    } else if (config.SpinometerConfig.mode == QountersMinus::SpinometerMode::SplitAverage) {
+    } else if (Mode == static_cast<int>(QountersMinus::SpinometerMode::SplitAverage)) {
         nextText = "<color=" + SpeedToColor(leftSpeed) + ">" + std::to_string((int)roundf(leftSpeed)) + "</color> | " +
                    "<color=" + SpeedToColor(rightSpeed) + ">" + std::to_string((int)roundf(rightSpeed)) + "</color>";
     }

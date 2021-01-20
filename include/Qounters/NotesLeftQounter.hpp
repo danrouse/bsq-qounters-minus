@@ -3,9 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "util/note_count.hpp"
-#include "config.hpp"
 #include "Qounter.hpp"
-#include "config/NotesLeftQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -13,6 +11,11 @@
 #include "GlobalNamespace/ColorType.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesLeftQounter, QountersMinus::Qounter,
+    DECLARE_STATIC_FIELD(bool, Enabled);
+    DECLARE_STATIC_FIELD(int, Position);
+    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(bool, LabelAboveCount);
+
     DECLARE_INSTANCE_FIELD_DEFAULT(int, notesLeft, 0);
 
     DECLARE_METHOD(static Qounter*, Initialize);
@@ -22,6 +25,11 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesLeftQounter, QountersMinus::
     DECLARE_METHOD(void, UpdateValue);
 
     REGISTER_FUNCTION(NotesLeftQounter,
+        REGISTER_FIELD(Enabled);
+        REGISTER_FIELD(Position);
+        REGISTER_FIELD(Distance);
+        REGISTER_FIELD(LabelAboveCount);
+
         REGISTER_FIELD(notesLeft);
 
         REGISTER_METHOD(Initialize);

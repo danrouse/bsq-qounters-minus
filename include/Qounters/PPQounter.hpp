@@ -4,9 +4,7 @@
 #include "util/song_id.hpp"
 #include "util/pp.hpp"
 #include "util/format.hpp"
-#include "config.hpp"
 #include "Qounter.hpp"
-#include "config/PPQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -14,8 +12,12 @@
 #include "GlobalNamespace/GameplayModifiersModelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
 
-
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter,
+    DECLARE_STATIC_FIELD(bool, Enabled);
+    DECLARE_STATIC_FIELD(int, Position);
+    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(bool, HideWhenUnranked);
+
     DECLARE_INSTANCE_FIELD(bool, isRanked);
     DECLARE_INSTANCE_FIELD(float, maxPP);
     DECLARE_INSTANCE_FIELD(float, multiplier);
@@ -25,6 +27,11 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter
     DECLARE_METHOD(void, OnScoreUpdated, int modifiedScore);
 
     REGISTER_FUNCTION(PPQounter,
+        REGISTER_FIELD(Enabled);
+        REGISTER_FIELD(Position);
+        REGISTER_FIELD(Distance);
+        REGISTER_FIELD(HideWhenUnranked);
+
         REGISTER_FIELD(isRanked);
         REGISTER_FIELD(maxPP);
         REGISTER_FIELD(multiplier);

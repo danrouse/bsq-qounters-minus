@@ -1,13 +1,18 @@
 #include "Qounters/ProgressQounter.hpp"
 
-extern QountersMinus::ModConfig config;
-
 DEFINE_CLASS(QountersMinus::Qounters::ProgressQounter);
 
+bool QountersMinus::Qounters::ProgressQounter::Enabled = true;
+int QountersMinus::Qounters::ProgressQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowEnergy);
+int QountersMinus::Qounters::ProgressQounter::Distance = 0;
+int QountersMinus::Qounters::ProgressQounter::Mode = static_cast<int>(QountersMinus::ProgressQounterMode::Original);
+bool QountersMinus::Qounters::ProgressQounter::ProgressTimeLeft = false;
+bool QountersMinus::Qounters::ProgressQounter::IncludeRing = false;
+
 QountersMinus::Qounter* QountersMinus::Qounters::ProgressQounter::Initialize() {
-    if (!config.ProgressQounterConfig.enabled) return nullptr;
+    if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ProgressQounter*>(
-        config.ProgressQounterConfig.position, config.ProgressQounterConfig.distance
+        static_cast<QountersMinus::QounterPosition>(Position), Distance
     );
 }
 
@@ -51,7 +56,7 @@ void ConfigureBaseGameObject(UnityEngine::Transform* parent) {
 }
 
 void QountersMinus::Qounters::ProgressQounter::Start() {
-    if (config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::BaseGame) return ConfigureBaseGameObject(get_transform());
+    if (Mode == static_cast<int>(QountersMinus::ProgressQounterMode::BaseGame)) return ConfigureBaseGameObject(get_transform());
 
     CreateBasicText("0");
 
@@ -64,7 +69,7 @@ void QountersMinus::Qounters::ProgressQounter::Start() {
     refs->coreGameHUDController->songProgressPanelGO->get_transform()->set_localScale(UnityEngine::Vector3(0.0f, 0.0f, 0.0f));
     // UnityEngine::Object::Destroy(coreGameHUDController->songProgressPanelGO);
 
-    if (config.ProgressQounterConfig.mode != QountersMinus::ProgressQounterMode::Percent) {
+    if (Mode != static_cast<int>(QountersMinus::ProgressQounterMode::Percent)) {
         auto backgroundImage = CreateRing(gameObject->get_transform());
         auto anchoredPosition = basicText->get_rectTransform()->get_anchoredPosition();
         backgroundImage->get_rectTransform()->set_anchoredPosition(anchoredPosition);
@@ -80,14 +85,15 @@ void QountersMinus::Qounters::ProgressQounter::Start() {
 }
 
 void QountersMinus::Qounters::ProgressQounter::Update() {
-    if (config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::BaseGame) return;
+    if (Mode == static_cast<int>(QountersMinus::ProgressQounterMode::BaseGame)) return;
     auto time = audioTimeSyncController->songTime;
-    if (config.ProgressQounterConfig.progressTimeLeft) time = length - time;
+    if (ProgressTimeLeft) time = length - time;
     if (time < 0.0f) return;
     if (
-        config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::Original ||
-        config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::TimeInBeats) {
-        if (config.ProgressQounterConfig.mode == QountersMinus::ProgressQounterMode::TimeInBeats) {
+        Mode == static_cast<int>(QountersMinus::ProgressQounterMode::Original) ||
+        Mode == static_cast<int>(QountersMinus::ProgressQounterMode::TimeInBeats)
+    ) {
+        if (Mode == static_cast<int>(QountersMinus::ProgressQounterMode::TimeInBeats)) {
             auto beats = std::roundf(songBPM / 60 * time / 0.25f) * 0.25f;
             basicText->set_text(il2cpp_utils::createcsstr(FormatNumber(beats, 2)));
         } else {
@@ -98,7 +104,7 @@ void QountersMinus::Qounters::ProgressQounter::Update() {
                 (seconds < 10 ? "0" : "") + std::to_string(seconds)
             ));
         }
-        progressRing->set_fillAmount((config.ProgressQounterConfig.includeRing ? time : audioTimeSyncController->songTime) / length);
+        progressRing->set_fillAmount((IncludeRing ? time : audioTimeSyncController->songTime) / length);
         progressRing->SetVerticesDirty();
     } else {
         basicText->set_text(il2cpp_utils::createcsstr(FormatNumber(100.0f * time / length, 2) + "%"));

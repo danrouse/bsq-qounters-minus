@@ -2,6 +2,7 @@
 
 #include "util/logger.hpp"
 #include "config.hpp"
+#include "QounterRegistry.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 #include "GlobalNamespace/SimpleLevelStarter.hpp"
@@ -20,3 +21,5 @@ DECLARE_CLASS_CODEGEN(QountersMinus, QounterSettingsViewController, HMUI::ViewCo
         REGISTER_METHOD(DidActivate);
     )
 )
+
+UnityEngine::GameObject* CreateQounterConfigView(UnityEngine::Transform* parent, std::string title, std::string namespaze, std::string klass, std::vector<QountersMinus::QounterRegistry::ConfigMetadata> configMetadata);

@@ -1,6 +1,7 @@
 #include "Qounter.hpp"
 
-extern QountersMinus::ModConfig config;
+extern QountersMinus::MainConfig mainConfig;
+
 const float distanceUnit = 40.0f;
 const float distanceUnitOffsetMult = 0.15f;
 
@@ -56,9 +57,9 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
         containerGO->get_transform()->SetParent(parentGO->get_transform(), false);
         auto anchoredPosition = QounterPositionData[position].anchoredPosition;
         if (position == QountersMinus::QounterPosition::BelowCombo || position == QountersMinus::QounterPosition::AboveCombo) {
-            anchoredPosition.y *= 1.0f + (config.comboOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
+            anchoredPosition.y *= 1.0f + (mainConfig.comboOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else if (position == QountersMinus::QounterPosition::BelowMultiplier || position == QountersMinus::QounterPosition::AboveMultiplier) {
-            anchoredPosition.y *= 1.0f + (config.multiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
+            anchoredPosition.y *= 1.0f + (mainConfig.multiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else {
             rect->set_localPosition(UnityEngine::Vector3(0.0f, 0.0f, 5.0f));
             rect->set_localScale(UnityEngine::Vector3(0.8f, 0.8f, 0.8f));

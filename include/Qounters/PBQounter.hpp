@@ -3,20 +3,46 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "util/note_count.hpp"
-#include "config.hpp"
 #include "Qounter.hpp"
-#include "config/PBQounterConfig.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 
+#include "UnityEngine/Color.hpp"
 #include "GlobalNamespace/ScoreModel.hpp"
 #include "GlobalNamespace/ScoreUIController.hpp"
 #include "GlobalNamespace/GameplayModifiersModelSO.hpp"
 #include "GlobalNamespace/PlayerLevelStatsData.hpp"
 #include "UnityEngine/Resources.hpp"
 
+namespace QountersMinus {
+    enum class PBQounterMode {
+        Absolute,
+        Relative
+    };
+    static int PBQounterModeCount = 2;
+    static std::map<PBQounterMode, std::string> PBQounterModeNames = {
+        {PBQounterMode::Absolute, "Absolute"},
+        {PBQounterMode::Relative, "Relative"}
+    };
+    static std::map<std::string, PBQounterMode> PBQounterModeLookup = {
+        {"Absolute", PBQounterMode::Absolute},
+        {"Relative", PBQounterMode::Relative}
+    };
+}
+
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter,
+    DECLARE_STATIC_FIELD(bool, Enabled);
+    DECLARE_STATIC_FIELD(int, Position);
+    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(int, Mode);
+    DECLARE_STATIC_FIELD(UnityEngine::Color, BetterColor);
+    DECLARE_STATIC_FIELD(UnityEngine::Color, DefaultColor);
+    DECLARE_STATIC_FIELD(int, DecimalPrecision);
+    DECLARE_STATIC_FIELD(int, TextSize);
+    DECLARE_STATIC_FIELD(bool, UnderScore);
+    DECLARE_STATIC_FIELD(bool, HideFirstScore);
+
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, pbText);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, maxPossibleScore, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, highScore, 0);
@@ -27,6 +53,17 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
     DECLARE_METHOD(void, SetPersonalBest, float ratioOfMaxScore);
 
     REGISTER_FUNCTION(PBQounter,
+        REGISTER_FIELD(Enabled);
+        REGISTER_FIELD(Position);
+        REGISTER_FIELD(Distance);
+        REGISTER_FIELD(Mode);
+        REGISTER_FIELD(BetterColor);
+        REGISTER_FIELD(DefaultColor);
+        REGISTER_FIELD(DecimalPrecision);
+        REGISTER_FIELD(TextSize);
+        REGISTER_FIELD(UnderScore);
+        REGISTER_FIELD(HideFirstScore);
+
         REGISTER_FIELD(pbText);
         REGISTER_FIELD(maxPossibleScore);
         REGISTER_FIELD(highScore);
