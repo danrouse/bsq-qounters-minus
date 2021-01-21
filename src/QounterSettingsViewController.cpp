@@ -420,9 +420,10 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
         container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(false);
         QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.second.displayName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
             classof(UnityEngine::Events::UnityAction*), container, +[](UnityEngine::GameObject* container) {
-                // for (int i = 0; i < self->containers->get_Count(); i++)
-                //     self->containers->get_Item(i)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(false);
-                // self->containers->get_Item(index)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
+                auto ancestor = container->get_transform()->get_parent()->get_parent()->get_parent()->get_parent();
+                for (int i = 2; i < ancestor->get_childCount(); i++) {
+                    ancestor->GetChild(i)->get_gameObject()->SetActive(false);
+                }
                 container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
             }
         ));
@@ -450,60 +451,88 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     testButton->GetComponent<UnityEngine::RectTransform*>()->set_sizeDelta(UnityEngine::Vector2(27.0f, 10.0f));
 }
 
-UnityEngine::GameObject* CreateQounterConfigView(UnityEngine::Transform* parent, std::string title, std::string namespaze, std::string klass, std::vector<QountersMinus::QounterRegistry::ConfigMetadata> configMetadata) {
+UnityEngine::GameObject* CreateQounterConfigView(UnityEngine::Transform* parent, std::string title, std::string namespaze, std::string klass, std::vector<std::shared_ptr<QountersMinus::QounterRegistry::ConfigMetadata>> configMetadata) {
     auto container = CreateContentView(parent);
     auto cutQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), title);
     cutQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
     cutQounterTitle->set_fontSize(6.0f);
 
-    for (auto config : configMetadata) {
+    for (auto fieldConfig : configMetadata) {
         UnityEngine::GameObject* gameObject;
-        auto label = config.displayName == "" ? config.field : config.displayName;
-        auto fieldInfo = il2cpp_utils::FindField(namespaze, klass, config.field);
+        auto label = fieldConfig->displayName == "" ? fieldConfig->field : fieldConfig->displayName;
+        auto fieldInfo = il2cpp_utils::FindField(namespaze, klass, fieldConfig->field);
+        // nasty hack to access field data inside delegates
+        auto csptr = il2cpp_utils::New<System::Reflection::Pointer*>().value();
+        csptr->ptr = fieldConfig.get();
+
         switch (fieldInfo->type->type) {
             case Il2CppTypeEnum::IL2CPP_TYPE_BOOLEAN: {
-                auto toggle = QuestUI::BeatSaberUI::CreateToggle(container->get_transform(), label, *(bool*)config.ptr, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
-                    classof(UnityEngine::Events::UnityAction_1<bool>*), config.ptr, +[](void* ptr, bool val) {
-                        *(bool*)ptr = val;
-                        QountersMinus::SaveConfig();
-                    }
-                ));
+                auto toggle = QuestUI::BeatSaberUI::CreateToggle(container->get_transform(), label, *(bool*)fieldConfig->ptr,
+                    il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(
+                        classof(UnityEngine::Events::UnityAction_1<bool>*), csptr, +[](System::Reflection::Pointer* csptr, bool val) {
+                            auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+                            *(bool*)field->ptr = val;
+                        }
+                    )
+                );
                 gameObject = toggle->get_gameObject();
                 break;
             }
             case Il2CppTypeEnum::IL2CPP_TYPE_I4: {
-                if (config.enumNumElements == 0) {
-                    auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), label, 0, static_cast<float>(config.intStep), static_cast<float>(*(int*)config.ptr), true, true, static_cast<float>(config.intMin), static_cast<float>(config.intMax), UnityEngine::Vector2(0.0f, 0.0f), il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
-                        classof(UnityEngine::Events::UnityAction_1<float>*), config.ptr, +[](void* ptr, float val) {
-                            *(int*)ptr = static_cast<int>(val);
-                            QountersMinus::SaveConfig();
-                        }
-                    ));
+                if (fieldConfig->enumNumElements == 0) {
+                    auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
+                        container->get_transform(),
+                        label,
+                        0,
+                        static_cast<float>(fieldConfig->intStep),
+                        static_cast<float>(*(int*)fieldConfig->ptr),
+                        true,
+                        true,
+                        static_cast<float>(fieldConfig->intMin),
+                        static_cast<float>(fieldConfig->intMax),
+                        UnityEngine::Vector2(0.0f, 0.0f),
+                        il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
+                            classof(UnityEngine::Events::UnityAction_1<float>*), csptr, +[](System::Reflection::Pointer* csptr, float val) {
+                                auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+                                *(int*)field->ptr = static_cast<int>(val);
+                                QountersMinus::SaveConfig();
+                            }
+                        )
+                    );
                     gameObject = increment->get_gameObject();
                 } else {
-                    auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(container->get_transform(), label, 0, 1.0f, static_cast<float>(*(int*)config.ptr), UnityEngine::Vector2(0.0f, 0.0f), nullptr);
+                    auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
+                        container->get_transform(),
+                        label,
+                        0,
+                        1.0f,
+                        static_cast<float>(*(int*)fieldConfig->ptr),
+                        UnityEngine::Vector2(0.0f, 0.0f),
+                        nullptr
+                    );
                     increment->OnValueChange = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(
-                        classof(UnityEngine::Events::UnityAction_1<float>*), &config, +[](void* configPtr, float rawVal) {
-                            auto config = static_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(configPtr);
-                            auto intVal = static_cast<int>(rawVal) % config->enumNumElements;
-                            if (intVal < 0) intVal = config->enumNumElements - (intVal * -1);
-                            *(int*)config->ptr = intVal;
-                            LOG_DEBUG("set enum to %d", intVal);
+                        classof(UnityEngine::Events::UnityAction_1<float>*), csptr, +[](System::Reflection::Pointer* csptr, float rawVal) {
+                            auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+                            auto intVal = static_cast<int>(rawVal) % field->enumNumElements;
+                            if (intVal < 0) intVal = field->enumNumElements - (intVal * -1);
+                            *(int*)field->ptr = intVal;
                             QountersMinus::SaveConfig();
-                            // self->Text->SetText(il2cpp_utils::createcsstr(enumMap[configVar]));
+                            reinterpret_cast<QuestUI::IncrementSetting*>(field->uiElementPtr)->Text->SetText(
+                                il2cpp_utils::createcsstr(field->enumDisplayNames[intVal])
+                            );
                         }
                     );
-                    increment->Text->SetText(il2cpp_utils::createcsstr(config.enumDisplayNames[*(int*)config.ptr]));
+                    fieldConfig->uiElementPtr = increment;
+                    increment->Text->SetText(il2cpp_utils::createcsstr(fieldConfig->enumDisplayNames[*(int*)fieldConfig->ptr]));
                     gameObject = increment->get_gameObject();
                 }
                 break;
             }
             default:
-                //FormatColorToHex
                 LOG_DEBUG("Unknown config type %d", fieldInfo->type->type);
         }
-        if (config.helpText != "" && gameObject != nullptr) {
-            QuestUI::BeatSaberUI::AddHoverHint(gameObject, config.helpText);
+        if (fieldConfig->helpText != "" && gameObject != nullptr) {
+            QuestUI::BeatSaberUI::AddHoverHint(gameObject, fieldConfig->helpText);
         }
     }
 

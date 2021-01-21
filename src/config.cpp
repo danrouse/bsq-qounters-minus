@@ -54,14 +54,14 @@ bool QountersMinus::LoadConfig() {
         LOG_DEBUG("Load for class " + def.first.first + "::" + def.first.second);
         if (getConfig().config.HasMember(def.second.configKey) && getConfig().config[def.second.configKey].IsObject()) {
             auto jsonConfigObj = getConfig().config[def.second.configKey].GetObject();
-            for (auto config : def.second.configMetadata) {
-                auto jsonKey = config.jsonKey == "" ? config.field : config.jsonKey;
+            for (auto fieldConfig : def.second.configMetadata) {
+                auto jsonKey = fieldConfig->jsonKey == "" ? fieldConfig->field : fieldConfig->jsonKey;
                 if (!jsonConfigObj.HasMember(jsonKey)) {
                     LOG_DEBUG("Config key not found: " + def.second.configKey + "." + jsonKey);
                     foundEverything = false;
                     continue;
                 }
-                auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, config.field);
+                auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, fieldConfig->field);
                 switch (fieldInfo->type->type) {
                     case Il2CppTypeEnum::IL2CPP_TYPE_BOOLEAN: {
                         if (!jsonConfigObj[jsonKey].IsBool()) {
@@ -69,18 +69,18 @@ bool QountersMinus::LoadConfig() {
                             foundEverything = false;
                             continue;
                         }
-                        *(bool*)config.ptr = jsonConfigObj[jsonKey].GetBool();
+                        *(bool*)fieldConfig->ptr = jsonConfigObj[jsonKey].GetBool();
                         break;
                     }
                     case Il2CppTypeEnum::IL2CPP_TYPE_I4: {
-                        if (config.enumNumElements == 0) {
+                        if (fieldConfig->enumNumElements == 0) {
                             // actual int
                             if (!jsonConfigObj[jsonKey].IsInt()) {
                                 LOG_DEBUG("Config key is wrong type (expected int): " + def.second.configKey + "." + jsonKey);
                                 foundEverything = false;
                                 continue;
                             }
-                            *(int*)config.ptr = jsonConfigObj[jsonKey].GetInt();
+                            *(int*)fieldConfig->ptr = jsonConfigObj[jsonKey].GetInt();
                         } else {
                             // serialized enum
                             if (!jsonConfigObj[jsonKey].IsString()) {
@@ -89,12 +89,12 @@ bool QountersMinus::LoadConfig() {
                                 continue;
                             }
                             auto val = jsonConfigObj[jsonKey].GetString();
-                            if (!config.enumSerializedNames.contains(val)) {
+                            if (!fieldConfig->enumSerializedNames.contains(val)) {
                                 LOG_DEBUG("Config key is unknown for enum: \"" + val + "\", " + def.second.configKey + "." + jsonKey);
                                 foundEverything = false;
                                 continue;
                             }
-                            *(int*)config.ptr = config.enumSerializedNames[val];
+                            *(int*)fieldConfig->ptr = fieldConfig->enumSerializedNames[val];
                         }
                         break;
                     }
@@ -125,31 +125,30 @@ void QountersMinus::SaveConfig() {
     getConfig().config.AddMember("ComboOffset", mainConfig.comboOffset, allocator);
     getConfig().config.AddMember("MultiplierOffset", mainConfig.multiplierOffset, allocator);
 
-    for (auto&& def : QountersMinus::QounterRegistry::registry) {
+    for (auto def : QountersMinus::QounterRegistry::registry) {
         rapidjson::Value childConfig(rapidjson::kObjectType);
-        for (auto&& config : def.second.configMetadata) {
-            auto _jsonKey = config.jsonKey == "" ? config.field : config.jsonKey;
-            LOG_DEBUG("Save key " + _jsonKey);
+        for (auto fieldConfig : def.second.configMetadata) {
+            auto _jsonKey = fieldConfig->jsonKey == "" ? fieldConfig->field : fieldConfig->jsonKey;
             rapidjson::Value jsonKey(_jsonKey, allocator);
-            auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, config.field);
+            auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, fieldConfig->field);
             switch (fieldInfo->type->type) {
                 case Il2CppTypeEnum::IL2CPP_TYPE_BOOLEAN: {
-                    childConfig.AddMember(jsonKey, *(bool*)config.ptr, allocator);
+                    childConfig.AddMember(jsonKey, *(bool*)fieldConfig->ptr, allocator);
                     break;
                 }
                 case Il2CppTypeEnum::IL2CPP_TYPE_I4: {
-                    if (config.enumNumElements == 0) {
-                        childConfig.AddMember(jsonKey, *(int*)config.ptr, allocator);
+                    if (fieldConfig->enumNumElements == 0) {
+                        childConfig.AddMember(jsonKey, *(int*)fieldConfig->ptr, allocator);
                     } else {
                         std::string serializedEnumVal;
-                        for (auto pair : config.enumSerializedNames) {
-                            if (pair.second == *(int*)config.ptr) {
+                        for (auto pair : fieldConfig->enumSerializedNames) {
+                            if (pair.second == *(int*)fieldConfig->ptr) {
                                 serializedEnumVal = pair.first;
                                 break;
                             }
                         }
                         if (serializedEnumVal == "") {
-                            LOG_DEBUG("Config could not find string for enum val %d (" + def.second.configKey + "." + _jsonKey + ")", *(int*)config.ptr);
+                            LOG_DEBUG("Config could not find string for enum val %d (" + def.second.configKey + "." + _jsonKey + ")", *(int*)fieldConfig->ptr);
                             continue;
                         }
                         childConfig.AddMember(jsonKey, serializedEnumVal, allocator);

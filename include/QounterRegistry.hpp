@@ -46,6 +46,7 @@ namespace QountersMinus {
             int enumNumElements = 0;
             std::map<int, std::string> enumDisplayNames;
             std::map<std::string, int> enumSerializedNames;
+            void* uiElementPtr; // yuck yuck ew yuck
         } ConfigMetadata;
         typedef struct _RegistryEntry {
             QountersMinus::Qounter* instance;
@@ -53,7 +54,7 @@ namespace QountersMinus {
             std::map<Event, const MethodInfo*> eventHandlers;
             std::string displayName;
             std::string configKey;
-            std::vector<ConfigMetadata> configMetadata;
+            std::vector<std::shared_ptr<ConfigMetadata>> configMetadata;
         } RegistryEntry;
         inline std::map<std::pair<std::string, std::string>, RegistryEntry> registry;
 
@@ -80,7 +81,8 @@ namespace QountersMinus {
         template <typename T>
         void RegisterConfig(ConfigMetadata config) {
             auto typeInfo = custom_types::name_registry<T>::get();
-            registry[{typeInfo->getNamespace(), typeInfo->getName()}].configMetadata.push_back(config);
+            auto ptr = std::make_shared<ConfigMetadata>(config);
+            registry[{typeInfo->getNamespace(), typeInfo->getName()}].configMetadata.push_back(ptr);
         }
         template <typename T>
         void RegisterConfig(std::vector<ConfigMetadata> configs) {
