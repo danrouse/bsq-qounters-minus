@@ -10,7 +10,7 @@ bool QountersMinus::Qounters::ProgressQounter::ProgressTimeLeft = false;
 bool QountersMinus::Qounters::ProgressQounter::IncludeRing = false;
 
 void QountersMinus::Qounters::ProgressQounter::Register() {
-    QounterRegistry::Register<ProgressQounter>("Progress Qounter", "ProgressConfig", true);
+    QounterRegistry::Register<ProgressQounter>("Progress", "Progress Qounter", "ProgressConfig", true);
     QounterRegistry::RegisterConfig<ProgressQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

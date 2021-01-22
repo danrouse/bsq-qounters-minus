@@ -14,7 +14,7 @@ bool QountersMinus::Qounters::PBQounter::UnderScore = true;
 bool QountersMinus::Qounters::PBQounter::HideFirstScore = false;
 
 void QountersMinus::Qounters::PBQounter::Register() {
-    QounterRegistry::Register<PBQounter>("PB Qounter", "PBConfig", true);
+    QounterRegistry::Register<PBQounter>("Personal Best", "PB Qounter", "PBConfig", true);
     QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

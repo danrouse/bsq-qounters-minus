@@ -15,7 +15,7 @@ static const float MULT_FASTERSONG_ORIGINAL = 0.08f;
 static const float MULT_FASTERSONG_SCORESABER = 0.08f;
 
 void QountersMinus::Qounters::PPQounter::Register() {
-    QounterRegistry::Register<PPQounter>("PP Qounter", "PPConfig", true);
+    QounterRegistry::Register<PPQounter>("PP", "PP Qounter", "PPConfig", true);
     QounterRegistry::RegisterConfig<PPQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

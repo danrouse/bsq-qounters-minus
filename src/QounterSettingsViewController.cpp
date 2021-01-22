@@ -37,10 +37,10 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     containers = il2cpp_utils::New<System::Collections::Generic::List_1<UnityEngine::GameObject*>*>().value();
 
     for (auto def : QountersMinus::QounterRegistry::registry) {
-        auto container = CreateQounterConfigView(get_transform(), def.second.displayName, def.first.first, def.first.second, def.second.configMetadata);
+        auto container = CreateQounterConfigView(get_transform(), def.second.longName, def.first.first, def.first.second, def.second.configMetadata);
         containers->Add(container);
         container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(false);
-        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.second.displayName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
+        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.second.shortName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
             classof(UnityEngine::Events::UnityAction*), container, +[](UnityEngine::GameObject* container) {
                 auto ancestor = container->get_transform()->get_parent()->get_parent()->get_parent()->get_parent();
                 for (int i = 3; i < ancestor->get_childCount(); i++) {
@@ -93,9 +93,9 @@ void HandleColorSettingChanged(System::Reflection::Pointer* csptr, UnityEngine::
 
 UnityEngine::GameObject* CreateQounterConfigView(UnityEngine::Transform* parent, std::string title, std::string namespaze, std::string klass, std::vector<std::shared_ptr<QountersMinus::QounterRegistry::ConfigMetadata>> configMetadata) {
     auto container = CreateContentView(parent);
-    auto cutQounterTitle = QuestUI::BeatSaberUI::CreateText(container->get_transform(), title);
-    cutQounterTitle->set_alignment(TMPro::TextAlignmentOptions::Center);
-    cutQounterTitle->set_fontSize(6.0f);
+    auto titleText = QuestUI::BeatSaberUI::CreateText(container->get_transform(), title);
+    titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
+    titleText->set_fontSize(6.0f);
 
     for (auto fieldConfig : configMetadata) {
         UnityEngine::GameObject* gameObject;

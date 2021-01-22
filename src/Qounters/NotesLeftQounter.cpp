@@ -8,7 +8,7 @@ int QountersMinus::Qounters::NotesLeftQounter::Distance = -1;
 bool QountersMinus::Qounters::NotesLeftQounter::LabelAboveCount = false;
 
 void QountersMinus::Qounters::NotesLeftQounter::Register() {
-    QounterRegistry::Register<NotesLeftQounter>("Notes Left Qounter", "NotesLeftConfig", true);
+    QounterRegistry::Register<NotesLeftQounter>("Notes Left", "Notes Left Qounter", "NotesLeftConfig", true);
     QounterRegistry::RegisterConfig<NotesLeftQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

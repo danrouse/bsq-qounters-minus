@@ -53,7 +53,8 @@ namespace QountersMinus {
             QountersMinus::Qounter* instance;
             const MethodInfo* initializer;
             std::map<Event, const MethodInfo*> eventHandlers;
-            std::string displayName;
+            std::string shortName;
+            std::string longName;
             std::string configKey;
             bool isBaseQounter = false;
             std::vector<std::shared_ptr<ConfigMetadata>> configMetadata;
@@ -61,7 +62,7 @@ namespace QountersMinus {
         inline std::map<std::pair<std::string, std::string>, RegistryEntry> registry;
 
         template <typename T>
-        void Register(std::string displayName, std::string configKey, bool isBaseQounter) {
+        void Register(std::string shortName, std::string longName, std::string configKey, bool isBaseQounter) {
             auto typeInfo = custom_types::name_registry<T>::get();
             auto initialize = il2cpp_utils::FindMethodUnsafe(typeInfo->getNamespace(), typeInfo->getName(), "Initialize", 0);
             std::map<Event, const MethodInfo*> eventHandlers;
@@ -72,15 +73,16 @@ namespace QountersMinus {
                 .instance = (Qounter*)nullptr,
                 .initializer = initialize,
                 .eventHandlers = eventHandlers,
-                .displayName = displayName,
+                .shortName = shortName,
+                .longName = longName,
                 .configKey = configKey,
                 .isBaseQounter = isBaseQounter
             };
         }
 
         template <typename T>
-        void Register(std::string displayName, std::string configKey) {
-            Register<T>(displayName, configKey, false);
+        void Register(std::string shortName, std::string longName, std::string configKey) {
+            Register<T>(shortName, longName, configKey, false);
         }
 
         template <typename T>

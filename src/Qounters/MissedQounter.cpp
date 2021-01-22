@@ -8,7 +8,7 @@ int QountersMinus::Qounters::MissedQounter::Distance = 0;
 bool QountersMinus::Qounters::MissedQounter::CountBadCuts = true;
 
 void QountersMinus::Qounters::MissedQounter::Register() {
-    QounterRegistry::Register<MissedQounter>("Missed Qounter", "MissedConfig", true);
+    QounterRegistry::Register<MissedQounter>("Missed", "Missed Qounter", "MissedConfig", true);
     QounterRegistry::RegisterConfig<MissedQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

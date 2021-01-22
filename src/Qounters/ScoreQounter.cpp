@@ -18,7 +18,7 @@ UnityEngine::Color QountersMinus::Qounters::ScoreQounter::DColor = UnityEngine::
 UnityEngine::Color QountersMinus::Qounters::ScoreQounter::EColor = UnityEngine::Color(1.0f, 0.0f, 0.0f, 1.0f);
 
 void QountersMinus::Qounters::ScoreQounter::Register() {
-    QounterRegistry::Register<ScoreQounter>("Score Qounter", "ScoreConfig", true);
+    QounterRegistry::Register<ScoreQounter>("Score", "Score Qounter", "ScoreConfig", true);
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

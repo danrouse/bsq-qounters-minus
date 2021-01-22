@@ -41,7 +41,7 @@ namespace QountersMinus {
             Qounters::Spinometer
         >();
 
-        QounterRegistry::Register<Qounter>("Main", "", true);
+        QounterRegistry::Register<Qounter>("Main", "Qounters-", "", true);
         QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::Enabled,
             .field = "Enabled",
