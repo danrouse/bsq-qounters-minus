@@ -10,7 +10,7 @@ bool QountersMinus::Qounters::SpeedQounter::SeparateCutValues = true;
 int QountersMinus::Qounters::SpeedQounter::DecimalPrecision = 2;
 
 void QountersMinus::Qounters::SpeedQounter::Register() {
-    QounterRegistry::Register<SpeedQounter>("Speed Qounter", "SpeedConfig");
+    QounterRegistry::Register<SpeedQounter>("Speed Qounter", "SpeedConfig", true);
     QounterRegistry::RegisterConfig<SpeedQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

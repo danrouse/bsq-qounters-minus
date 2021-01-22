@@ -9,7 +9,7 @@ bool QountersMinus::Qounters::NotesQounter::ShowPercentage = false;
 int QountersMinus::Qounters::NotesQounter::DecimalPrecision = 2;
 
 void QountersMinus::Qounters::NotesQounter::Register() {
-    QounterRegistry::Register<NotesQounter>("Note Qounter", "NoteConfig");
+    QounterRegistry::Register<NotesQounter>("Note Qounter", "NoteConfig", true);
     QounterRegistry::RegisterConfig<NotesQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

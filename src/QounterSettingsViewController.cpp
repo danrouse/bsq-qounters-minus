@@ -43,7 +43,7 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
         QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.second.displayName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
             classof(UnityEngine::Events::UnityAction*), container, +[](UnityEngine::GameObject* container) {
                 auto ancestor = container->get_transform()->get_parent()->get_parent()->get_parent()->get_parent();
-                for (int i = 2; i < ancestor->get_childCount(); i++) {
+                for (int i = 3; i < ancestor->get_childCount(); i++) {
                     ancestor->GetChild(i)->get_gameObject()->SetActive(false);
                 }
                 container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);

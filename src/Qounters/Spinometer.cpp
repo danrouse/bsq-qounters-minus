@@ -8,7 +8,7 @@ int QountersMinus::Qounters::Spinometer::Distance = 0;
 int QountersMinus::Qounters::Spinometer::Mode = static_cast<int>(QountersMinus::SpinometerMode::SplitAverage);
 
 void QountersMinus::Qounters::Spinometer::Register() {
-    QounterRegistry::Register<Spinometer>("Spinometer", "Spinometer");
+    QounterRegistry::Register<Spinometer>("Spinometer", "Spinometer", true);
     QounterRegistry::RegisterConfig<Spinometer>({
         .ptr = &Enabled,
         .field = "Enabled",

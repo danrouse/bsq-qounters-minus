@@ -11,7 +11,7 @@ int QountersMinus::Qounters::FailQounter::restarts = 0;
 Il2CppString* QountersMinus::Qounters::FailQounter::prevBeatmapHash = nullptr;
 
 void QountersMinus::Qounters::FailQounter::Register() {
-    QounterRegistry::Register<FailQounter>("Fail Qounter", "FailConfig");
+    QounterRegistry::Register<FailQounter>("Fail Qounter", "FailConfig", true);
     QounterRegistry::RegisterConfig<FailQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

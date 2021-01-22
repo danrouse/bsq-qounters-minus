@@ -10,7 +10,7 @@ bool QountersMinus::Qounters::CutQounter::SeparateCutValues = false;
 int QountersMinus::Qounters::CutQounter::AveragePrecision = 1;
 
 void QountersMinus::Qounters::CutQounter::Register() {
-    QounterRegistry::Register<CutQounter>("Cut Qounter", "CutConfig");
+    QounterRegistry::Register<CutQounter>("Cut Qounter", "CutConfig", true);
     QounterRegistry::RegisterConfig<CutQounter>({
         .ptr = &Enabled,
         .field = "Enabled",

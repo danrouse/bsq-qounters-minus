@@ -23,14 +23,21 @@ UnityEngine::Color ParseHexColor(std::string hexString) {
 bool QountersMinus::LoadConfig() {
     bool foundEverything = true;
     getConfig().Load();
+    auto customQounterConfig = getConfig().config["CustomCounters"].GetObject();
 
     for (auto def : QountersMinus::QounterRegistry::registry) {
-        rapidjson::GenericValue<rapidjson::UTF8<>> _childConfig = getConfig().config[def.second.configKey].GetObject();
+        rapidjson::GenericValue<rapidjson::UTF8<>> _childConfig = (def.second.isBaseQounter ? getConfig().config[def.second.configKey] : customQounterConfig[def.second.configKey]).GetObject();
         auto&& jsonConfigObj = def.second.configKey == "" ? getConfig().config : _childConfig;
-        if (def.second.configKey != "" && (!getConfig().config.HasMember(def.second.configKey) || !getConfig().config[def.second.configKey].IsObject())) {
-            LOG_DEBUG("Config object not found: " + def.second.configKey);
-            foundEverything = false;
-            continue;
+        if (def.second.configKey != "") {
+            if (def.second.isBaseQounter && (!getConfig().config.HasMember(def.second.configKey) || !getConfig().config[def.second.configKey].IsObject())) {
+                LOG_DEBUG("Config object not found: " + def.second.configKey);
+                foundEverything = false;
+                continue;
+            } else if (!def.second.isBaseQounter && (!customQounterConfig.HasMember(def.second.configKey) || !customQounterConfig[def.second.configKey].IsObject())) {
+                LOG_DEBUG("Custom Qounter config object not found: " + def.second.configKey);
+                foundEverything = false;
+                continue;
+            }
         }
         // TODO: handle nesting of custom qounter configs
         for (auto fieldConfig : def.second.configMetadata) {
@@ -99,10 +106,11 @@ bool QountersMinus::LoadConfig() {
 void QountersMinus::SaveConfig() {
     LOG_CALLER;
 
-    // TODO: handle not removing custom qounter data, or re-adding
+    auto prevCustomConfig = getConfig().config["CustomCounters"].GetObject();
     getConfig().config.RemoveAllMembers();
     getConfig().config.SetObject();
     rapidjson::Document::AllocatorType& allocator = getConfig().config.GetAllocator();
+    rapidjson::Value customConfig(rapidjson::kObjectType);
 
     for (auto def : QountersMinus::QounterRegistry::registry) {
         rapidjson::Value _childConfig(rapidjson::kObjectType);
@@ -142,9 +150,21 @@ void QountersMinus::SaveConfig() {
         }
         if (def.second.configKey != "") {
             rapidjson::Value configKey(def.second.configKey, allocator);
-            getConfig().config.AddMember(configKey, childConfig, allocator);
+            if (def.second.isBaseQounter) {
+                getConfig().config.AddMember(configKey, childConfig, allocator);
+            } else {
+                customConfig.AddMember(configKey, childConfig, allocator);
+            }
         }
     }
 
+    for (auto itr = prevCustomConfig.MemberBegin(); itr != prevCustomConfig.MemberEnd(); ++itr) {
+        if (!customConfig.HasMember(itr->name) || !customConfig[itr->name].IsObject()) {
+            LOG_DEBUG("Preserving " + itr->name.GetString() + " in Custom Qounter config");
+            customConfig.AddMember(itr->name, itr->value, allocator);
+        }
+    }
+
+    getConfig().config.AddMember("CustomCounters", customConfig, allocator);
     getConfig().Write();
 }

@@ -30,6 +30,7 @@ namespace QountersMinus {
             {Event::MaxScoreUpdated, "OnMaxScoreUpdated", 1},
             {Event::SwingRatingFinished, "OnSwingRatingFinished", 2},
         };
+
         typedef struct _ConfigMetadata {
             void* ptr;
             std::string field;
@@ -54,15 +55,13 @@ namespace QountersMinus {
             std::map<Event, const MethodInfo*> eventHandlers;
             std::string displayName;
             std::string configKey;
+            bool isBaseQounter = false;
             std::vector<std::shared_ptr<ConfigMetadata>> configMetadata;
         } RegistryEntry;
         inline std::map<std::pair<std::string, std::string>, RegistryEntry> registry;
 
-        void Initialize();
-        void DestroyAll();
-
         template <typename T>
-        void Register(std::string displayName, std::string configKey) {
+        void Register(std::string displayName, std::string configKey, bool isBaseQounter) {
             auto typeInfo = custom_types::name_registry<T>::get();
             auto initialize = il2cpp_utils::FindMethodUnsafe(typeInfo->getNamespace(), typeInfo->getName(), "Initialize", 0);
             std::map<Event, const MethodInfo*> eventHandlers;
@@ -74,8 +73,14 @@ namespace QountersMinus {
                 .initializer = initialize,
                 .eventHandlers = eventHandlers,
                 .displayName = displayName,
-                .configKey = configKey
+                .configKey = configKey,
+                .isBaseQounter = isBaseQounter
             };
+        }
+
+        template <typename T>
+        void Register(std::string displayName, std::string configKey) {
+            Register<T>(displayName, configKey, false);
         }
 
         template <typename T>
@@ -88,6 +93,9 @@ namespace QountersMinus {
         void RegisterConfig(std::vector<ConfigMetadata> configs) {
             for (auto c : configs) RegisterConfig<T>(c);
         }
+
+        void Initialize();
+        void DestroyAll();
 
         template <typename... TArgs>
         void BroadcastEvent(Event event, TArgs&&... args) {

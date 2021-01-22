@@ -41,7 +41,7 @@ MAKE_HOOK_OFFSETLESS(CutScoreHandler_HandleSwingRatingCounterDidFinish, void, Gl
 MAKE_HOOK_OFFSETLESS(HealthWarningFlowCoordinator_DidActivate, void, Il2CppObject* self, bool a, bool b, bool c) {
     HealthWarningFlowCoordinator_DidActivate(self, a, b, c);
 
-    // Defer config loading to this point to allow everything to be registered
+    // Defer config loading to this point to give Custom Qounters a chance to register
     // LOG_DEBUG("Loading config");
     // if (!QountersMinus::LoadConfig()) QountersMinus::SaveConfig();
 

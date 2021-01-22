@@ -12,7 +12,6 @@ bool QountersMinus::Qounter::ItalicText = false;
 const float distanceUnit = 40.0f;
 const float distanceUnitOffsetMult = 0.15f;
 
-
 struct QounterPositionData {
     std::string parentName;
     UnityEngine::Vector2 anchoredPosition;
