@@ -66,7 +66,7 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
         } else if (position == QountersMinus::QounterPosition::BelowMultiplier || position == QountersMinus::QounterPosition::AboveMultiplier) {
             anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::MultiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else {
-            rect->set_localPosition(UnityEngine::Vector3(0.0f, 0.0f, 5.0f));
+            rect->set_localPosition(UnityEngine::Vector3(0.0f, 0.0f, -5.0f));
             rect->set_localScale(UnityEngine::Vector3(0.8f, 0.8f, 0.8f));
         }
         rect->set_anchoredPosition(anchoredPosition);
