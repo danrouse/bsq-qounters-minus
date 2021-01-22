@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/logger.hpp"
+#include "util/color_picker_button.hpp"
 #include "config.hpp"
 #include "QounterRegistry.hpp"
 #include "custom-types/shared/macros.hpp"
