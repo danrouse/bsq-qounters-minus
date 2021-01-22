@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -22,17 +23,17 @@ namespace QountersMinus {
         RankOnly
     };
     static int ScoreQounterModeCount = 4;
-    static std::map<ScoreQounterMode, std::string> ScoreQounterModeNames = {
-        {ScoreQounterMode::Original, "Original"},
-        {ScoreQounterMode::LeavePoints, "Don't Move Points"},
-        {ScoreQounterMode::ScoreOnly, "Remove Rank"},
-        {ScoreQounterMode::RankOnly, "Remove Percentage"}
+    static std::map<int, std::string> ScoreQounterModeNames = {
+        {static_cast<int>(ScoreQounterMode::Original), "Original"},
+        {static_cast<int>(ScoreQounterMode::LeavePoints), "Don't Move Points"},
+        {static_cast<int>(ScoreQounterMode::ScoreOnly), "Remove Rank"},
+        {static_cast<int>(ScoreQounterMode::RankOnly), "Remove Percentage"}
     };
-    static std::map<std::string, ScoreQounterMode> ScoreQounterModeLookup = {
-        {"Original", ScoreQounterMode::Original},
-        {"LeavePoints", ScoreQounterMode::LeavePoints},
-        {"ScoreOnly", ScoreQounterMode::ScoreOnly},
-        {"RankOnly", ScoreQounterMode::RankOnly}
+    static std::map<std::string, int> ScoreQounterModeLookup = {
+        {"Original", static_cast<int>(ScoreQounterMode::Original)},
+        {"LeavePoints", static_cast<int>(ScoreQounterMode::LeavePoints)},
+        {"ScoreOnly", static_cast<int>(ScoreQounterMode::ScoreOnly)},
+        {"RankOnly", static_cast<int>(ScoreQounterMode::RankOnly)}
     };
 }
 
@@ -57,6 +58,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD(GlobalNamespace::RankModel::Rank, prevImmediateRank);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, UpdateText);
     DECLARE_METHOD(UnityEngine::Color, GetRankColor, GlobalNamespace::RankModel::Rank);
@@ -82,6 +84,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
         REGISTER_FIELD(prevImmediateRank);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(UpdateText);
         REGISTER_METHOD(GetRankColor);

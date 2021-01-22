@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -24,6 +25,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounte
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnSwingRatingFinished, GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter);
     DECLARE_METHOD(void, UpdateCutScores);
@@ -41,6 +43,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounte
         REGISTER_FIELD(cutScores);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(OnSwingRatingFinished);
         REGISTER_METHOD(UpdateCutScores);

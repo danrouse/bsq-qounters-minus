@@ -2,6 +2,7 @@
 
 #include "custom-types/shared/register.hpp"
 #include "questui/shared/QuestUI.hpp"
+#include "QounterRegistry.hpp"
 #include "InjectedComponents.hpp"
 #include "QounterSettingsViewController.hpp"
 #include "Qounter.hpp"
@@ -27,76 +28,69 @@ namespace QountersMinus {
             QounterSettingsViewController
         >();
         custom_types::Register::RegisterTypes<
-            Qounters::CutQounter
+            Qounters::CutQounter,
+            Qounters::FailQounter,
+            Qounters::MissedQounter,
+            Qounters::NotesLeftQounter,
+            Qounters::NotesQounter,
+            Qounters::PBQounter,
+            Qounters::PPQounter,
+            Qounters::ProgressQounter,
+            Qounters::ScoreQounter,
+            Qounters::SpeedQounter,
+            Qounters::Spinometer
         >();
 
-        QounterRegistry::Register<Qounters::CutQounter>("Cut Qounter", "CutConfig");
-        QounterRegistry::RegisterConfig<Qounters::CutQounter>({
-            .ptr = &Qounters::CutQounter::Enabled,
+        QounterRegistry::Register<Qounter>("Main", "");
+        QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::Enabled,
             .field = "Enabled",
+            .helpText = "Toggles Qounters-.",
         });
-        QounterRegistry::RegisterConfig<Qounters::CutQounter>({
-            .ptr = &Qounters::CutQounter::Position,
-            .field = "Position",
-            .enumNumElements = QounterPositionCount,
-            .enumDisplayNames = QounterPositionNames,
-            .enumSerializedNames = QounterPositionLookup,
+        QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::HideCombo,
+            .field = "HideCombo",
+            .displayName = "Hide Combo",
+            .helpText = "Hides the Combo counter.",
         });
-        QounterRegistry::RegisterConfig<Qounters::CutQounter>({
-            .ptr = &Qounters::CutQounter::Distance,
-            .field = "Distance",
+        QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::HideMultiplier,
+            .field = "HideMultiplier",
+            .displayName = "Hide Multiplier",
+            .helpText = "Hides the Multiplier.",
         });
-        QounterRegistry::RegisterConfig<Qounters::CutQounter>({
-            .ptr = &Qounters::CutQounter::SeparateSaberCounts,
-            .field = "SeparateSaberCounts",
-            .displayName = "Separate Saber Cuts",
-            .helpText = "Shows the average cut for the left and right sabers separately.",
+        QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::ItalicText,
+            .field = "ItalicText",
+            .displayName = "Use Italic Text",
+            .helpText = "Text elements will be italicized to match the base game.",
         });
-        QounterRegistry::RegisterConfig<Qounters::CutQounter>({
-            .ptr = &Qounters::CutQounter::SeparateCutValues,
-            .field = "SeparateCutValues",
-            .displayName = "Separate Cut Values",
-            .helpText = "Show separate averages for angle before cut (0-70), angle after cut (0-30) and distance to center (0-15).",
+        QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::ComboOffset,
+            .field = "ComboOffset",
+            .displayName = "Combo Offset",
+            .helpText = "Applies additional offset to Qounters situated above or below the Combo.",
+            .floatStep = 0.1f,
         });
-        QounterRegistry::RegisterConfig<Qounters::CutQounter>({
-            .ptr = &Qounters::CutQounter::AveragePrecision,
-            .field = "AveragePrecision",
-            .displayName = "Average Cut Precision",
-            .helpText = "How many decimals should be shown on the average cuts?",
-            .intMin = 0,
-            .intMax = 4,
+        QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::MultiplierOffset,
+            .field = "MultiplierOffset",
+            .displayName = "Multiplier Offset",
+            .helpText = "Applies additional offset to Qounters situated above or below the Multiplier.",
+            .floatStep = 0.1f,
         });
 
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::FailQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "FailQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::MissedQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "MissedQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::NotesLeftQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "NotesLeftQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::NotesQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "NotesQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::PPQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "PPQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::ProgressQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "ProgressQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::ScoreQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "ScoreQounter");
-
-        // // must initialize after score
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::PBQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "PBQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::SpeedQounter>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "SpeedQounter");
-
-        // custom_types::Register::RegisterType<QountersMinus::Qounters::Spinometer>();
-        // QountersMinus::QounterRegistry::Register("QountersMinus::Qounters", "Spinometer");
+        Qounters::CutQounter::Register();
+        Qounters::FailQounter::Register();
+        Qounters::MissedQounter::Register();
+        Qounters::NotesLeftQounter::Register();
+        Qounters::NotesQounter::Register();
+        Qounters::PPQounter::Register();
+        Qounters::ProgressQounter::Register();
+        Qounters::ScoreQounter::Register();
+        Qounters::PBQounter::Register(); // must initialize after score
+        Qounters::SpeedQounter::Register();
+        Qounters::Spinometer::Register();
 
         QuestUI::Register::RegisterModSettingsViewController<QountersMinus::QounterSettingsViewController*>(
             (ModInfo){"Qounters-", VERSION}, "Qounters-"

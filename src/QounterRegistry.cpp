@@ -13,21 +13,23 @@ void _DeactivateChildren(std::string gameObjectName) {
     _DeactivateChildren(UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(gameObjectName)));
 }
 
-void QountersMinus::QounterRegistry::Initialize(bool enabled, bool hideCombo, bool hideMultiplier, bool italicText) {
+void QountersMinus::QounterRegistry::Initialize() {
     for (auto&& def : registry) def.second.instance = nullptr;
-    if (!enabled) return;
-    if (hideCombo) _DeactivateChildren("LeftPanel/ComboPanel");
-    if (hideMultiplier) {
+    if (!Qounter::Enabled) return;
+    if (Qounter::HideCombo) _DeactivateChildren("LeftPanel/ComboPanel");
+    if (Qounter::HideMultiplier) {
         auto multiplierGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("RightPanel/MultiplierCanvas"));
         multiplierGO->GetComponent<UnityEngine::Animator*>()->set_enabled(false);
         _DeactivateChildren(multiplierGO);
     }
 
     for (auto&& def : registry) {
-        def.second.instance = il2cpp_utils::RunStaticMethodUnsafe<Qounter*>(def.second.initializer).value();
+        if (def.second.initializer) {
+            def.second.instance = il2cpp_utils::RunStaticMethodUnsafe<Qounter*>(def.second.initializer).value();
+        }
     }
 
-    if (italicText) {
+    if (Qounter::ItalicText) {
         auto qounters = UnityEngine::Resources::FindObjectsOfTypeAll<Qounter*>();
         for (int i = 0; i < qounters->Length(); i++) {
             auto texts = qounters->values[i]->GetComponentsInChildren<TMPro::TextMeshProUGUI*>();

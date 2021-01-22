@@ -7,6 +7,31 @@ int QountersMinus::Qounters::MissedQounter::Position = static_cast<int>(Qounters
 int QountersMinus::Qounters::MissedQounter::Distance = 0;
 bool QountersMinus::Qounters::MissedQounter::CountBadCuts = true;
 
+void QountersMinus::Qounters::MissedQounter::Register() {
+    QounterRegistry::Register<MissedQounter>("Missed Qounter", "MissedConfig");
+    QounterRegistry::RegisterConfig<MissedQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<MissedQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<MissedQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<MissedQounter>({
+        .ptr = &CountBadCuts,
+        .field = "CountBadCuts",
+        .displayName = "Include Bad Cuts",
+        .helpText = "Bad cuts count towards the Missed counter.",
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::MissedQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::MissedQounter*>(

@@ -14,6 +14,31 @@ static const float MULT_GHOSTNOTES_SCORESABER = 0.04f;
 static const float MULT_FASTERSONG_ORIGINAL = 0.08f;
 static const float MULT_FASTERSONG_SCORESABER = 0.08f;
 
+void QountersMinus::Qounters::PPQounter::Register() {
+    QounterRegistry::Register<PPQounter>("PP Qounter", "PPConfig");
+    QounterRegistry::RegisterConfig<PPQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<PPQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<PPQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<PPQounter>({
+        .ptr = &HideWhenUnranked,
+        .field = "HideWhenUnranked",
+        .displayName = "Hide When Unranked",
+        .helpText = "Whether the Qounter should be shown at all in unranked songs.",
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::PPQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PPQounter*>(

@@ -2,8 +2,6 @@
 
 DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
-extern QountersMinus::MainConfig mainConfig;
-
 bool QountersMinus::Qounters::ScoreQounter::Enabled = true;
 int QountersMinus::Qounters::ScoreQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
 int QountersMinus::Qounters::ScoreQounter::Distance = 0;
@@ -18,6 +16,89 @@ UnityEngine::Color QountersMinus::Qounters::ScoreQounter::BColor = UnityEngine::
 UnityEngine::Color QountersMinus::Qounters::ScoreQounter::CColor = UnityEngine::Color(1.0f, 0.5f, 0.0f, 1.0f);
 UnityEngine::Color QountersMinus::Qounters::ScoreQounter::DColor = UnityEngine::Color(1.0f, 0.0f, 0.0f, 1.0f);
 UnityEngine::Color QountersMinus::Qounters::ScoreQounter::EColor = UnityEngine::Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+void QountersMinus::Qounters::ScoreQounter::Register() {
+    QounterRegistry::Register<ScoreQounter>("Score Qounter", "ScoreConfig");
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &Mode,
+        .field = "Mode",
+        .enumNumElements = ScoreQounterModeCount,
+        .enumDisplayNames = ScoreQounterModeNames,
+        .enumSerializedNames = ScoreQounterModeLookup,
+        .helpText = "How should this Qounter display data?",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &DecimalPrecision,
+        .field = "DecimalPrecision",
+        .displayName = "Percentage Precision",
+        .helpText = "How precise should the percentage be?",
+        .intMin = 0,
+        .intMax = 5,
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &CustomRankColors,
+        .field = "CustomRankColors",
+        .displayName = "Custom Rank Colors",
+        .helpText = "Colors your Score Qounter depending on the rank you have in a song.",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &SSColor,
+        .field = "SSColor",
+        .displayName = "SS Color",
+        .helpText = "Change the rank color for the SS rank.",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &SColor,
+        .field = "SColor",
+        .displayName = "S Color",
+        .helpText = "Change the rank color for the S rank.",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &AColor,
+        .field = "AColor",
+        .displayName = "A Color",
+        .helpText = "Change the rank color for the A rank.",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &BColor,
+        .field = "BColor",
+        .displayName = "B Color",
+        .helpText = "Change the rank color for the B rank.",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &CColor,
+        .field = "CColor",
+        .displayName = "C Color",
+        .helpText = "Change the rank color for the C rank.",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &DColor,
+        .field = "DColor",
+        .displayName = "D Color",
+        .helpText = "Change the rank color for the D rank.",
+    });
+    QounterRegistry::RegisterConfig<ScoreQounter>({
+        .ptr = &EColor,
+        .field = "EColor",
+        .displayName = "E Color",
+        .helpText = "Change the rank color for the E rank.",
+    });
+}
 
 QountersMinus::Qounter* QountersMinus::Qounters::ScoreQounter::Initialize() {
     if (!Enabled) return nullptr;
@@ -38,7 +119,7 @@ void QountersMinus::Qounters::ScoreQounter::Start() {
     refs->coreGameHUDController->relativeScoreGO->get_transform()->SetParent(scoreUIText->get_transform(), true);
     refs->coreGameHUDController->immediateRankGO->get_transform()->SetParent(scoreUIText->get_transform(), true);
 
-    if (!mainConfig.italicText) {
+    if (!QountersMinus::Qounter::ItalicText) {
         scoreUIText->set_fontStyle(TMPro::FontStyles::Normal);
         relativeScoreText->set_fontStyle(TMPro::FontStyles::Normal);
         rankText->set_fontStyle(TMPro::FontStyles::Normal);

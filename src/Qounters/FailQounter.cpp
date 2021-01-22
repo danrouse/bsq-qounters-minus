@@ -10,6 +10,31 @@ bool QountersMinus::Qounters::FailQounter::ShowRestartsInstead = true;
 int QountersMinus::Qounters::FailQounter::restarts = 0;
 Il2CppString* QountersMinus::Qounters::FailQounter::prevBeatmapHash = nullptr;
 
+void QountersMinus::Qounters::FailQounter::Register() {
+    QounterRegistry::Register<FailQounter>("Fail Qounter", "FailConfig");
+    QounterRegistry::RegisterConfig<FailQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<FailQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<FailQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<FailQounter>({
+        .ptr = &ShowRestartsInstead,
+        .field = "ShowRestartsInstead",
+        .displayName = "Track Restarts",
+        .helpText = "Instead of showing global fail count, show the amount of times you have restarted the same song.",
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::FailQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::FailQounter*>(

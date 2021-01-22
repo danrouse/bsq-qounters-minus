@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -20,6 +21,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD_DEFAULT(int, goodCuts, 0);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
     DECLARE_METHOD(void, OnNoteMiss, GlobalNamespace::NoteData* data);
@@ -36,6 +38,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
         REGISTER_FIELD(goodCuts);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(OnNoteCut);
         REGISTER_METHOD(OnNoteMiss);

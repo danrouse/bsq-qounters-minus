@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -21,19 +22,19 @@ namespace QountersMinus {
         SplitBoth
     };
     static int SpeedQounterModeCount = 5;
-    static std::map<SpeedQounterMode, std::string> SpeedQounterModeNames = {
-        {SpeedQounterMode::Average, "Average"},
-        {SpeedQounterMode::Top5Sec, "Top from 5 Seconds"},
-        {SpeedQounterMode::Both, "Both Metrics"},
-        {SpeedQounterMode::SplitAverage, "Split Average"},
-        {SpeedQounterMode::SplitBoth, "Split Both Metrics"}
+    static std::map<int, std::string> SpeedQounterModeNames = {
+        {static_cast<int>(SpeedQounterMode::Average), "Average"},
+        {static_cast<int>(SpeedQounterMode::Top5Sec), "Top from 5 Seconds"},
+        {static_cast<int>(SpeedQounterMode::Both), "Both Metrics"},
+        {static_cast<int>(SpeedQounterMode::SplitAverage), "Split Average"},
+        {static_cast<int>(SpeedQounterMode::SplitBoth), "Split Both Metrics"}
     };
-    static std::map<std::string, SpeedQounterMode> SpeedQounterModeLookup = {
-        {"Average", SpeedQounterMode::Average},
-        {"Top5Sec", SpeedQounterMode::Top5Sec},
-        {"Both", SpeedQounterMode::Both},
-        {"SplitAverage", SpeedQounterMode::SplitAverage},
-        {"SplitBoth", SpeedQounterMode::SplitBoth}
+    static std::map<std::string, int> SpeedQounterModeLookup = {
+        {"Average", static_cast<int>(SpeedQounterMode::Average)},
+        {"Top5Sec", static_cast<int>(SpeedQounterMode::Top5Sec)},
+        {"Both", static_cast<int>(SpeedQounterMode::Both)},
+        {"SplitAverage", static_cast<int>(SpeedQounterMode::SplitAverage)},
+        {"SplitBoth", static_cast<int>(SpeedQounterMode::SplitBoth)}
     };
 }
 
@@ -54,6 +55,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD_DEFAULT(float, lastUpdatedFastest, 0.0f);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
 
@@ -74,6 +76,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
         REGISTER_FIELD(lastUpdatedFastest);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);
     )

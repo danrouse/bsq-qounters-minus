@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/song_id.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -26,6 +27,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qount
     DECLARE_INSTANCE_FIELD_DEFAULT(float, animationTimer, 10.0f);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
 
@@ -40,6 +42,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qount
         REGISTER_FIELD(count);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);
     )

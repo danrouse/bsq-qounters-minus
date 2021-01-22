@@ -1,12 +1,11 @@
 #include "hooks.hpp"
 
 using namespace QountersMinus;
-extern MainConfig mainConfig;
 
 MAKE_HOOK_OFFSETLESS(CoreGameHUDController_Start, void, GlobalNamespace::CoreGameHUDController* self) {
     LOG_CALLER;
     CoreGameHUDController_Start(self);
-    QounterRegistry::Initialize(mainConfig.enabled, mainConfig.hideCombo, mainConfig.hideMultiplier, mainConfig.italicText);
+    QounterRegistry::Initialize();
 }
 
 MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreController* self) {

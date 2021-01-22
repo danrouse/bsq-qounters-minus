@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -24,17 +25,17 @@ namespace QountersMinus {
         Percent
     };
     static int ProgressQounterModeCount = 4;
-    static std::map<ProgressQounterMode, std::string> ProgressQounterModeNames = {
-        {ProgressQounterMode::Original, "Original"},
-        {ProgressQounterMode::BaseGame, "Base Game"},
-        {ProgressQounterMode::TimeInBeats, "Time in Beats"},
-        {ProgressQounterMode::Percent, "Percentage"}
+    static std::map<int, std::string> ProgressQounterModeNames = {
+        {static_cast<int>(ProgressQounterMode::Original), "Original"},
+        {static_cast<int>(ProgressQounterMode::BaseGame), "Base Game"},
+        {static_cast<int>(ProgressQounterMode::TimeInBeats), "Time in Beats"},
+        {static_cast<int>(ProgressQounterMode::Percent), "Percentage"}
     };
-    static std::map<std::string, ProgressQounterMode> ProgressQounterModeLookup = {
-        {"Original", ProgressQounterMode::Original},
-        {"BaseGame", ProgressQounterMode::BaseGame},
-        {"TimeInBeats", ProgressQounterMode::TimeInBeats},
-        {"Percent", ProgressQounterMode::Percent}
+    static std::map<std::string, int> ProgressQounterModeLookup = {
+        {"Original", static_cast<int>(ProgressQounterMode::Original)},
+        {"BaseGame", static_cast<int>(ProgressQounterMode::BaseGame)},
+        {"TimeInBeats", static_cast<int>(ProgressQounterMode::TimeInBeats)},
+        {"Percent", static_cast<int>(ProgressQounterMode::Percent)}
     };
 }
 
@@ -52,6 +53,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ProgressQounter, QountersMinus::Q
     DECLARE_INSTANCE_FIELD(GlobalNamespace::AudioTimeSyncController*, audioTimeSyncController);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
 
@@ -69,6 +71,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ProgressQounter, QountersMinus::Q
         REGISTER_FIELD(audioTimeSyncController);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);
     )

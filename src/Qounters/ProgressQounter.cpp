@@ -9,6 +9,45 @@ int QountersMinus::Qounters::ProgressQounter::Mode = static_cast<int>(QountersMi
 bool QountersMinus::Qounters::ProgressQounter::ProgressTimeLeft = false;
 bool QountersMinus::Qounters::ProgressQounter::IncludeRing = false;
 
+void QountersMinus::Qounters::ProgressQounter::Register() {
+    QounterRegistry::Register<ProgressQounter>("Progress Qounter", "ProgressConfig");
+    QounterRegistry::RegisterConfig<ProgressQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<ProgressQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<ProgressQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<ProgressQounter>({
+        .ptr = &ProgressTimeLeft,
+        .field = "ProgressTimeLeft",
+        .displayName = "Show Time Left",
+        .helpText = "Starts the counter from the end of the song and decreases while the song is played.",
+    });
+    QounterRegistry::RegisterConfig<ProgressQounter>({
+        .ptr = &Mode,
+        .field = "Mode",
+        .enumNumElements = ProgressQounterModeCount,
+        .enumDisplayNames = ProgressQounterModeNames,
+        .enumSerializedNames = ProgressQounterModeLookup,
+        .helpText = "How should this Qounter display data?",
+    });
+    QounterRegistry::RegisterConfig<ProgressQounter>({
+        .ptr = &IncludeRing,
+        .field = "IncludeRing",
+        .displayName = "Include Progress Ring",
+        .helpText = "Whether or not the Progress Ring will also be affected by the \"Show Time Left\" setting. Only active in \"Original\" mode.",
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::ProgressQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ProgressQounter*>(

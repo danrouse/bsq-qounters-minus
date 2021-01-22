@@ -8,6 +8,39 @@ int QountersMinus::Qounters::NotesQounter::Distance = 1;
 bool QountersMinus::Qounters::NotesQounter::ShowPercentage = false;
 int QountersMinus::Qounters::NotesQounter::DecimalPrecision = 2;
 
+void QountersMinus::Qounters::NotesQounter::Register() {
+    QounterRegistry::Register<NotesQounter>("Note Qounter", "NoteConfig");
+    QounterRegistry::RegisterConfig<NotesQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<NotesQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<NotesQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<NotesQounter>({
+        .ptr = &ShowPercentage,
+        .field = "ShowPercentage",
+        .displayName = "Show Percentage",
+        .helpText = "Toggles the percentage of notes hit over total notes.",
+    });
+    QounterRegistry::RegisterConfig<NotesQounter>({
+        .ptr = &DecimalPrecision,
+        .field = "DecimalPrecision",
+        .displayName = "Percentage Precision",
+        .helpText = "How precise should the percentage be?",
+        .intMin = 0,
+        .intMax = 5,
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::NotesQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::NotesQounter*>(

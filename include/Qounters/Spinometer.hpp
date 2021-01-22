@@ -3,6 +3,7 @@
 #include "util/logger.hpp"
 #include "util/format.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -20,15 +21,15 @@ namespace QountersMinus {
         Highest
     };
     static int SpinometerModeCount = 3;
-    static std::map<SpinometerMode, std::string> SpinometerModeNames = {
-        {SpinometerMode::Average, "Average"},
-        {SpinometerMode::SplitAverage, "Split Average"},
-        {SpinometerMode::Highest, "Highest"}
+    static std::map<int, std::string> SpinometerModeNames = {
+        {static_cast<int>(SpinometerMode::Average), "Average"},
+        {static_cast<int>(SpinometerMode::SplitAverage), "Split Average"},
+        {static_cast<int>(SpinometerMode::Highest), "Highest"}
     };
-    static std::map<std::string, SpinometerMode> SpinometerModeLookup = {
-        {"Average", SpinometerMode::Average},
-        {"SplitAverage", SpinometerMode::SplitAverage},
-        {"Highest", SpinometerMode::Highest}
+    static std::map<std::string, int> SpinometerModeLookup = {
+        {"Average", static_cast<int>(SpinometerMode::Average)},
+        {"SplitAverage", static_cast<int>(SpinometerMode::SplitAverage)},
+        {"Highest", static_cast<int>(SpinometerMode::Highest)}
     };
 }
 
@@ -46,6 +47,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
     DECLARE_INSTANCE_FIELD_DEFAULT(float, highestSpin, 0.0f);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
 
@@ -63,6 +65,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
         REGISTER_FIELD(highestSpin);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);
     )

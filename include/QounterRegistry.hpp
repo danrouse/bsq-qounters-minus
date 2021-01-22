@@ -58,7 +58,7 @@ namespace QountersMinus {
         } RegistryEntry;
         inline std::map<std::pair<std::string, std::string>, RegistryEntry> registry;
 
-        void Initialize(bool enabled, bool hideCombo, bool hideMultiplier, bool italicText);
+        void Initialize();
         void DestroyAll();
 
         template <typename T>

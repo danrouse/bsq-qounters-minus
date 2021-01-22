@@ -4,6 +4,7 @@
 #include "util/pp.hpp"
 #include "config.hpp"
 #include "QounterRegistry.hpp"
+#include "Qounter.hpp"
 
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 

@@ -9,6 +9,45 @@ bool QountersMinus::Qounters::CutQounter::SeparateSaberCounts = false;
 bool QountersMinus::Qounters::CutQounter::SeparateCutValues = false;
 int QountersMinus::Qounters::CutQounter::AveragePrecision = 1;
 
+void QountersMinus::Qounters::CutQounter::Register() {
+    QounterRegistry::Register<CutQounter>("Cut Qounter", "CutConfig");
+    QounterRegistry::RegisterConfig<CutQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<CutQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<CutQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<CutQounter>({
+        .ptr = &SeparateSaberCounts,
+        .field = "SeparateSaberCounts",
+        .displayName = "Separate Saber Cuts",
+        .helpText = "Shows the average cut for the left and right sabers separately.",
+    });
+    QounterRegistry::RegisterConfig<CutQounter>({
+        .ptr = &SeparateCutValues,
+        .field = "SeparateCutValues",
+        .displayName = "Separate Cut Values",
+        .helpText = "Show separate averages for angle before cut (0-70), angle after cut (0-30) and distance to center (0-15).",
+    });
+    QounterRegistry::RegisterConfig<CutQounter>({
+        .ptr = &AveragePrecision,
+        .field = "AveragePrecision",
+        .displayName = "Average Cut Precision",
+        .helpText = "How many decimals should be shown on the average cuts?",
+        .intMin = 0,
+        .intMax = 4,
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::CutQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::CutQounter*>(

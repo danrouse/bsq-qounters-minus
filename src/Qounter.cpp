@@ -1,11 +1,17 @@
 #include "Qounter.hpp"
 
-extern QountersMinus::MainConfig mainConfig;
+DEFINE_CLASS(QountersMinus::Qounter);
+
+bool QountersMinus::Qounter::Enabled = true;
+bool QountersMinus::Qounter::HideCombo = false;
+bool QountersMinus::Qounter::HideMultiplier = false;
+float QountersMinus::Qounter::ComboOffset = 0.2f;
+float QountersMinus::Qounter::MultiplierOffset = 0.4f;
+bool QountersMinus::Qounter::ItalicText = false;
 
 const float distanceUnit = 40.0f;
 const float distanceUnitOffsetMult = 0.15f;
 
-DEFINE_CLASS(QountersMinus::Qounter);
 
 struct QounterPositionData {
     std::string parentName;
@@ -57,9 +63,9 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
         containerGO->get_transform()->SetParent(parentGO->get_transform(), false);
         auto anchoredPosition = QounterPositionData[position].anchoredPosition;
         if (position == QountersMinus::QounterPosition::BelowCombo || position == QountersMinus::QounterPosition::AboveCombo) {
-            anchoredPosition.y *= 1.0f + (mainConfig.comboOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
+            anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::ComboOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else if (position == QountersMinus::QounterPosition::BelowMultiplier || position == QountersMinus::QounterPosition::AboveMultiplier) {
-            anchoredPosition.y *= 1.0f + (mainConfig.multiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
+            anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::MultiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else {
             rect->set_localPosition(UnityEngine::Vector3(0.0f, 0.0f, 5.0f));
             rect->set_localScale(UnityEngine::Vector3(0.8f, 0.8f, 0.8f));

@@ -9,6 +9,41 @@ int QountersMinus::Qounters::SpeedQounter::Mode = static_cast<int>(QountersMinus
 bool QountersMinus::Qounters::SpeedQounter::SeparateCutValues = true;
 int QountersMinus::Qounters::SpeedQounter::DecimalPrecision = 2;
 
+void QountersMinus::Qounters::SpeedQounter::Register() {
+    QounterRegistry::Register<SpeedQounter>("Speed Qounter", "SpeedConfig");
+    QounterRegistry::RegisterConfig<SpeedQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<SpeedQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<SpeedQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<SpeedQounter>({
+        .ptr = &DecimalPrecision,
+        .field = "DecimalPrecision",
+        .displayName = "Percentage Precision",
+        .helpText = "How precise should the percentage be?",
+        .intMin = 0,
+        .intMax = 5,
+    });
+    QounterRegistry::RegisterConfig<SpeedQounter>({
+        .ptr = &Mode,
+        .field = "Mode",
+        .enumNumElements = SpeedQounterModeCount,
+        .enumDisplayNames = SpeedQounterModeNames,
+        .enumSerializedNames = SpeedQounterModeLookup,
+        .helpText = "How should this Qounter display data?",
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::SpeedQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::SpeedQounter*>(

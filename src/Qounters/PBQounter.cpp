@@ -13,6 +13,71 @@ int QountersMinus::Qounters::PBQounter::TextSize = 2;
 bool QountersMinus::Qounters::PBQounter::UnderScore = true;
 bool QountersMinus::Qounters::PBQounter::HideFirstScore = false;
 
+void QountersMinus::Qounters::PBQounter::Register() {
+    QounterRegistry::Register<PBQounter>("PB Qounter", "PBConfig");
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &Enabled,
+        .field = "Enabled",
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &Position,
+        .field = "Position",
+        .enumNumElements = QounterPositionCount,
+        .enumDisplayNames = QounterPositionNames,
+        .enumSerializedNames = QounterPositionLookup,
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &Distance,
+        .field = "Distance",
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &Mode,
+        .field = "Mode",
+        .enumNumElements = PBQounterModeCount,
+        .enumDisplayNames = PBQounterModeNames,
+        .enumSerializedNames = PBQounterModeLookup,
+        .helpText = "Change color based on absolute (song maximum) or relative (current maximum) score.",
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &BetterColor,
+        .field = "BetterColor",
+        .displayName = "Better Color",
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &DefaultColor,
+        .field = "DefaultColor",
+        .displayName = "Default Color",
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &DecimalPrecision,
+        .field = "DecimalPrecision",
+        .displayName = "Percentage Precision",
+        .helpText = "How precise should the percentage be?",
+        .intMin = 0,
+        .intMax = 5,
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &TextSize,
+        .field = "TextSize",
+        .displayName = "Text Sizee",
+        .helpText = "How large should the text be?",
+        .intMin = 1,
+        .intMax = 10,
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &UnderScore,
+        .field = "UnderScore",
+        .displayName = "Below Score Qounter",
+        .helpText = "Will the Personal Best counter instead be positioned below the Score Qounter?",
+    });
+    QounterRegistry::RegisterConfig<PBQounter>({
+        .ptr = &HideFirstScore,
+        .field = "HideFirstScore",
+        .displayName = "Hide First Score",
+        .helpText = "Hides Personal Best if you play a map that doesnt yet have a personal best set.",
+    });
+}
+
 QountersMinus::Qounter* QountersMinus::Qounters::PBQounter::Initialize() {
     if (!Enabled) return nullptr;
     return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PBQounter*>(

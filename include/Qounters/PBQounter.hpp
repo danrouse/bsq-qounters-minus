@@ -4,6 +4,7 @@
 #include "util/format.hpp"
 #include "util/note_count.hpp"
 #include "Qounter.hpp"
+#include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -21,13 +22,13 @@ namespace QountersMinus {
         Relative
     };
     static int PBQounterModeCount = 2;
-    static std::map<PBQounterMode, std::string> PBQounterModeNames = {
-        {PBQounterMode::Absolute, "Absolute"},
-        {PBQounterMode::Relative, "Relative"}
+    static std::map<int, std::string> PBQounterModeNames = {
+        {static_cast<int>(PBQounterMode::Absolute), "Absolute"},
+        {static_cast<int>(PBQounterMode::Relative), "Relative"}
     };
-    static std::map<std::string, PBQounterMode> PBQounterModeLookup = {
-        {"Absolute", PBQounterMode::Absolute},
-        {"Relative", PBQounterMode::Relative}
+    static std::map<std::string, int> PBQounterModeLookup = {
+        {"Absolute", static_cast<int>(PBQounterMode::Absolute)},
+        {"Relative", static_cast<int>(PBQounterMode::Relative)}
     };
 }
 
@@ -48,6 +49,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
     DECLARE_INSTANCE_FIELD_DEFAULT(int, highScore, 0);
 
     DECLARE_METHOD(static Qounter*, Initialize);
+    DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnScoreUpdated, int modifiedScore);
     DECLARE_METHOD(void, SetPersonalBest, float ratioOfMaxScore);
@@ -69,6 +71,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
         REGISTER_FIELD(highScore);
 
         REGISTER_METHOD(Initialize);
+        REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(OnScoreUpdated);
         REGISTER_METHOD(SetPersonalBest);
