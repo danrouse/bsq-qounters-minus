@@ -14,6 +14,7 @@
 #include "GlobalNamespace/ScoreUIController.hpp"
 #include "GlobalNamespace/GameplayModifiersModelSO.hpp"
 #include "GlobalNamespace/PlayerLevelStatsData.hpp"
+#include "GlobalNamespace/GameEnergyCounter.hpp"
 #include "UnityEngine/Resources.hpp"
 
 namespace QountersMinus {

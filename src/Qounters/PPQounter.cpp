@@ -51,7 +51,7 @@ GlobalNamespace::GameplayModifiers* RemovePositiveModifiers(GlobalNamespace::Gam
         modifiers->demoNoFail,
         modifiers->demoNoObstacles,
         modifiers->energyType,
-        modifiers->noFail,
+        modifiers->noFailOn0Energy,
         modifiers->instaFail,
         modifiers->failOnSaberClash,
         modifiers->enabledObstacleType,
@@ -69,7 +69,7 @@ GlobalNamespace::GameplayModifiers* RemovePositiveModifiers(GlobalNamespace::Gam
 float CalculateMultiplier(std::string songID, GlobalNamespace::ScoreController* scoreController) {
     auto modifiers = QountersMinus::PP::SongAllowsPositiveModifiers(songID) ?
         scoreController->gameplayModifiers : RemovePositiveModifiers(scoreController->gameplayModifiers);
-    auto multiplier = scoreController->gameplayModifiersModel->GetTotalMultiplier(modifiers);
+    auto multiplier = scoreController->gameplayModifiersModel->GetTotalMultiplier(modifiers, scoreController->gameEnergyCounter->energy);
 
     // ScoreSaber weights these multipliers differently
     if (modifiers->get_disappearingArrows())

@@ -91,7 +91,7 @@ void QountersMinus::Qounters::PBQounter::Start() {
 
     maxPossibleScore = GlobalNamespace::ScoreModel::GetModifiedScoreForGameplayModifiersScoreMultiplier(
         maxRawScore,
-        refs->scoreController->gameplayModifiersModel->GetTotalMultiplier(refs->scoreController->gameplayModifiers)
+        refs->scoreController->gameplayModifiersModel->GetTotalMultiplier(refs->scoreController->gameplayModifiers, refs->scoreController->gameEnergyCounter->energy)
     );
     auto playerLevelStats = refs->playerData->GetPlayerLevelStatsData(refs->difficultyBeatmap);
     highScore = playerLevelStats->highScore;

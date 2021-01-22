@@ -12,6 +12,7 @@
 
 #include "GlobalNamespace/GameplayModifiersModelSO.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
+#include "GlobalNamespace/GameEnergyCounter.hpp"
 
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter,
     DECLARE_STATIC_FIELD(bool, Enabled);
