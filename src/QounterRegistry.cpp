@@ -16,6 +16,7 @@ void _DeactivateChildren(std::string gameObjectName) {
 void QountersMinus::QounterRegistry::Initialize() {
     for (auto&& def : registry) def.second.instance = nullptr;
     if (!Qounter::Enabled) return;
+    if (UnityEngine::Object::FindObjectOfType<PlayerDataModel*>()->playerData->playerSpecificSettings->noTextsAndHuds) return;
     if (Qounter::HideCombo) _DeactivateChildren("LeftPanel/ComboPanel");
     if (Qounter::HideMultiplier) {
         auto multiplierGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("RightPanel/MultiplierCanvas"));

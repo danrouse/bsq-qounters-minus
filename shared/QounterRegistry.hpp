@@ -7,6 +7,9 @@
 #include "UnityEngine/Animator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
+#include "GlobalNamespace/PlayerDataModel.hpp"
+#include "GlobalNamespace/PlayerData.hpp"
+#include "GlobalNamespace/PlayerSpecificSettings.hpp"
 #include "TMPro/FontStyles.hpp"
 
 namespace QountersMinus {
