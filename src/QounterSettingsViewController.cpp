@@ -18,9 +18,11 @@ void StartTestLevel(QountersMinus::QounterSettingsViewController* self) {
 }
 
 UnityEngine::GameObject* CreateContentView(UnityEngine::Transform* parent) {
+    static auto name = il2cpp_utils::createcsstr("QountersMinusSettingsContainer", il2cpp_utils::StringType::Manual);
     auto scrollContainer = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(parent);
     auto scrollContainerScrollerRect = scrollContainer->get_transform()->get_parent()->get_parent()->get_parent()->GetComponent<UnityEngine::RectTransform*>();
     scrollContainerScrollerRect->set_anchoredPosition(UnityEngine::Vector2(22.0f, 0.0f));
+    scrollContainer->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->set_name(name);
     return scrollContainer;
 }
 
@@ -28,30 +30,30 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     if (!firstActivation || !addedToHierarchy) return;
 
     auto navigationContainer = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(get_transform());
-    navigationContainer->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>()->set_spacing(0.5f);
+    navigationContainer->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>()->set_spacing(-0.5f);
 
     auto navigationContainerRect = navigationContainer->get_transform()->get_parent()->get_parent()->get_parent()->GetComponent<UnityEngine::RectTransform*>();
     navigationContainerRect->set_sizeDelta(UnityEngine::Vector2(-112.0f, -12.0f));
     navigationContainerRect->set_anchoredPosition(UnityEngine::Vector2(-52.0f, 6.0f));
 
-    containers = il2cpp_utils::New<System::Collections::Generic::List_1<UnityEngine::GameObject*>*>().value();
-
     for (auto def : QountersMinus::QounterRegistry::registry) {
-        auto container = CreateQounterConfigView(get_transform(), def.second.longName, def.first.first, def.first.second, def.second.configMetadata);
-        containers->Add(container);
-        container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(false);
+        auto context = new NavigationButtonContext({
+            .parent = get_transform(),
+            .title = def.second.longName,
+            ._namespace = def.first.first,
+            ._class = def.first.second,
+            .configMetadata = def.second.configMetadata,
+        });
+        context->klass = classof(System::Object*);
         QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.second.shortName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
-            classof(UnityEngine::Events::UnityAction*), container, +[](UnityEngine::GameObject* container) {
-                auto ancestor = container->get_transform()->get_parent()->get_parent()->get_parent()->get_parent();
-                for (int i = 3; i < ancestor->get_childCount(); i++) {
-                    ancestor->GetChild(i)->get_gameObject()->SetActive(false);
-                }
-                container->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
+            classof(UnityEngine::Events::UnityAction*), context, +[](NavigationButtonContext* context) {
+                auto existingContainer = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("QountersMinusSettingsContainer"));
+                if (existingContainer) UnityEngine::Object::Destroy(existingContainer);
+                CreateQounterConfigView(context->parent, context->title, context->_namespace, context->_class, context->configMetadata);
             }
         ));
     }
-
-    containers->get_Item(0)->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->SetActive(true);
+    CreateQounterConfigView(get_transform(), QountersMinus::QounterRegistry::registry.begin()->second.longName, QountersMinus::QounterRegistry::registry.begin()->first.first, QountersMinus::QounterRegistry::registry.begin()->first.second, QountersMinus::QounterRegistry::registry.begin()->second.configMetadata);
 
     auto testButton = QuestUI::BeatSaberUI::CreateUIButton(get_transform(), "Test", "PlayButton", il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
         classof(UnityEngine::Events::UnityAction*), this, StartTestLevel
@@ -91,7 +93,13 @@ void HandleColorSettingChanged(System::Reflection::Pointer* csptr, UnityEngine::
     QountersMinus::SaveConfig();
 }
 
-UnityEngine::GameObject* CreateQounterConfigView(UnityEngine::Transform* parent, std::string title, std::string namespaze, std::string klass, std::vector<std::shared_ptr<QountersMinus::QounterRegistry::ConfigMetadata>> configMetadata) {
+UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
+    UnityEngine::Transform* parent,
+    std::string title,
+    std::string namespaze,
+    std::string klass,
+    std::vector<std::shared_ptr<QountersMinus::QounterRegistry::ConfigMetadata>> configMetadata
+) {
     auto container = CreateContentView(parent);
     auto titleText = QuestUI::BeatSaberUI::CreateText(container->get_transform(), title);
     titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
