@@ -59,7 +59,7 @@ void QountersMinus::Qounters::PBQounter::Register() {
     QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &TextSize,
         .field = "TextSize",
-        .displayName = "Text Sizee",
+        .displayName = "Text Size",
         .helpText = "How large should the text be?",
         .intMin = 1,
         .intMax = 10,
