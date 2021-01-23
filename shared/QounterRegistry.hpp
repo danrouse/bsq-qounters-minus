@@ -60,6 +60,7 @@ namespace QountersMinus {
             std::vector<std::shared_ptr<ConfigMetadata>> configMetadata;
         } RegistryEntry;
         inline std::map<std::pair<std::string, std::string>, RegistryEntry> registry;
+        inline std::vector<std::pair<std::string, std::string>> registryInsertionOrder;
 
         template <typename T>
         void Register(std::string shortName, std::string longName, std::string configKey, bool isBaseQounter) {
@@ -78,6 +79,7 @@ namespace QountersMinus {
                 .configKey = configKey,
                 .isBaseQounter = isBaseQounter
             };
+            registryInsertionOrder.push_back({typeInfo->getNamespace(), typeInfo->getName()});
         }
 
         template <typename T>

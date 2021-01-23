@@ -23,9 +23,11 @@ void QountersMinus::QounterRegistry::Initialize() {
         _DeactivateChildren(multiplierGO);
     }
 
-    for (auto&& def : registry) {
-        if (def.second.initializer) {
-            def.second.instance = il2cpp_utils::RunStaticMethodUnsafe<Qounter*>(def.second.initializer).value();
+    for (auto key : registryInsertionOrder) {
+        auto&& def = registry[key];
+        if (def.initializer) {
+            LOG_DEBUG("Initialize " + key.first + "::" + key.second);
+            def.instance = il2cpp_utils::RunStaticMethodUnsafe<Qounter*>(def.initializer).value();
         }
     }
 
