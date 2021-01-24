@@ -42,8 +42,8 @@ MAKE_HOOK_OFFSETLESS(HealthWarningFlowCoordinator_DidActivate, void, Il2CppObjec
     HealthWarningFlowCoordinator_DidActivate(self, a, b, c);
 
     // Defer config loading to this point to give Custom Qounters a chance to register
-    // LOG_DEBUG("Loading config");
-    // if (!QountersMinus::LoadConfig()) QountersMinus::SaveConfig();
+    LOG_DEBUG("Loading config");
+    if (!QountersMinus::LoadConfig()) QountersMinus::SaveConfig();
 
     PP::Initialize();
 }

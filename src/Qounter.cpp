@@ -23,8 +23,8 @@ std::map<QountersMinus::QounterPosition, QounterPositionData> QounterPositionDat
     {QountersMinus::QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 40.0f), false}},
     {QountersMinus::QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 12.0f), true}},
     {QountersMinus::QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 40.0f), false}},
-    {QountersMinus::QounterPosition::BelowEnergy, {"EnergyPanel", UnityEngine::Vector2(0.0f, -5.0f), true}},
-    {QountersMinus::QounterPosition::AboveHighway, {"EnergyPanel", UnityEngine::Vector2(0.0f, 180.0f), false}}
+    {QountersMinus::QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector2(0.0f, -180.0f), true}},
+    {QountersMinus::QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector2(0.0f, 100.0f), false}}
 };
 
 void DeactivateChildren(UnityEngine::GameObject* gameObject) {
@@ -66,8 +66,8 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
         } else if (position == QountersMinus::QounterPosition::BelowMultiplier || position == QountersMinus::QounterPosition::AboveMultiplier) {
             anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::MultiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else {
-            rect->set_localPosition(UnityEngine::Vector3(0.0f, 0.0f, -5.0f));
-            rect->set_localScale(UnityEngine::Vector3(0.8f, 0.8f, 0.8f));
+            auto parentPosition = parentGO->get_transform()->get_position();
+            anchoredPosition.x += parentPosition.x * -100.0f;
         }
         rect->set_anchoredPosition(anchoredPosition);
     }

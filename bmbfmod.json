@@ -1,7 +1,7 @@
 {
   "id": "qounters-minus",
   "name": "Qounters-",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "author": "danrouse#0214",
   "description": [
     "Store brand version of Counters+ for the Quest version of Beat Saber. Adds a variety of configurable Qounters to display statistics in-game."
@@ -9,7 +9,7 @@
   "icon": "cover.png",
 	"coverImageFilename": "cover.png",
   "category": "Gameplay",
-  "gameVersion": "1.13.0",
+  "gameVersion": "1.13.2",
   "platform": "Quest",
   "components": [
     {
@@ -24,7 +24,7 @@
     {
       "type": "HookModLibrary",
       "installAction": {
-        "installLibraryFile": "libbeatsaber-hook_1_0_9.so"
+        "installLibraryFile": "libbeatsaber-hook_1_0_10.so"
       }
     },
     {
