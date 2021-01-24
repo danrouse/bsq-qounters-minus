@@ -20,21 +20,6 @@ UnityEngine::Color QountersMinus::Qounters::ScoreQounter::EColor = UnityEngine::
 void QountersMinus::Qounters::ScoreQounter::Register() {
     QounterRegistry::Register<ScoreQounter>("Score", "Score Qounter", "ScoreConfig", true);
     QounterRegistry::RegisterConfig<ScoreQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<ScoreQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<ScoreQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &Mode,
         .field = "Mode",
         .enumNumElements = ScoreQounterModeCount,
@@ -98,13 +83,6 @@ void QountersMinus::Qounters::ScoreQounter::Register() {
         .displayName = "E Color",
         .helpText = "Change the rank color for the E rank.",
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::ScoreQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ScoreQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 void QountersMinus::Qounters::ScoreQounter::Start() {

@@ -24,7 +24,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter
     DECLARE_INSTANCE_FIELD(float, maxPP);
     DECLARE_INSTANCE_FIELD(float, multiplier);
 
-    DECLARE_METHOD(static Qounter*, Initialize);
     DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnScoreUpdated, int modifiedScore);
@@ -39,7 +38,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter
         REGISTER_FIELD(maxPP);
         REGISTER_FIELD(multiplier);
 
-        REGISTER_METHOD(Initialize);
         REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(OnScoreUpdated);

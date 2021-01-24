@@ -12,21 +12,6 @@ int QountersMinus::Qounters::CutQounter::AveragePrecision = 1;
 void QountersMinus::Qounters::CutQounter::Register() {
     QounterRegistry::Register<CutQounter>("Cut", "Cut Qounter", "CutConfig", true);
     QounterRegistry::RegisterConfig<CutQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<CutQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<CutQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<CutQounter>({
         .ptr = &SeparateSaberCounts,
         .field = "SeparateSaberCounts",
         .displayName = "Separate Saber Cuts",
@@ -46,13 +31,6 @@ void QountersMinus::Qounters::CutQounter::Register() {
         .intMin = 0,
         .intMax = 4,
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::CutQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::CutQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 void QountersMinus::Qounters::CutQounter::Start() {

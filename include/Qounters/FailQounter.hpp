@@ -26,7 +26,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qount
     DECLARE_INSTANCE_FIELD_DEFAULT(int, count, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, animationTimer, 10.0f);
 
-    DECLARE_METHOD(static Qounter*, Initialize);
     DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
@@ -41,7 +40,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qount
         REGISTER_FIELD(restarts);
         REGISTER_FIELD(count);
 
-        REGISTER_METHOD(Initialize);
         REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);

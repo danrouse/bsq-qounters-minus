@@ -82,6 +82,13 @@ void SetPosition(UnityEngine::Transform* transform, QountersMinus::QounterPositi
     reinterpret_cast<UnityEngine::RectTransform*>(transform)->set_anchoredPosition(anchoredPosition);
 }
 
+QountersMinus::Qounter* QountersMinus::Qounter::Initialize(System::Type* type, QountersMinus::QounterPosition position, float distance) {
+    auto parent = GetParent(position);
+    auto instance = reinterpret_cast<Qounter*>(parent->AddComponent(type));
+    SetPosition(instance->gameObject->get_transform(), position, distance);
+    return instance;
+}
+
 void QountersMinus::Qounter::Awake() {
     static auto gameObjectName = il2cpp_utils::createcsstr("QountersMinus_Qounter", il2cpp_utils::StringType::Manual);
     gameObject = UnityEngine::GameObject::New_ctor(gameObjectName);

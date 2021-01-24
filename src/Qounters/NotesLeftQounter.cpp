@@ -10,33 +10,11 @@ bool QountersMinus::Qounters::NotesLeftQounter::LabelAboveCount = false;
 void QountersMinus::Qounters::NotesLeftQounter::Register() {
     QounterRegistry::Register<NotesLeftQounter>("Notes Left", "Notes Left Qounter", "NotesLeftConfig", true);
     QounterRegistry::RegisterConfig<NotesLeftQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<NotesLeftQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<NotesLeftQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<NotesLeftQounter>({
         .ptr = &LabelAboveCount,
         .field = "LabelAboveCount",
         .displayName = "Label Above Qounter",
         .helpText = "Put the label above the number, similar to a usual Qounters- qounter.",
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::NotesLeftQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::NotesLeftQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 void QountersMinus::Qounters::NotesLeftQounter::Start() {

@@ -36,16 +36,17 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     navigationContainerRect->set_sizeDelta(UnityEngine::Vector2(-112.0f, -12.0f));
     navigationContainerRect->set_anchoredPosition(UnityEngine::Vector2(-52.0f, 6.0f));
 
-    for (auto def : QountersMinus::QounterRegistry::registry) {
+    for (auto key : QountersMinus::QounterRegistry::registryInsertionOrder) {
+        auto def = QountersMinus::QounterRegistry::registry[key];
         auto context = new NavigationButtonContext({
             .parent = get_transform(),
-            .title = def.second.longName,
-            ._namespace = def.first.first,
-            ._class = def.first.second,
-            .configMetadata = def.second.configMetadata,
+            .title = def.longName,
+            ._namespace = key.first,
+            ._class = key.second,
+            .configMetadata = def.configMetadata,
         });
         context->klass = classof(System::Object*);
-        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.second.shortName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
+        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.shortName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
             classof(UnityEngine::Events::UnityAction*), context, +[](NavigationButtonContext* context) {
                 auto existingContainer = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("QountersMinusSettingsContainer"));
                 if (existingContainer) UnityEngine::Object::Destroy(existingContainer);

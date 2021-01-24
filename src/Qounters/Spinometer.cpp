@@ -10,21 +10,6 @@ int QountersMinus::Qounters::Spinometer::Mode = static_cast<int>(QountersMinus::
 void QountersMinus::Qounters::Spinometer::Register() {
     QounterRegistry::Register<Spinometer>("Spinometer", "Spinometer", "Spinometer", true);
     QounterRegistry::RegisterConfig<Spinometer>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<Spinometer>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<Spinometer>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<Spinometer>({
         .ptr = &Mode,
         .field = "Mode",
         .enumNumElements = SpinometerModeCount,
@@ -32,13 +17,6 @@ void QountersMinus::Qounters::Spinometer::Register() {
         .enumSerializedNames = SpinometerModeLookup,
         .helpText = "How should this Qounter display data?",
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::Spinometer::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::Spinometer*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 std::string SpeedToColor(float speed) {

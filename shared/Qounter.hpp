@@ -15,6 +15,9 @@
 #include "GlobalNamespace/NoteCutInfo.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
+// define version for external consumers
+#define QOUNTERS_MINUS_VERSION "0.2.1"
+
 namespace QountersMinus {
     enum class QounterPosition {
         BelowCombo,
@@ -80,12 +83,5 @@ DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
     public:
         TMPro::TextMeshProUGUI* CreateBasicTitle(std::string text);
         void CreateBasicText(std::string text);
-
-        template<typename T>
-        static T Initialize(QountersMinus::QounterPosition position, float distance) {
-            auto parent = GetParent(position);
-            auto instance = parent->AddComponent<T>();
-            SetPosition(instance->gameObject->get_transform(), position, distance);
-            return instance;
-        }
+        static Qounter* Initialize(System::Type* type, QountersMinus::QounterPosition position, float distance);
 )

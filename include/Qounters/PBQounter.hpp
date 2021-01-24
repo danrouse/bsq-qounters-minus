@@ -49,7 +49,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
     DECLARE_INSTANCE_FIELD_DEFAULT(int, maxPossibleScore, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, highScore, 0);
 
-    DECLARE_METHOD(static Qounter*, Initialize);
     DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnScoreUpdated, int modifiedScore);
@@ -71,7 +70,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter
         REGISTER_FIELD(maxPossibleScore);
         REGISTER_FIELD(highScore);
 
-        REGISTER_METHOD(Initialize);
         REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(OnScoreUpdated);

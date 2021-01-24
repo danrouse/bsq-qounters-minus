@@ -11,21 +11,6 @@ int QountersMinus::Qounters::NotesQounter::DecimalPrecision = 2;
 void QountersMinus::Qounters::NotesQounter::Register() {
     QounterRegistry::Register<NotesQounter>("Note", "Note Qounter", "NoteConfig", true);
     QounterRegistry::RegisterConfig<NotesQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<NotesQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<NotesQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<NotesQounter>({
         .ptr = &ShowPercentage,
         .field = "ShowPercentage",
         .displayName = "Show Percentage",
@@ -39,13 +24,6 @@ void QountersMinus::Qounters::NotesQounter::Register() {
         .intMin = 0,
         .intMax = 5,
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::NotesQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::NotesQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 void QountersMinus::Qounters::NotesQounter::Start() {

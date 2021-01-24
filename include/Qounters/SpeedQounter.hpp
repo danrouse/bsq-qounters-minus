@@ -54,7 +54,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD_DEFAULT(float, lastUpdated, 0.0f);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, lastUpdatedFastest, 0.0f);
 
-    DECLARE_METHOD(static Qounter*, Initialize);
     DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, Update);
@@ -75,7 +74,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
         REGISTER_FIELD(lastUpdated);
         REGISTER_FIELD(lastUpdatedFastest);
 
-        REGISTER_METHOD(Initialize);
         REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(Update);

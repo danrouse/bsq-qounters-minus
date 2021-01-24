@@ -48,12 +48,12 @@ namespace QountersMinus {
             } ConfigMetadata;
             typedef struct _RegistryEntry {
                 QountersMinus::Qounter* instance;
-                const MethodInfo* initializer;
                 std::map<Event, const MethodInfo*> eventHandlers;
                 std::string shortName;
                 std::string longName;
                 std::string configKey;
                 std::vector<std::shared_ptr<ConfigMetadata>> configMetadata;
+                std::map<std::string, void*> staticFieldRefs;
                 bool isBaseQounter = false;
             } RegistryEntry;
             static std::map<std::pair<std::string, std::string>, RegistryEntry> registry;
@@ -61,20 +61,44 @@ namespace QountersMinus {
             template <typename T>
             static void Register(std::string shortName, std::string longName, std::string configKey, bool isBaseQounter) {
                 auto typeInfo = custom_types::name_registry<T>::get();
-                auto initialize = il2cpp_utils::FindMethodUnsafe(typeInfo->getNamespace(), typeInfo->getName(), "Initialize", 0);
                 std::map<Event, const MethodInfo*> eventHandlers;
                 for (auto sig : eventHandlerSignatures) {
                     eventHandlers[sig.event] = il2cpp_utils::FindMethodUnsafe(typeInfo->getNamespace(), typeInfo->getName(), sig.methodName, sig.numArgs);
                 }
+                std::map<std::string, void*> staticFieldRefs;
+                if constexpr (!std::is_same_v<T, QountersMinus::Qounter>) {
+                    staticFieldRefs = {
+                        {"Enabled", &T::Enabled},
+                        {"Position", &T::Position},
+                        {"Distance", &T::Distance}
+                    };
+                }
                 registry[{typeInfo->getNamespace(), typeInfo->getName()}] = {
                     .instance = (Qounter*)nullptr,
-                    .initializer = initialize,
                     .eventHandlers = eventHandlers,
                     .shortName = shortName,
                     .longName = longName,
                     .configKey = configKey,
-                    .isBaseQounter = isBaseQounter
+                    .isBaseQounter = isBaseQounter,
+                    .staticFieldRefs = staticFieldRefs
                 };
+                if constexpr (!std::is_same_v<T, QountersMinus::Qounter>) {
+                    RegisterConfig<T>({
+                        .ptr = staticFieldRefs["Enabled"],
+                        .field = "Enabled",
+                    });
+                    RegisterConfig<T>({
+                        .ptr = staticFieldRefs["Position"],
+                        .field = "Position",
+                        .enumNumElements = QounterPositionCount,
+                        .enumDisplayNames = QounterPositionNames,
+                        .enumSerializedNames = QounterPositionLookup,
+                    });
+                    RegisterConfig<T>({
+                        .ptr = staticFieldRefs["Distance"],
+                        .field = "Distance",
+                    });
+                }
                 registryInsertionOrder.push_back({typeInfo->getNamespace(), typeInfo->getName()});
             }
 

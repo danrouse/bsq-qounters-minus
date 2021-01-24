@@ -12,21 +12,6 @@ int QountersMinus::Qounters::SpeedQounter::DecimalPrecision = 2;
 void QountersMinus::Qounters::SpeedQounter::Register() {
     QounterRegistry::Register<SpeedQounter>("Speed", "Speed Qounter", "SpeedConfig", true);
     QounterRegistry::RegisterConfig<SpeedQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<SpeedQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<SpeedQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<SpeedQounter>({
         .ptr = &DecimalPrecision,
         .field = "DecimalPrecision",
         .displayName = "Percentage Precision",
@@ -42,13 +27,6 @@ void QountersMinus::Qounters::SpeedQounter::Register() {
         .enumSerializedNames = SpeedQounterModeLookup,
         .helpText = "How should this Qounter display data?",
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::SpeedQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::SpeedQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 float Max(System::Collections::Generic::List_1<float>* list) {

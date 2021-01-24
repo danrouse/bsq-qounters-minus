@@ -12,21 +12,6 @@ bool QountersMinus::Qounters::ProgressQounter::IncludeRing = false;
 void QountersMinus::Qounters::ProgressQounter::Register() {
     QounterRegistry::Register<ProgressQounter>("Progress", "Progress Qounter", "ProgressConfig", true);
     QounterRegistry::RegisterConfig<ProgressQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<ProgressQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<ProgressQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<ProgressQounter>({
         .ptr = &ProgressTimeLeft,
         .field = "ProgressTimeLeft",
         .displayName = "Show Time Left",
@@ -46,13 +31,6 @@ void QountersMinus::Qounters::ProgressQounter::Register() {
         .displayName = "Include Progress Ring",
         .helpText = "Whether or not the Progress Ring will also be affected by the \"Show Time Left\" setting. Only active in \"Original\" mode.",
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::ProgressQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::ProgressQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 HMUI::ImageView* CreateRing(UnityEngine::Transform* parent) {

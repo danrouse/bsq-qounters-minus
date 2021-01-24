@@ -16,21 +16,6 @@ bool QountersMinus::Qounters::PBQounter::HideFirstScore = false;
 void QountersMinus::Qounters::PBQounter::Register() {
     QounterRegistry::Register<PBQounter>("Personal Best", "PB Qounter", "PBConfig", true);
     QounterRegistry::RegisterConfig<PBQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<PBQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<PBQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &Mode,
         .field = "Mode",
         .enumNumElements = PBQounterModeCount,
@@ -76,13 +61,6 @@ void QountersMinus::Qounters::PBQounter::Register() {
         .displayName = "Hide First Score",
         .helpText = "Hides Personal Best if you play a map that doesnt yet have a personal best set.",
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::PBQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PBQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 void QountersMinus::Qounters::PBQounter::Start() {

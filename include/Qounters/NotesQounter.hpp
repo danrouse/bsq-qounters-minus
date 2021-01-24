@@ -20,7 +20,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD_DEFAULT(int, allCuts, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, goodCuts, 0);
 
-    DECLARE_METHOD(static Qounter*, Initialize);
     DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, OnNoteCut, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info);
@@ -37,7 +36,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, NotesQounter, QountersMinus::Qoun
         REGISTER_FIELD(allCuts);
         REGISTER_FIELD(goodCuts);
 
-        REGISTER_METHOD(Initialize);
         REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(OnNoteCut);

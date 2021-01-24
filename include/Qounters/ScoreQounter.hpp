@@ -57,7 +57,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, relativeScoreText);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::RankModel::Rank, prevImmediateRank);
 
-    DECLARE_METHOD(static Qounter*, Initialize);
     DECLARE_METHOD(static void, Register);
     DECLARE_METHOD(void, Start);
     DECLARE_METHOD(void, UpdateText);
@@ -83,7 +82,6 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qoun
         REGISTER_FIELD(relativeScoreText);
         REGISTER_FIELD(prevImmediateRank);
 
-        REGISTER_METHOD(Initialize);
         REGISTER_METHOD(Register);
         REGISTER_METHOD(Start);
         REGISTER_METHOD(UpdateText);

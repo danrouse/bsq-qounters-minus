@@ -17,33 +17,11 @@ static const float MULT_FASTERSONG_SCORESABER = 0.08f;
 void QountersMinus::Qounters::PPQounter::Register() {
     QounterRegistry::Register<PPQounter>("PP", "PP Qounter", "PPConfig", true);
     QounterRegistry::RegisterConfig<PPQounter>({
-        .ptr = &Enabled,
-        .field = "Enabled",
-    });
-    QounterRegistry::RegisterConfig<PPQounter>({
-        .ptr = &Position,
-        .field = "Position",
-        .enumNumElements = QounterPositionCount,
-        .enumDisplayNames = QounterPositionNames,
-        .enumSerializedNames = QounterPositionLookup,
-    });
-    QounterRegistry::RegisterConfig<PPQounter>({
-        .ptr = &Distance,
-        .field = "Distance",
-    });
-    QounterRegistry::RegisterConfig<PPQounter>({
         .ptr = &HideWhenUnranked,
         .field = "HideWhenUnranked",
         .displayName = "Hide When Unranked",
         .helpText = "Whether the Qounter should be shown at all in unranked songs.",
     });
-}
-
-QountersMinus::Qounter* QountersMinus::Qounters::PPQounter::Initialize() {
-    if (!Enabled) return nullptr;
-    return QountersMinus::Qounter::Initialize<QountersMinus::Qounters::PPQounter*>(
-        static_cast<QountersMinus::QounterPosition>(Position), Distance
-    );
 }
 
 GlobalNamespace::GameplayModifiers* RemovePositiveModifiers(GlobalNamespace::GameplayModifiers* modifiers) {
