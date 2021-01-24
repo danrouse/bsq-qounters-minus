@@ -126,7 +126,7 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
             auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
                 container->get_transform(),
                 label,
-                0,
+                1,
                 fieldConfig->floatStep,
                 *(float*)fieldConfig->ptr,
                 true,
