@@ -23,8 +23,8 @@ std::map<QountersMinus::QounterPosition, QounterPositionData> QounterPositionDat
     {QountersMinus::QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 40.0f), false}},
     {QountersMinus::QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 12.0f), true}},
     {QountersMinus::QounterPosition::AboveMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 40.0f), false}},
-    {QountersMinus::QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector2(0.0f, -180.0f), true}},
-    {QountersMinus::QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector2(0.0f, 100.0f), false}}
+    {QountersMinus::QounterPosition::BelowEnergy, {"ComboPanel", UnityEngine::Vector2(0.0f, -200.0f), true}},
+    {QountersMinus::QounterPosition::AboveHighway, {"ComboPanel", UnityEngine::Vector2(0.0f, 110.0f), false}}
 };
 
 void DeactivateChildren(UnityEngine::GameObject* gameObject) {
