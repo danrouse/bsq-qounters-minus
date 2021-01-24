@@ -18,22 +18,23 @@
 namespace QountersMinus {
     enum class ScoreQounterMode {
         Original,
-        LeavePoints,
         ScoreOnly,
-        RankOnly
+        RankOnly,
+        RemoveScore
     };
-    static int ScoreQounterModeCount = 4;
+    static int ScoreQounterModeCount = 3; // TODO: increment when RemoveScore works
     static std::map<int, std::string> ScoreQounterModeNames = {
         {static_cast<int>(ScoreQounterMode::Original), "Original"},
-        {static_cast<int>(ScoreQounterMode::LeavePoints), "Don't Move Points"},
         {static_cast<int>(ScoreQounterMode::ScoreOnly), "Remove Rank"},
-        {static_cast<int>(ScoreQounterMode::RankOnly), "Remove Percentage"}
+        {static_cast<int>(ScoreQounterMode::RankOnly), "Remove Percentage"},
+        {static_cast<int>(ScoreQounterMode::RemoveScore), "Remove Score"},
     };
     static std::map<std::string, int> ScoreQounterModeLookup = {
         {"Original", static_cast<int>(ScoreQounterMode::Original)},
-        {"LeavePoints", static_cast<int>(ScoreQounterMode::LeavePoints)},
+        {"LeavePoints", static_cast<int>(ScoreQounterMode::Original)}, // leave reference to convert from pc config
         {"ScoreOnly", static_cast<int>(ScoreQounterMode::ScoreOnly)},
-        {"RankOnly", static_cast<int>(ScoreQounterMode::RankOnly)}
+        {"RankOnly", static_cast<int>(ScoreQounterMode::RankOnly)},
+        {"RemoveScore", static_cast<int>(ScoreQounterMode::RemoveScore)}
     };
 }
 

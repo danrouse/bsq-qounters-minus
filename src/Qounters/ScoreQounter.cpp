@@ -85,6 +85,14 @@ void QountersMinus::Qounters::ScoreQounter::Register() {
     });
 }
 
+void logRecursive(UnityEngine::GameObject* obj, std::string path) {
+    auto name = path + "/" + to_utf8(csstrtostr(obj->get_name()));
+    LOG_DEBUG(name);
+    for (int i = 0; i < obj->get_transform()->get_childCount(); i++) {
+        logRecursive(obj->get_transform()->GetChild(i)->get_gameObject(), name);
+    }
+}
+
 void QountersMinus::Qounters::ScoreQounter::Start() {
     relativeScoreText = refs->coreGameHUDController->relativeScoreGO->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
     relativeScoreText->set_color(UnityEngine::Color::get_white());
@@ -107,17 +115,22 @@ void QountersMinus::Qounters::ScoreQounter::Start() {
         rankText->get_rectTransform()->set_localPosition(UnityEngine::Vector3(0.0f, localPosition2.y, localPosition2.z));
     }
 
+    auto immediateRankUIPanel = refs->coreGameHUDController->GetComponentInChildren<GlobalNamespace::ImmediateRankUIPanel*>();
+
     if (Mode == static_cast<int>(QountersMinus::ScoreQounterMode::RankOnly))
         UnityEngine::Object::Destroy(refs->coreGameHUDController->relativeScoreGO);
     if (Mode == static_cast<int>(QountersMinus::ScoreQounterMode::ScoreOnly))
         UnityEngine::Object::Destroy(refs->coreGameHUDController->immediateRankGO);
+    if (Mode == static_cast<int>(QountersMinus::ScoreQounterMode::RemoveScore)) {
+        // TODO: figure out how to actually disable this gameobject?
+    }
 
     // instead of calculating original text position based on canvas like counters+,
     // just slap that bad boy right on our unpopulated gameobject
     auto basePosition = gameObject->get_transform()->get_position();
     scoreUIText->get_transform()->set_position(basePosition);
 
-    UnityEngine::Object::Destroy(refs->coreGameHUDController->GetComponentInChildren<GlobalNamespace::ImmediateRankUIPanel*>());
+    UnityEngine::Object::Destroy(immediateRankUIPanel);
 
     refs->relativeScoreAndImmediateRankCounter->add_relativeScoreOrImmediateRankDidChangeEvent(il2cpp_utils::MakeDelegate<System::Action*>(
         classof(System::Action*), this, +[](QountersMinus::Qounters::ScoreQounter* self) {

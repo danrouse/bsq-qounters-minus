@@ -35,11 +35,11 @@ namespace QountersMinus {
                 std::string displayName;
                 std::string helpText;
                 // hahaha unions you say? nay, i want the memory all for myself
-                float floatMin = FLT_MIN;
-                float floatMax = FLT_MAX;
+                float floatMin = -100.0f;
+                float floatMax = 100.0f;
                 float floatStep = 1.0f;
-                int intMin = INT_MIN;
-                int intMax = INT_MAX;
+                int intMin = -1024;
+                int intMax = 1024;
                 int intStep = 1;
                 int enumNumElements = 0;
                 std::map<int, std::string> enumDisplayNames;
