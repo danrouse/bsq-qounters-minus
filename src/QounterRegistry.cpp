@@ -2,6 +2,16 @@
 
 using namespace QountersMinus;
 
+const std::vector<QounterRegistry::EventHandlerSignature> QounterRegistry::eventHandlerSignatures = {
+    {QounterRegistry::Event::NoteCut, "OnNoteCut", 2},
+    {QounterRegistry::Event::NoteMiss, "OnNoteMiss", 1},
+    {QounterRegistry::Event::ScoreUpdated, "OnScoreUpdated", 1},
+    {QounterRegistry::Event::MaxScoreUpdated, "OnMaxScoreUpdated", 1},
+    {QounterRegistry::Event::SwingRatingFinished, "OnSwingRatingFinished", 2},
+};
+std::map<std::pair<std::string, std::string>, QounterRegistry::RegistryEntry> QounterRegistry::registry;
+std::vector<std::pair<std::string, std::string>> QounterRegistry::registryInsertionOrder;
+
 void _DeactivateChildren(UnityEngine::GameObject* gameObject) {
     auto parent = gameObject->get_transform();
     for (int i = 0; i < parent->get_childCount(); i++) {
