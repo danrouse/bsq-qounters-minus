@@ -8,5 +8,5 @@ if ($?) {
         "./libs/arm64-v8a/libquestui.so", `
         "./bmbfmod.json", `
         "./cover.png" `
-        -DestinationPath "./qounters-minus_v0.2.0.zip" -Update
+        -DestinationPath "./qounters-minus_v0.2.1.zip" -Update
 }
