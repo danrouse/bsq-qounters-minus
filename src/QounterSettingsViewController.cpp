@@ -54,7 +54,14 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
             }
         ));
     }
-    CreateQounterConfigView(get_transform(), QountersMinus::QounterRegistry::registry.begin()->second.longName, QountersMinus::QounterRegistry::registry.begin()->first.first, QountersMinus::QounterRegistry::registry.begin()->first.second, QountersMinus::QounterRegistry::registry.begin()->second.configMetadata);
+
+    // Select "Main" by default
+    CreateQounterConfigView(get_transform(),
+        QountersMinus::QounterRegistry::registry[{"QountersMinus", "Qounter"}].longName,
+        "QountersMinus",
+        "Qounter",
+        QountersMinus::QounterRegistry::registry[{"QountersMinus", "Qounter"}].configMetadata
+    );
 
     auto testButton = QuestUI::BeatSaberUI::CreateUIButton(get_transform(), "Test", "PlayButton", il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
         classof(UnityEngine::Events::UnityAction*), this, StartTestLevel
