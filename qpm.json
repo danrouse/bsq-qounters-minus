@@ -5,8 +5,11 @@
     "name": "Qounters-",
     "id": "qounters-minus",
     "version": "0.2.2",
-    "url": null,
-    "additionalData": {}
+    "url": "https://github.com/danrouse/bsq-qounters-minus",
+    "additionalData": {
+      "soLink": "https://github.com/danrouse/bsq-qounters-minus/releases/download/0.2.2/libqounters-minus.so",
+      "debugSoLink": "https://github.com/danrouse/bsq-qounters-minus/releases/download/0.2.2/libqounters-minus_debug.so"
+    }
   },
   "dependencies": [
     {
