@@ -4,32 +4,32 @@
   "info": {
     "name": "Qounters-",
     "id": "qounters-minus",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "url": "https://github.com/danrouse/bsq-qounters-minus",
     "additionalData": {
-      "soLink": "https://github.com/danrouse/bsq-qounters-minus/releases/download/0.2.2/libqounters-minus.so",
-      "debugSoLink": "https://github.com/danrouse/bsq-qounters-minus/releases/download/0.2.2/libqounters-minus_debug.so"
+      "soLink": "https://github.com/danrouse/bsq-qounters-minus/releases/download/0.2.3/libqounters-minus.so",
+      "debugSoLink": "https://github.com/danrouse/bsq-qounters-minus/releases/download/0.2.3/libqounters-minus_debug.so"
     }
   },
   "dependencies": [
     {
       "id": "beatsaber-hook",
-      "versionRange": "^1.0.10",
+      "versionRange": "^1.0.12",
       "additionalData": {}
     },
     {
       "id": "questui",
-      "versionRange": "^0.4.1",
-      "additionalData": {}
-    },
-    {
-      "id": "custom-types",
       "versionRange": "^0.4.3",
       "additionalData": {}
     },
     {
+      "id": "custom-types",
+      "versionRange": "^0.4.4",
+      "additionalData": {}
+    },
+    {
       "id": "codegen",
-      "versionRange": "^0.6.1",
+      "versionRange": "^0.6.2",
       "additionalData": {}
     }
   ],

@@ -20,7 +20,7 @@ rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
 # Build the modloader shared library
 include $(CLEAR_VARS)
-LOCAL_MODULE := 
+LOCAL_MODULE :=
 include $(CLEAR_VARS)
 # Creating prebuilt for dependency: beatsaber-hook - version: 1.0.12
 include $(CLEAR_VARS)
@@ -65,7 +65,7 @@ LOCAL_SHARED_LIBRARIES += questui
 LOCAL_SHARED_LIBRARIES += codegen_0_6_2
 LOCAL_SHARED_LIBRARIES += custom-types
 LOCAL_LDLIBS += -llog
-LOCAL_CFLAGS += -I'extern/libil2cpp/il2cpp/libil2cpp' -DID='"qounters-minus"' -DVERSION='"0.2.2"' -I'./shared' -I'./extern' -isystem'extern/codegen/include'
+LOCAL_CFLAGS += -I'extern/libil2cpp/il2cpp/libil2cpp' -DID='"qounters-minus"' -DVERSION='"0.2.3"' -I'./shared' -I'./extern' -isystem'extern/codegen/include'
 LOCAL_CPPFLAGS += -std=c++2a
 LOCAL_C_INCLUDES += ./include ./src
 include $(BUILD_SHARED_LIBRARY)
