@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::PBQounter);
 
 bool QountersMinus::Qounters::PBQounter::Enabled = true;
 int QountersMinus::Qounters::PBQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
-int QountersMinus::Qounters::PBQounter::Distance = 1;
+float QountersMinus::Qounters::PBQounter::Distance = 1.0f;
 int QountersMinus::Qounters::PBQounter::Mode = static_cast<int>(QountersMinus::PBQounterMode::Absolute);
 UnityEngine::Color QountersMinus::Qounters::PBQounter::BetterColor = UnityEngine::Color(1.0f, 0.0f, 0.0f, 1.0f);
 UnityEngine::Color QountersMinus::Qounters::PBQounter::DefaultColor = UnityEngine::Color(1.0f, 0.647f, 0.0f, 1.0f);

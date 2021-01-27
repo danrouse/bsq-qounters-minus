@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::SpeedQounter);
 
 bool QountersMinus::Qounters::SpeedQounter::Enabled = false;
 int QountersMinus::Qounters::SpeedQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
-int QountersMinus::Qounters::SpeedQounter::Distance = 2;
+float QountersMinus::Qounters::SpeedQounter::Distance = 2.0f;
 int QountersMinus::Qounters::SpeedQounter::Mode = static_cast<int>(QountersMinus::SpeedQounterMode::Average);
 bool QountersMinus::Qounters::SpeedQounter::SeparateCutValues = true;
 int QountersMinus::Qounters::SpeedQounter::DecimalPrecision = 2;

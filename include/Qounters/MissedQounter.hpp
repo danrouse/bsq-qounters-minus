@@ -12,7 +12,7 @@
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, MissedQounter, QountersMinus::Qounter,
     DECLARE_STATIC_FIELD(bool, Enabled);
     DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(float, Distance);
     DECLARE_STATIC_FIELD(bool, CountBadCuts);
 
     DECLARE_INSTANCE_FIELD_DEFAULT(int, misses, 0);

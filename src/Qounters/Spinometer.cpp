@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::Spinometer);
 
 bool QountersMinus::Qounters::Spinometer::Enabled = false;
 int QountersMinus::Qounters::Spinometer::Position = static_cast<int>(QountersMinus::QounterPosition::AboveMultiplier);
-int QountersMinus::Qounters::Spinometer::Distance = 0;
+float QountersMinus::Qounters::Spinometer::Distance = 0.0f;
 int QountersMinus::Qounters::Spinometer::Mode = static_cast<int>(QountersMinus::SpinometerMode::SplitAverage);
 
 void QountersMinus::Qounters::Spinometer::Register() {

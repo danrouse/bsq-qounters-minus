@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
 bool QountersMinus::Qounters::ScoreQounter::Enabled = true;
 int QountersMinus::Qounters::ScoreQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
-int QountersMinus::Qounters::ScoreQounter::Distance = 0;
+float QountersMinus::Qounters::ScoreQounter::Distance = 0.0f;
 int QountersMinus::Qounters::ScoreQounter::Mode = static_cast<int>(QountersMinus::ScoreQounterMode::Original);
 int QountersMinus::Qounters::ScoreQounter::DecimalPrecision = 2;
 bool QountersMinus::Qounters::ScoreQounter::DisplayRank = true;
@@ -122,7 +122,7 @@ void QountersMinus::Qounters::ScoreQounter::Start() {
     if (Mode == static_cast<int>(QountersMinus::ScoreQounterMode::ScoreOnly))
         UnityEngine::Object::Destroy(refs->coreGameHUDController->immediateRankGO);
     if (Mode == static_cast<int>(QountersMinus::ScoreQounterMode::RemoveScore)) {
-        // TODO: figure out how to actually disable this gameobject?
+        scoreUIText->set_enabled(false);
     }
 
     // instead of calculating original text position based on canvas like counters+,

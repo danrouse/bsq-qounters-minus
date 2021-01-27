@@ -135,7 +135,7 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
                 container->get_transform(),
                 label,
                 1,
-                fieldConfig->floatStep,
+                fieldConfig->field == "Distance" ? QountersMinus::Qounter::DistanceStep : fieldConfig->floatStep,
                 *(float*)fieldConfig->ptr,
                 true,
                 true,

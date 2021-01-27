@@ -36,7 +36,7 @@ namespace QountersMinus {
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter,
     DECLARE_STATIC_FIELD(bool, Enabled);
     DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(float, Distance);
     DECLARE_STATIC_FIELD(int, Mode);
     DECLARE_STATIC_FIELD(UnityEngine::Color, BetterColor);
     DECLARE_STATIC_FIELD(UnityEngine::Color, DefaultColor);

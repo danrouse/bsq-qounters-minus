@@ -17,7 +17,7 @@
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PPQounter, QountersMinus::Qounter,
     DECLARE_STATIC_FIELD(bool, Enabled);
     DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(float, Distance);
     DECLARE_STATIC_FIELD(bool, HideWhenUnranked);
 
     DECLARE_INSTANCE_FIELD(bool, isRanked);

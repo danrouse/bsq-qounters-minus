@@ -15,7 +15,7 @@
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounter,
     DECLARE_STATIC_FIELD(bool, Enabled);
     DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(float, Distance);
     DECLARE_STATIC_FIELD(bool, SeparateSaberCounts);
     DECLARE_STATIC_FIELD(bool, SeparateCutValues);
     DECLARE_STATIC_FIELD(int, AveragePrecision);

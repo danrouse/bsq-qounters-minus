@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::FailQounter);
 
 bool QountersMinus::Qounters::FailQounter::Enabled = false;
 int QountersMinus::Qounters::FailQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveCombo);
-int QountersMinus::Qounters::FailQounter::Distance = 0;
+float QountersMinus::Qounters::FailQounter::Distance = 0.0f;
 bool QountersMinus::Qounters::FailQounter::ShowRestartsInstead = true;
 
 int QountersMinus::Qounters::FailQounter::restarts = 0;

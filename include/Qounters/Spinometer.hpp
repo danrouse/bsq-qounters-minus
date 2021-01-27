@@ -36,7 +36,7 @@ namespace QountersMinus {
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounter,
     DECLARE_STATIC_FIELD(bool, Enabled);
     DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(float, Distance);
     DECLARE_STATIC_FIELD(int, Mode);
 
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<UnityEngine::Quaternion>*, leftQuaternions);

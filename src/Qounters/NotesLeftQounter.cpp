@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::NotesLeftQounter);
 
 bool QountersMinus::Qounters::NotesLeftQounter::Enabled = false;
 int QountersMinus::Qounters::NotesLeftQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveHighway);
-int QountersMinus::Qounters::NotesLeftQounter::Distance = -1;
+float QountersMinus::Qounters::NotesLeftQounter::Distance = -1.0f;
 bool QountersMinus::Qounters::NotesLeftQounter::LabelAboveCount = false;
 
 void QountersMinus::Qounters::NotesLeftQounter::Register() {

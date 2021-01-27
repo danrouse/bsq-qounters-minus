@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::CutQounter);
 
 bool QountersMinus::Qounters::CutQounter::Enabled = false;
 int QountersMinus::Qounters::CutQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveHighway);
-int QountersMinus::Qounters::CutQounter::Distance = 1;
+float QountersMinus::Qounters::CutQounter::Distance = 1.0f;
 bool QountersMinus::Qounters::CutQounter::SeparateSaberCounts = false;
 bool QountersMinus::Qounters::CutQounter::SeparateCutValues = false;
 int QountersMinus::Qounters::CutQounter::AveragePrecision = 1;

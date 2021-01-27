@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::ProgressQounter);
 
 bool QountersMinus::Qounters::ProgressQounter::Enabled = true;
 int QountersMinus::Qounters::ProgressQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowEnergy);
-int QountersMinus::Qounters::ProgressQounter::Distance = 0;
+float QountersMinus::Qounters::ProgressQounter::Distance = 0.0f;
 int QountersMinus::Qounters::ProgressQounter::Mode = static_cast<int>(QountersMinus::ProgressQounterMode::Original);
 bool QountersMinus::Qounters::ProgressQounter::ProgressTimeLeft = false;
 bool QountersMinus::Qounters::ProgressQounter::IncludeRing = false;

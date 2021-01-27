@@ -53,7 +53,7 @@ void QountersMinus::QounterRegistry::Initialize() {
         if (key.first == "QountersMinus" && key.second == "Qounter") continue; // there's got to be a better way
         auto enabled = *(bool*)def.staticFieldRefs["Enabled"];
         auto position = *(int*)def.staticFieldRefs["Position"];
-        auto distance = *(int*)def.staticFieldRefs["Distance"];
+        auto distance = *(float*)def.staticFieldRefs["Distance"];
         if (!enabled) continue;
         LOG_DEBUG("Initialize " + key.first + "::" + key.second);
         auto systemType = il2cpp_utils::GetSystemType(key.first, key.second);

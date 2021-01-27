@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::MissedQounter);
 
 bool QountersMinus::Qounters::MissedQounter::Enabled = true;
 int QountersMinus::Qounters::MissedQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowCombo);
-int QountersMinus::Qounters::MissedQounter::Distance = 0;
+float QountersMinus::Qounters::MissedQounter::Distance = 0.0f;
 bool QountersMinus::Qounters::MissedQounter::CountBadCuts = true;
 
 void QountersMinus::Qounters::MissedQounter::Register() {

@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::NotesQounter);
 
 bool QountersMinus::Qounters::NotesQounter::Enabled = false;
 int QountersMinus::Qounters::NotesQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowCombo);
-int QountersMinus::Qounters::NotesQounter::Distance = 1;
+float QountersMinus::Qounters::NotesQounter::Distance = 1.0f;
 bool QountersMinus::Qounters::NotesQounter::ShowPercentage = false;
 int QountersMinus::Qounters::NotesQounter::DecimalPrecision = 2;
 

@@ -60,6 +60,12 @@ namespace QountersMinus {
             .helpText = "Hides the Multiplier.",
         });
         QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::UprightInMultiplayer,
+            .field = "UprightInMultiplayer",
+            .displayName = "Upright HUD in Multiplayer",
+            .helpText = "In multiplayer, the game HUD and Qounters will be vertical as in solo mode.",
+        });
+        QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::ItalicText,
             .field = "ItalicText",
             .displayName = "Use Italic Text",
@@ -80,10 +86,12 @@ namespace QountersMinus {
             .floatStep = 0.1f,
         });
         QounterRegistry::RegisterConfig<Qounter>({
-            .ptr = &QountersMinus::Qounter::UprightInMultiplayer,
-            .field = "UprightInMultiplayer",
-            .displayName = "HUD Upright in Multiplayer",
-            .helpText = "In multiplayer, the game HUD and Qounters will be vertical as in solo mode.",
+            .ptr = &QountersMinus::Qounter::DistanceStep,
+            .field = "DistanceStep",
+            .displayName = "Distance Increment",
+            .helpText = "How much to adjust Distance settings per click. Lower means finer tuning.",
+            .floatMin = 0.1f,
+            .floatStep = 0.1f,
         });
 
         Qounters::CutQounter::Register();

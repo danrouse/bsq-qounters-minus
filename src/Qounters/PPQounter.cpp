@@ -4,7 +4,7 @@ DEFINE_CLASS(QountersMinus::Qounters::PPQounter);
 
 bool QountersMinus::Qounters::PPQounter::Enabled = false;
 int QountersMinus::Qounters::PPQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveHighway);
-int QountersMinus::Qounters::PPQounter::Distance = 1;
+float QountersMinus::Qounters::PPQounter::Distance = 1.0f;
 bool QountersMinus::Qounters::PPQounter::HideWhenUnranked = true;
 
 static const float MULT_DISAPPEARINGARROWS_ORIGINAL = 0.07f;

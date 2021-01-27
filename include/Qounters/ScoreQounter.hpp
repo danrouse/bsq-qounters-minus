@@ -22,7 +22,7 @@ namespace QountersMinus {
         RankOnly,
         RemoveScore
     };
-    static int ScoreQounterModeCount = 3; // TODO: increment when RemoveScore works
+    static int ScoreQounterModeCount = 4;
     static std::map<int, std::string> ScoreQounterModeNames = {
         {static_cast<int>(ScoreQounterMode::Original), "Original"},
         {static_cast<int>(ScoreQounterMode::ScoreOnly), "Remove Rank"},
@@ -41,7 +41,7 @@ namespace QountersMinus {
 DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qounter,
     DECLARE_STATIC_FIELD(bool, Enabled);
     DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(int, Distance);
+    DECLARE_STATIC_FIELD(float, Distance);
     DECLARE_STATIC_FIELD(int, Mode);
     DECLARE_STATIC_FIELD(int, DecimalPrecision);
     DECLARE_STATIC_FIELD(bool, DisplayRank); // unused?

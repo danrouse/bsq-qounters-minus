@@ -8,6 +8,8 @@ bool QountersMinus::Qounter::HideMultiplier = false;
 float QountersMinus::Qounter::ComboOffset = 0.2f;
 float QountersMinus::Qounter::MultiplierOffset = 0.4f;
 bool QountersMinus::Qounter::ItalicText = false;
+bool QountersMinus::Qounter::UprightInMultiplayer = true;
+float QountersMinus::Qounter::DistanceStep = 1.0f;
 
 const float distanceUnit = 40.0f;
 const float distanceUnitOffsetMult = 0.15f;
@@ -74,7 +76,7 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
     return containerGO;
 }
 
-void SetPosition(UnityEngine::Transform* transform, QountersMinus::QounterPosition position, int distance) {
+void SetPosition(UnityEngine::Transform* transform, QountersMinus::QounterPosition position, float distance) {
     const auto mult = QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f;
     const auto pivot = UnityEngine::Vector2(0.5f, QounterPositionData[position].distanceIsDown ? 1.0f : 0.0f);
     const auto anchoredPosition = UnityEngine::Vector2(0.0f, distance * distanceUnit * mult);
