@@ -56,6 +56,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
     DECLARE_STATIC_FIELD(float, ComboOffset);
     DECLARE_STATIC_FIELD(float, MultiplierOffset);
     DECLARE_STATIC_FIELD(bool, ItalicText);
+    DECLARE_STATIC_FIELD(bool, UprightInMultiplayer);
 
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, gameObject);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, basicText);
@@ -71,6 +72,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
         REGISTER_FIELD(ComboOffset);
         REGISTER_FIELD(MultiplierOffset);
         REGISTER_FIELD(ItalicText);
+        REGISTER_FIELD(UprightInMultiplayer);
 
         REGISTER_FIELD(gameObject);
         REGISTER_FIELD(basicText);

@@ -27,11 +27,25 @@ void QountersMinus::QounterRegistry::Initialize() {
     for (auto&& def : registry) def.second.instance = nullptr;
     if (!Qounter::Enabled) return;
     if (UnityEngine::Object::FindObjectOfType<PlayerDataModel*>()->playerData->playerSpecificSettings->noTextsAndHuds) return;
-    if (Qounter::HideCombo) _DeactivateChildren("LeftPanel/ComboPanel");
+    auto comboPanel = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("ComboPanel"));
+    auto multiplierCanvas = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("MultiplierCanvas"));
+    if (Qounter::HideCombo) _DeactivateChildren(comboPanel);
     if (Qounter::HideMultiplier) {
-        auto multiplierGO = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("RightPanel/MultiplierCanvas"));
-        multiplierGO->GetComponent<UnityEngine::Animator*>()->set_enabled(false);
-        _DeactivateChildren(multiplierGO);
+        multiplierCanvas->GetComponent<UnityEngine::Animator*>()->set_enabled(false);
+        _DeactivateChildren(multiplierCanvas);
+    }
+    if (Qounter::UprightInMultiplayer && UnityEngine::Object::FindObjectOfType<GlobalNamespace::MultiplayerLocalActivePlayerFacade*>()) {
+        UnityEngine::Transform* transforms[4] = {
+            comboPanel->get_transform(),
+            multiplierCanvas->get_transform(),
+            UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("ScoreCanvas"))->get_transform(),
+            UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("SongProgressCanvas"))->get_transform()
+        };
+        for (auto transform : transforms) {
+            transform->set_eulerAngles(UnityEngine::Vector3::get_zero());
+            auto position = transform->get_localPosition();
+            transform->set_localPosition(UnityEngine::Vector3(position.x, position.y + 1.8f, position.z + 4.0f));
+        }
     }
 
     for (auto key : registryInsertionOrder) {

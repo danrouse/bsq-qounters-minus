@@ -79,6 +79,12 @@ namespace QountersMinus {
             .helpText = "Applies additional offset to Qounters situated above or below the Multiplier.",
             .floatStep = 0.1f,
         });
+        QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::UprightInMultiplayer,
+            .field = "UprightInMultiplayer",
+            .displayName = "HUD Upright in Multiplayer",
+            .helpText = "In multiplayer, the game HUD and Qounters will be vertical as in solo mode.",
+        });
 
         Qounters::CutQounter::Register();
         Qounters::FailQounter::Register();
