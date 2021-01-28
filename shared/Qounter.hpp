@@ -46,7 +46,7 @@ namespace QountersMinus {
     };
 }
 
-UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position);
+UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position, UnityEngine::GameObject* parentGO);
 void SetPosition(UnityEngine::Transform* transform, QountersMinus::QounterPosition position, float distance);
 
 DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,

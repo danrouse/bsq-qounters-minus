@@ -50,14 +50,16 @@ UnityEngine::GameObject* GetGameObject(std::string name) {
     return nullptr;
 }
 
-UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
+UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position, UnityEngine::GameObject* parentGO) {
     auto containerName = il2cpp_utils::createcsstr("QountersMinus_Container" + std::to_string((int)position));
     auto containerGO = UnityEngine::GameObject::Find(containerName);
     if (!containerGO) {
-        auto parentGO = GetGameObject(QounterPositionData[position].parentName);
-        if (!parentGO->get_activeSelf()) {
-            DeactivateChildren(parentGO);
-            parentGO->SetActive(true);
+        if (!parentGO) {
+            parentGO = GetGameObject(QounterPositionData[position].parentName);
+            if (!parentGO->get_activeSelf()) {
+                DeactivateChildren(parentGO);
+                parentGO->SetActive(true);
+            }
         }
         containerGO = UnityEngine::GameObject::New_ctor(containerName);
         auto rect = containerGO->AddComponent<UnityEngine::RectTransform*>();
@@ -85,7 +87,7 @@ void SetPosition(UnityEngine::Transform* transform, QountersMinus::QounterPositi
 }
 
 QountersMinus::Qounter* QountersMinus::Qounter::Initialize(System::Type* type, QountersMinus::QounterPosition position, float distance) {
-    auto parent = GetParent(position);
+    auto parent = GetParent(position, nullptr);
     auto instance = reinterpret_cast<Qounter*>(parent->AddComponent(type));
     SetPosition(instance->gameObject->get_transform(), position, distance);
     return instance;

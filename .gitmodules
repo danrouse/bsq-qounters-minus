@@ -1,0 +1,3 @@
+[submodule "CountersPlus"]
+	path = CountersPlus
+	url = https://github.com/Caeden117/CountersPlus.git

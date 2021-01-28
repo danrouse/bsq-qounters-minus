@@ -46,6 +46,7 @@ namespace QountersMinus {
                 std::map<int, std::string> enumDisplayNames;
                 std::map<std::string, int> enumSerializedNames;
                 void* uiElementPtr; // yuck yuck ew yuck
+                std::pair<std::string, std::string> parentClass;
             } ConfigMetadata;
             typedef struct _RegistryEntry {
                 QountersMinus::Qounter* instance;
@@ -111,8 +112,10 @@ namespace QountersMinus {
             template <typename T>
             static void RegisterConfig(ConfigMetadata config) {
                 auto typeInfo = custom_types::name_registry<T>::get();
+                std::pair<std::string, std::string> key = {typeInfo->getNamespace(), typeInfo->getName()};
+                config.parentClass = key;
                 auto ptr = std::make_shared<ConfigMetadata>(config);
-                registry[{typeInfo->getNamespace(), typeInfo->getName()}].configMetadata.push_back(ptr);
+                registry[key].configMetadata.push_back(ptr);
             }
 
             static void Initialize();
