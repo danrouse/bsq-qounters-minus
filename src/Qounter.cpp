@@ -54,7 +54,10 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
     auto containerName = il2cpp_utils::createcsstr("QountersMinus_Container" + std::to_string((int)position));
     auto containerGO = UnityEngine::GameObject::Find(containerName);
     if (!containerGO) {
-        auto parentGO = GetGameObject(QounterPositionData[position].parentName);
+        // TODO: this is slow
+        auto coreGameHUDController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
+        auto parentGO = coreGameHUDController->get_gameObject()->Find(il2cpp_utils::createcsstr(QounterPositionData[position].parentName));
+        // parentGO = GetGameObject(QounterPositionData[position].parentName);
         if (!parentGO->get_activeSelf()) {
             DeactivateChildren(parentGO);
             parentGO->SetActive(true);
@@ -67,11 +70,16 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position) {
             anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::ComboOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else if (position == QountersMinus::QounterPosition::BelowMultiplier || position == QountersMinus::QounterPosition::AboveMultiplier) {
             anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::MultiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
-        } else {
-            auto parentPosition = parentGO->get_transform()->get_position();
-            anchoredPosition.x += parentPosition.x * -100.0f;
+        // } else {
+        //     auto parentPosition = parentGO->get_transform()->get_position();
+        //     anchoredPosition.x += parentPosition.x * -100.0f;
+        //     LOG_DEBUG("Ending anchored x %d %.2f (from %.2f)", position, anchoredPosition.x, parentPosition.x);
         }
         rect->set_anchoredPosition(anchoredPosition);
+        if (position == QountersMinus::QounterPosition::BelowEnergy || position == QountersMinus::QounterPosition::AboveHighway) {
+            auto position = containerGO->get_transform()->get_position();
+            containerGO->get_transform()->set_position(UnityEngine::Vector3(0.0f, position.y, position.z));
+        }
     }
     return containerGO;
 }

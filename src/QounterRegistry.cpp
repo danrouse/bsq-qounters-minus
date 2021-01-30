@@ -23,6 +23,21 @@ void _DeactivateChildren(std::string gameObjectName) {
     _DeactivateChildren(UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(gameObjectName)));
 }
 
+
+void logScales(UnityEngine::GameObject* go, std::string path) {
+    auto name = path + "/" + to_utf8(csstrtostr(go->get_name()));
+    auto scale = go->get_transform()->get_localScale();
+    LOG_DEBUG(name + ": %.2f, %.2f, %.2f", scale.x, scale.y, scale.z);
+
+    if (go->get_transform()->get_parent()) {
+        logScales(go->get_transform()->get_parent()->get_gameObject(), name);
+    }
+
+    // for (int i = 0; i < go->get_transform()->get_childCount(); i++) {
+    //     logScales(go->get_transform()->GetChild(i)->get_gameObject(), name);
+    // }
+}
+
 void QountersMinus::QounterRegistry::Initialize() {
     for (auto&& def : registry) def.second.instance = nullptr;
     if (!Qounter::Enabled) return;
