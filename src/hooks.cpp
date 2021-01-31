@@ -38,8 +38,8 @@ MAKE_HOOK_OFFSETLESS(CutScoreHandler_HandleSwingRatingCounterDidFinish, void, Gl
     QounterRegistry::BroadcastEvent(QounterRegistry::Event::SwingRatingFinished, self->noteCutInfo, swingRatingCounter);
 }
 
-MAKE_HOOK_OFFSETLESS(HealthWarningFlowCoordinator_DidActivate, void, Il2CppObject* self, bool a, bool b, bool c) {
-    HealthWarningFlowCoordinator_DidActivate(self, a, b, c);
+MAKE_HOOK_OFFSETLESS(AppInit_Start, void, Il2CppObject* self) {
+    AppInit_Start(self);
 
     // Defer config loading to this point to give Custom Qounters a chance to register
     LOG_DEBUG("Loading config");
@@ -52,5 +52,5 @@ void QountersMinus::InstallHooks() {
     INSTALL_HOOK_OFFSETLESS(getLogger(), CoreGameHUDController_Start, il2cpp_utils::FindMethodUnsafe("", "CoreGameHUDController", "Start", 0));
     INSTALL_HOOK_OFFSETLESS(getLogger(), ScoreController_Start, il2cpp_utils::FindMethodUnsafe("", "ScoreController", "Start", 0));
     INSTALL_HOOK_OFFSETLESS(getLogger(), CutScoreHandler_HandleSwingRatingCounterDidFinish, il2cpp_utils::FindMethodUnsafe("", "BeatmapObjectExecutionRatingsRecorder/CutScoreHandler", "HandleSwingRatingCounterDidFinish", 1));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), HealthWarningFlowCoordinator_DidActivate, il2cpp_utils::FindMethodUnsafe("", "HealthWarningFlowCoordinator", "DidActivate", 3));
+    INSTALL_HOOK_OFFSETLESS(getLogger(), AppInit_Start, il2cpp_utils::FindMethodUnsafe("", "AppInit", "Start", 0));
 }
