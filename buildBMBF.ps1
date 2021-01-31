@@ -6,5 +6,5 @@ if ($?) {
         "./libs/arm64-v8a/libbeatsaber-hook_1_0_12.so", `
         "./bmbfmod.json", `
         "./cover.png" `
-        -DestinationPath "./qounters-minus_v1.0.0.zip" -Update
+        -DestinationPath "./qounters-minus_v1.0.1.zip" -Update
 }
