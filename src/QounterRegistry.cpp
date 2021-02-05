@@ -23,12 +23,38 @@ void _DeactivateChildren(std::string gameObjectName) {
     _DeactivateChildren(UnityEngine::GameObject::Find(il2cpp_utils::createcsstr(gameObjectName)));
 }
 
+
+void logScales(UnityEngine::GameObject* go, std::string path) {
+    auto name = path + "/" + to_utf8(csstrtostr(go->get_name()));
+    auto scale = go->get_transform()->get_localScale();
+    LOG_DEBUG(name + ": %.2f, %.2f, %.2f", scale.x, scale.y, scale.z);
+
+    if (go->get_transform()->get_parent()) {
+        logScales(go->get_transform()->get_parent()->get_gameObject(), name);
+    }
+
+    // for (int i = 0; i < go->get_transform()->get_childCount(); i++) {
+    //     logScales(go->get_transform()->GetChild(i)->get_gameObject(), name);
+    // }
+}
+
 void QountersMinus::QounterRegistry::Initialize() {
     for (auto&& def : registry) def.second.instance = nullptr;
     if (!Qounter::Enabled) return;
     if (UnityEngine::Object::FindObjectOfType<PlayerDataModel*>()->playerData->playerSpecificSettings->noTextsAndHuds) return;
+
     auto comboPanel = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("ComboPanel"));
     auto multiplierCanvas = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("MultiplierCanvas"));
+
+    if (Qounter::DisableIn90Degree) {
+        // hacky way of getting BeatmapCharacteristic
+        auto refs = comboPanel->AddComponent<QountersMinus::InjectedComponents*>();
+        if (refs->beatmapCharacteristic->containsRotationEvents) {
+            UnityEngine::Object::Destroy(refs);
+            return;
+        }
+    }
+
     if (Qounter::HideCombo) _DeactivateChildren(comboPanel);
     if (Qounter::HideMultiplier) {
         multiplierCanvas->GetComponent<UnityEngine::Animator*>()->set_enabled(false);

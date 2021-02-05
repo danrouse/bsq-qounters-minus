@@ -5,14 +5,14 @@
     "info": {
       "name": "Qounters-",
       "id": "qounters-minus",
-      "version": "0.2.3",
+      "version": "1.0.1",
       "url": null,
       "additionalData": {}
     },
     "dependencies": [
       {
         "id": "beatsaber-hook",
-        "versionRange": "^1.0.0",
+        "versionRange": "^1.0.1",
         "additionalData": {}
       },
       {
@@ -37,7 +37,7 @@
     {
       "dependency": {
         "id": "beatsaber-hook",
-        "versionRange": "^1.0.0",
+        "versionRange": "^1.0.1",
         "additionalData": {}
       },
       "version": "1.0.9"
@@ -45,7 +45,7 @@
     {
       "dependency": {
         "id": "modloader",
-        "versionRange": "^1.0.0",
+        "versionRange": "^1.0.1",
         "additionalData": {}
       },
       "version": "1.0.4"

@@ -10,8 +10,10 @@
 #include "GlobalNamespace/PlayerDataModel.hpp"
 #include "GlobalNamespace/PlayerData.hpp"
 #include "GlobalNamespace/IDifficultyBeatmap.hpp"
+#include "GlobalNamespace/IDifficultyBeatmapSet.hpp"
 #include "GlobalNamespace/GameplayCoreInstaller.hpp"
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
+#include "GlobalNamespace/BeatmapCharacteristicSO.hpp"
 
 using namespace GlobalNamespace;
 
@@ -22,6 +24,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus, InjectedComponents, UnityEngine::MonoBehavi
     DECLARE_STATIC_FIELD(ScoreController*, scoreController);
     DECLARE_STATIC_FIELD(PlayerData*, playerData);
     DECLARE_STATIC_FIELD(IDifficultyBeatmap*, difficultyBeatmap);
+    DECLARE_STATIC_FIELD(BeatmapCharacteristicSO*, beatmapCharacteristic);
 
     DECLARE_STATIC_FIELD(int, numInstances);
     DECLARE_METHOD(void, Awake);
@@ -34,6 +37,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus, InjectedComponents, UnityEngine::MonoBehavi
         REGISTER_FIELD(scoreController);
         REGISTER_FIELD(playerData);
         REGISTER_FIELD(difficultyBeatmap);
+        REGISTER_FIELD(beatmapCharacteristic);
 
         REGISTER_FIELD(numInstances);
         REGISTER_METHOD(Awake);

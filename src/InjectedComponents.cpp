@@ -12,6 +12,7 @@ RelativeScoreAndImmediateRankCounter* InjectedComponents::relativeScoreAndImmedi
 ScoreController* InjectedComponents::scoreController;
 PlayerData* InjectedComponents::playerData;
 IDifficultyBeatmap* InjectedComponents::difficultyBeatmap;
+BeatmapCharacteristicSO* InjectedComponents::beatmapCharacteristic;
 
 void QountersMinus::InjectedComponents::Awake() {
     if (numInstances++ == 0) {
@@ -21,8 +22,17 @@ void QountersMinus::InjectedComponents::Awake() {
         scoreController = UnityEngine::Object::FindObjectOfType<ScoreController*>();
         playerData = UnityEngine::Object::FindObjectOfType<PlayerDataModel*>()->playerData;
 
-        auto gameplayCoreInstaller = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayCoreInstaller*>()->values[0];
+        auto gameplayCoreInstallers = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayCoreInstaller*>();
+        GlobalNamespace::GameplayCoreInstaller* gameplayCoreInstaller;
+        for (int i = 0; i < gameplayCoreInstallers->Length(); i++) {
+            if (gameplayCoreInstallers->values[i]->get_isActiveAndEnabled() && gameplayCoreInstallers->values[i]->sceneSetupData != nullptr) {
+                gameplayCoreInstaller = gameplayCoreInstallers->values[i];
+                break;
+            }
+        }
+        if (!gameplayCoreInstaller) gameplayCoreInstaller = gameplayCoreInstallers->values[0];
         difficultyBeatmap = gameplayCoreInstaller->sceneSetupData->difficultyBeatmap;
+        beatmapCharacteristic = difficultyBeatmap->get_parentDifficultyBeatmapSet()->get_beatmapCharacteristic();
     }
 }
 

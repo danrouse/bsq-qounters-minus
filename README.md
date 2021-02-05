@@ -1,18 +1,15 @@
 # Qounters-
 
-Store brand version of [*Counters+*](https://github.com/Caeden117/CountersPlus) for the Oculus Quest version of Beat Saber. Adds a variety of configurable ~~Counters~~ Qounters to display statistics in-game.
+Spice up your Beat Saber HUD with a variety of configurable ~~Counters~~ Qounters, which can display a wide variety of stats in an even wider variety of ways.
+This mod is an Oculus Quest port of [Caeden117's *Counters+*](https://github.com/Caeden117/CountersPlus) for PC.
 
-Configure your Qounters from the Mod Settings menu (Main menu → Settings (gear icon) → Mod Settings → Qounters-)
+Configure your Qounters from the Mod Settings menu (Main menu → Settings (gear icon) → Mod Settings → Qounters-). After making changes, you can click the big blue _Test_ button to preview your configuration.
 
-Settings can be loaded from a *Counters+* configuration file! Rename your `CountersPlus.json` to `qounters-minus.json` and upload it through BMBF's Upload screen after installing Qounters-.
+Settings can be loaded from a PC *Counters+* configuration file! Rename your `CountersPlus.json` to `qounters-minus.json` and upload it through BMBF after installing Qounters-.
 
 Everything covered by the original base mod is supported, *except*:
 - The settings menu is store brand
-- Separate canvases are not supported
-
----
-
-If Qounters- is failing to load, make sure it is the most recently enabled mod in BMBF by disabling and re-enabling it.
+- Canvas/HUD settings are not yet supported
 
 ---
 
@@ -35,6 +32,10 @@ All of the base modules included in *Counters+* are available.
 | Fail | How many times you've failed or restarted |
 | Progress | Enhanced version of default song timer |
 | PP | For ranked songs, how much PP you will get for your current performance |
+
+## Custom Qounters
+
+Mod developers can easily write Custom Qounters as standalone mods with Qounters- as a dependency. Creating, positioning, and configuring the Custom Qounters is all handled by Qounters-. For more details on writing your own Custom Qounter, see the [bsq-example-custom-qounter](https://github.com/danrouse/bsq-example-custom-qounter) repository.
 
 ## Credits
 

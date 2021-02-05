@@ -9,6 +9,7 @@ float QountersMinus::Qounter::ComboOffset = 0.2f;
 float QountersMinus::Qounter::MultiplierOffset = 0.4f;
 bool QountersMinus::Qounter::ItalicText = false;
 bool QountersMinus::Qounter::UprightInMultiplayer = true;
+bool QountersMinus::Qounter::DisableIn90Degree = false;
 float QountersMinus::Qounter::DistanceStep = 1.0f;
 
 const float distanceUnit = 40.0f;
@@ -55,7 +56,9 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position, Unit
     auto containerGO = UnityEngine::GameObject::Find(containerName);
     if (!containerGO) {
         if (!parentGO) {
-            parentGO = GetGameObject(QounterPositionData[position].parentName);
+            auto coreGameHUDController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::CoreGameHUDController*>();
+            parentGO = coreGameHUDController->get_gameObject()->Find(il2cpp_utils::createcsstr(QounterPositionData[position].parentName));
+            // parentGO = GetGameObject(QounterPositionData[position].parentName);
             if (!parentGO->get_activeSelf()) {
                 DeactivateChildren(parentGO);
                 parentGO->SetActive(true);
@@ -69,11 +72,16 @@ UnityEngine::GameObject* GetParent(QountersMinus::QounterPosition position, Unit
             anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::ComboOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
         } else if (position == QountersMinus::QounterPosition::BelowMultiplier || position == QountersMinus::QounterPosition::AboveMultiplier) {
             anchoredPosition.y *= 1.0f + (QountersMinus::Qounter::MultiplierOffset * distanceUnit * distanceUnitOffsetMult * (QounterPositionData[position].distanceIsDown ? -1.0f : 1.0f));
-        } else {
-            auto parentPosition = parentGO->get_transform()->get_position();
-            anchoredPosition.x += parentPosition.x * -100.0f;
+        // } else {
+        //     auto parentPosition = parentGO->get_transform()->get_position();
+        //     anchoredPosition.x += parentPosition.x * -100.0f;
+        //     LOG_DEBUG("Ending anchored x %d %.2f (from %.2f)", position, anchoredPosition.x, parentPosition.x);
         }
         rect->set_anchoredPosition(anchoredPosition);
+        if (position == QountersMinus::QounterPosition::BelowEnergy || position == QountersMinus::QounterPosition::AboveHighway) {
+            auto position = containerGO->get_transform()->get_position();
+            containerGO->get_transform()->set_position(UnityEngine::Vector3(0.0f, position.y, position.z));
+        }
     }
     return containerGO;
 }
