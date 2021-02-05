@@ -9,6 +9,7 @@ float QountersMinus::Qounter::ComboOffset = 0.2f;
 float QountersMinus::Qounter::MultiplierOffset = 0.4f;
 bool QountersMinus::Qounter::ItalicText = false;
 bool QountersMinus::Qounter::UprightInMultiplayer = true;
+bool QountersMinus::Qounter::DisableIn90Degree = false;
 float QountersMinus::Qounter::DistanceStep = 1.0f;
 
 const float distanceUnit = 40.0f;

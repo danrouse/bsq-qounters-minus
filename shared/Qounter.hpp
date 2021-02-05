@@ -57,6 +57,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
     DECLARE_STATIC_FIELD(float, MultiplierOffset);
     DECLARE_STATIC_FIELD(bool, ItalicText);
     DECLARE_STATIC_FIELD(bool, UprightInMultiplayer);
+    DECLARE_STATIC_FIELD(bool, DisableIn90Degree);
     DECLARE_STATIC_FIELD(float, DistanceStep);
 
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, gameObject);
@@ -74,6 +75,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus, Qounter, UnityEngine::MonoBehaviour,
         REGISTER_FIELD(MultiplierOffset);
         REGISTER_FIELD(ItalicText);
         REGISTER_FIELD(UprightInMultiplayer);
+        REGISTER_FIELD(DisableIn90Degree);
         REGISTER_FIELD(DistanceStep);
 
         REGISTER_FIELD(gameObject);

@@ -42,8 +42,19 @@ void QountersMinus::QounterRegistry::Initialize() {
     for (auto&& def : registry) def.second.instance = nullptr;
     if (!Qounter::Enabled) return;
     if (UnityEngine::Object::FindObjectOfType<PlayerDataModel*>()->playerData->playerSpecificSettings->noTextsAndHuds) return;
+
     auto comboPanel = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("ComboPanel"));
     auto multiplierCanvas = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("MultiplierCanvas"));
+
+    if (Qounter::DisableIn90Degree) {
+        // hacky way of getting BeatmapCharacteristic
+        auto refs = comboPanel->AddComponent<QountersMinus::InjectedComponents*>();
+        if (refs->beatmapCharacteristic->containsRotationEvents) {
+            UnityEngine::Object::Destroy(refs);
+            return;
+        }
+    }
+
     if (Qounter::HideCombo) _DeactivateChildren(comboPanel);
     if (Qounter::HideMultiplier) {
         multiplierCanvas->GetComponent<UnityEngine::Animator*>()->set_enabled(false);

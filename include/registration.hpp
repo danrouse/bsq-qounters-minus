@@ -86,6 +86,13 @@ namespace QountersMinus {
             .floatStep = 0.1f,
         });
         QounterRegistry::RegisterConfig<Qounter>({
+            .ptr = &QountersMinus::Qounter::DisableIn90Degree,
+            .field = "DisableIn90Degree",
+            .displayName = "Disable In 90/360-Degree Maps",
+            .helpText = "Disables Qounters- when playing a beatmap in 90- or 360-degree mode.",
+            .floatStep = 0.1f,
+        });
+        QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::DistanceStep,
             .field = "DistanceStep",
             .displayName = "Distance Increment",

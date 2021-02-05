@@ -12,6 +12,8 @@ RelativeScoreAndImmediateRankCounter* InjectedComponents::relativeScoreAndImmedi
 ScoreController* InjectedComponents::scoreController;
 PlayerData* InjectedComponents::playerData;
 IDifficultyBeatmap* InjectedComponents::difficultyBeatmap;
+BeatmapCharacteristicSO* InjectedComponents::beatmapCharacteristic;
+
 void QountersMinus::InjectedComponents::Awake() {
     if (numInstances++ == 0) {
         saberManager = UnityEngine::Object::FindObjectOfType<SaberManager*>();
@@ -30,6 +32,7 @@ void QountersMinus::InjectedComponents::Awake() {
         }
         if (!gameplayCoreInstaller) gameplayCoreInstaller = gameplayCoreInstallers->values[0];
         difficultyBeatmap = gameplayCoreInstaller->sceneSetupData->difficultyBeatmap;
+        beatmapCharacteristic = difficultyBeatmap->get_parentDifficultyBeatmapSet()->get_beatmapCharacteristic();
     }
 }
 
