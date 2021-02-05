@@ -1,7 +1,7 @@
 #pragma once
 
 #include "util/logger.hpp"
-#include "Qounter.hpp"
+#include "components/Qounter.hpp"
 #include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"

@@ -2,7 +2,7 @@
 
 #include <map>
 #include "util/logger.hpp"
-#include "InjectedComponents.hpp"
+#include "components/InjectedComponents.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"

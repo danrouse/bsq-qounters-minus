@@ -1,4 +1,4 @@
-#include "Qounters/ProgressQounter.hpp"
+#include "components/Qounters/ProgressQounter.hpp"
 
 DEFINE_CLASS(QountersMinus::Qounters::ProgressQounter);
 

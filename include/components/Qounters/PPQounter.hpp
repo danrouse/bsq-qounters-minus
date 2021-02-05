@@ -4,7 +4,7 @@
 #include "util/song_id.hpp"
 #include "util/pp.hpp"
 #include "util/format.hpp"
-#include "Qounter.hpp"
+#include "components/Qounter.hpp"
 #include "QounterRegistry.hpp"
 
 #include "custom-types/shared/macros.hpp"

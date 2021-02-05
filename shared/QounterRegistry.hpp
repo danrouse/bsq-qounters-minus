@@ -2,8 +2,8 @@
 
 #include <map>
 #include "util/logger.hpp"
-#include "Qounter.hpp"
-#include "InjectedComponents.hpp"
+#include "components/Qounter.hpp"
+#include "components/InjectedComponents.hpp"
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/register.hpp"
 #include "UnityEngine/Animator.hpp"

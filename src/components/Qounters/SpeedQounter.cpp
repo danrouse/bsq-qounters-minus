@@ -1,4 +1,4 @@
-#include "Qounters/SpeedQounter.hpp"
+#include "components/Qounters/SpeedQounter.hpp"
 
 DEFINE_CLASS(QountersMinus::Qounters::SpeedQounter);
 

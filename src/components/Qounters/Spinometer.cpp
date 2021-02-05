@@ -1,4 +1,4 @@
-#include "Qounters/Spinometer.hpp"
+#include "components/Qounters/Spinometer.hpp"
 
 DEFINE_CLASS(QountersMinus::Qounters::Spinometer);
 

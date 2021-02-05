@@ -1,4 +1,4 @@
-#include "QounterSettingsViewController.hpp"
+#include "components/QounterSettingsViewController.hpp"
 
 DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
 

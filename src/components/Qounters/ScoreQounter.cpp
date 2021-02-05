@@ -1,4 +1,4 @@
-#include "Qounters/ScoreQounter.hpp"
+#include "components/Qounters/ScoreQounter.hpp"
 
 DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
 
