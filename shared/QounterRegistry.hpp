@@ -4,6 +4,7 @@
 #include "util/logger.hpp"
 #include "Qounter.hpp"
 #include "custom-types/shared/macros.hpp"
+#include "custom-types/shared/register.hpp"
 #include "UnityEngine/Animator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
@@ -25,7 +26,7 @@ namespace QountersMinus {
             };
             typedef struct _EventHandlerSignature {
                 Event event;
-                std::string methodName;
+                const char* methodName;
                 int numArgs;
             } EventHandlerSignature;
             static const std::vector<EventHandlerSignature> eventHandlerSignatures;
@@ -62,9 +63,18 @@ namespace QountersMinus {
             template <typename T>
             static void Register(std::string shortName, std::string longName, std::string configKey, bool isBaseQounter) {
                 auto typeInfo = custom_types::name_registry<T>::get();
+                const Il2CppClass* klass;
+                for (auto& classWrapper : custom_types::Register::classes) {
+                    auto _klass = classWrapper->get();
+                    if (_klass->namespaze == typeInfo->getNamespace() && _klass->name == typeInfo->getName()) {
+                        klass = _klass;
+                        break;
+                    }
+                }
+                CRASH_UNLESS(klass);
                 std::map<Event, const MethodInfo*> eventHandlers;
                 for (auto sig : eventHandlerSignatures) {
-                    eventHandlers[sig.event] = il2cpp_utils::FindMethodUnsafe(typeInfo->getNamespace(), typeInfo->getName(), sig.methodName, sig.numArgs);
+                    eventHandlers[sig.event] = il2cpp_functions::class_get_method_from_name(klass, sig.methodName, sig.numArgs);
                 }
                 std::map<std::string, void*> staticFieldRefs;
                 if constexpr (!std::is_same_v<T, QountersMinus::Qounter>) {
