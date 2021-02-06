@@ -8,77 +8,20 @@ UnityEngine::GameObject* CreateContentView(UnityEngine::Transform* parent) {
     static auto name = il2cpp_utils::createcsstr("QountersMinusSettingsContainer", il2cpp_utils::StringType::Manual);
     auto scrollContainer = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(parent);
     auto scrollContainerScrollerRect = scrollContainer->get_transform()->get_parent()->get_parent()->get_parent()->GetComponent<UnityEngine::RectTransform*>();
-    scrollContainerScrollerRect->set_anchoredPosition(UnityEngine::Vector2(22.0f, 0.0f));
+    scrollContainerScrollerRect->set_sizeDelta(UnityEngine::Vector2(120.0f, 0.0f));
+    // scrollContainerScrollerRect->set_anchoredPosition(UnityEngine::Vector2(22.0f, 0.0f));
     scrollContainer->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject()->set_name(name);
     return scrollContainer;
 }
 
-static bool isTutorialSceneForceUnloaded = false;
 static std::map<std::pair<std::string, std::string>, TMPro::TextMeshProUGUI*> dummies;
 static UnityEngine::GameObject* dummyContainer;
 
-void DisableAllNonImportantObjects(UnityEngine::Transform* original, UnityEngine::Transform* source, std::set<std::string> importantObjects) {
-    for (int i = 0; i < source->get_childCount(); i++) {
-        auto child = source->GetChild(i);
-        if (importantObjects.contains(to_utf8(csstrtostr(child->get_name())))) {
-            auto loopback = child;
-            while (loopback != original) {
-                loopback->get_gameObject()->SetActive(true);
-                loopback = loopback->get_parent();
-            }
-        } else {
-            child->get_gameObject()->SetActive(false);
-            DisableAllNonImportantObjects(original, child, importantObjects);
-        }
-    }
-}
-
-void LoadTutorialScene() {
-    isTutorialSceneForceUnloaded = false;
-    auto gameScenesManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::GameScenesManager*>();
-    gameScenesManager->neverUnloadScenes->Add(il2cpp_utils::createcsstr("MenuViewControllers"));
-    gameScenesManager->neverUnloadScenes->Add(il2cpp_utils::createcsstr("MenuCore"));
-    gameScenesManager->neverUnloadScenes->Add(il2cpp_utils::createcsstr("MainMenu"));
-
-    auto menuTransitionsHelper = UnityEngine::Object::FindObjectOfType<GlobalNamespace::MenuTransitionsHelper*>();
-    menuTransitionsHelper->tutorialScenesTransitionSetupData->Init();
-
-    gameScenesManager->PushScenes(menuTransitionsHelper->tutorialScenesTransitionSetupData, 0.0f, nullptr, il2cpp_utils::MakeDelegate<SceneTransitionDelegate>(
-        classof(SceneTransitionDelegate), gameScenesManager, +[](GlobalNamespace::GameScenesManager* gameScenesManager, Zenject::DiContainer* diContainer) {
-            auto tutorialTransform = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("TutorialGameplay"))->get_transform();
-            // if (mainSettings.screenDisplacementEffectsEnabled) menuShockwave.gameObject.SetActive(false);
-            UnityEngine::Object::FindObjectOfType<GlobalNamespace::SongPreviewPlayer*>()->CrossfadeToDefault();
-            // UnityEngine::Object::FindObjectOfType<VRUIControls::VRInputModule*>()->get_gameObject()->SetActive(false);
-            DisableAllNonImportantObjects(tutorialTransform, tutorialTransform, {
-                "EventSystem",
-                "ControllerLeft",
-                "ControllerRight"
-            });
-        }
-    ));
-}
-
-void ResetSceneAfterUnload(GlobalNamespace::GameScenesManager* gameScenesManager, Zenject::DiContainer* diContainer) {
-    gameScenesManager->neverUnloadScenes->Remove(il2cpp_utils::createcsstr("MenuViewControllers"));
-    gameScenesManager->neverUnloadScenes->Remove(il2cpp_utils::createcsstr("MenuCore"));
-    gameScenesManager->neverUnloadScenes->Remove(il2cpp_utils::createcsstr("MainMenu"));
-    isTutorialSceneForceUnloaded = true;
-
-    UnityEngine::Object::FindObjectOfType<GlobalNamespace::FadeInOutController*>()->FadeIn();
-    UnityEngine::Object::FindObjectOfType<GlobalNamespace::SongPreviewPlayer*>()->CrossfadeToDefault();
-}
-
-void UnloadTutorialScene(GlobalNamespace::GameScenesManager* gameScenesManager, SceneTransitionDelegate onUnload) {
-    // if (mainSettings.screenDisplacementEffectsEnabled) menuShockwave.gameObject.SetActive(true);
-    // UnityEngine::Object::FindObjectOfType<VRUIControls::VRInputModule*>()->get_gameObject()->SetActive(true);
-    gameScenesManager->PopScenes(0.0f, nullptr, onUnload);
-}
-
 void StartTestLevel(QountersMinus::QounterSettingsViewController* self) {
-    auto gameScenesManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::GameScenesManager*>();
-    UnloadTutorialScene(gameScenesManager, il2cpp_utils::MakeDelegate<SceneTransitionDelegate>(
-        classof(SceneTransitionDelegate), gameScenesManager, +[](GlobalNamespace::GameScenesManager* gameScenesManager, Zenject::DiContainer* diContainer) {
-            ResetSceneAfterUnload(gameScenesManager, diContainer);
+    // auto gameScenesManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::GameScenesManager*>();
+    // UnloadTutorialScene(gameScenesManager, il2cpp_utils::MakeDelegate<SceneTransitionDelegate>(
+        // classof(SceneTransitionDelegate), gameScenesManager, +[](GlobalNamespace::GameScenesManager* gameScenesManager, Zenject::DiContainer* diContainer) {
+            // ResetSceneAfterUnload(gameScenesManager, diContainer);
             auto simpleLevelStarters = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleLevelStarter*>();
             for (int i = 0; i < simpleLevelStarters->Length(); i++) {
                 auto starter = simpleLevelStarters->values[i];
@@ -89,20 +32,12 @@ void StartTestLevel(QountersMinus::QounterSettingsViewController* self) {
                     return;
                 }
             }
-        }
-    ));
+    //     }
+    // ));
 }
 
 void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
-    if (addedToHierarchy || isTutorialSceneForceUnloaded) LoadTutorialScene();
     if (!firstActivation || !addedToHierarchy) return;
-
-    auto navigationContainer = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(get_transform());
-    navigationContainer->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>()->set_spacing(-0.5f);
-
-    auto navigationContainerRect = navigationContainer->get_transform()->get_parent()->get_parent()->get_parent()->GetComponent<UnityEngine::RectTransform*>();
-    navigationContainerRect->set_sizeDelta(UnityEngine::Vector2(-112.0f, -12.0f));
-    navigationContainerRect->set_anchoredPosition(UnityEngine::Vector2(-52.0f, 6.0f));
 
     dummyContainer = UnityEngine::GameObject::New_ctor(il2cpp_utils::createcsstr("QountersMinusDummyContainer"));
     dummyContainer->get_transform()->SetParent(get_transform(), false);
@@ -110,48 +45,20 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
     dummyContainer->get_transform()->set_localScale(UnityEngine::Vector3(0.4f, 0.4f, 0.4f));
 
     for (auto key : QountersMinus::QounterRegistry::registryInsertionOrder) {
-        auto def = QountersMinus::QounterRegistry::registry[key];
-        auto context = new NavigationButtonContext({
-            .parent = get_transform(),
-            .title = def.longName,
-            ._namespace = key.first,
-            ._class = key.second,
-            .configMetadata = def.configMetadata,
-        });
-        context->klass = classof(System::Object*);
-        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.shortName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
-            classof(UnityEngine::Events::UnityAction*), context, +[](NavigationButtonContext* context) {
-                auto existingContainer = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("QountersMinusSettingsContainer"));
-                if (existingContainer) UnityEngine::Object::Destroy(existingContainer);
-                CreateQounterConfigView(context->parent, context->title, context->_namespace, context->_class, context->configMetadata);
-            }
-        ));
-
         UpdateDummy(key);
     }
 
     // Select "Main" by default
-    CreateQounterConfigView(get_transform(),
+    ReplaceQounterConfig(
         QountersMinus::QounterRegistry::registry[{"QountersMinus", "Qounter"}].longName,
-        "QountersMinus",
-        "Qounter",
         QountersMinus::QounterRegistry::registry[{"QountersMinus", "Qounter"}].configMetadata
     );
 
-    auto testButton = QuestUI::BeatSaberUI::CreateUIButton(get_transform(), "Test", "PlayButton", il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
-        classof(UnityEngine::Events::UnityAction*), this, StartTestLevel
-    ));
-    testButton->GetComponent<UnityEngine::RectTransform*>()->set_anchoredPosition(UnityEngine::Vector2(-52.0f, -27.5f));
-    testButton->GetComponent<UnityEngine::RectTransform*>()->set_sizeDelta(UnityEngine::Vector2(27.0f, 10.0f));
-}
-
-void QountersMinus::QounterSettingsViewController::DidDeactivate(bool removedFromHierarchy, bool screenSystemDisabling) {
-    if (removedFromHierarchy) {
-        auto gameScenesManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::GameScenesManager*>();
-        UnloadTutorialScene(gameScenesManager, il2cpp_utils::MakeDelegate<SceneTransitionDelegate>(
-            classof(SceneTransitionDelegate), gameScenesManager, ResetSceneAfterUnload
-        ));
-    }
+    // auto testButton = QuestUI::BeatSaberUI::CreateUIButton(get_transform(), "Test", "PlayButton", il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
+    //     classof(UnityEngine::Events::UnityAction*), this, StartTestLevel
+    // ));
+    // testButton->GetComponent<UnityEngine::RectTransform*>()->set_anchoredPosition(UnityEngine::Vector2(-52.0f, -27.5f));
+    // testButton->GetComponent<UnityEngine::RectTransform*>()->set_sizeDelta(UnityEngine::Vector2(27.0f, 10.0f));
 }
 
 void UpdateDummy(std::pair<std::string, std::string> key) {
@@ -217,14 +124,13 @@ void HandleColorSettingChanged(System::Reflection::Pointer* csptr, UnityEngine::
     // dummies aren't affected by color changes so don't waste cycles updating
 }
 
-UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
-    UnityEngine::Transform* parent,
+UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::ReplaceQounterConfig(
     std::string title,
-    std::string namespaze,
-    std::string klass,
     std::vector<std::shared_ptr<QountersMinus::QounterRegistry::ConfigMetadata>> configMetadata
 ) {
-    auto container = CreateContentView(parent);
+    if (currentView) UnityEngine::Object::Destroy(currentView->get_transform()->get_parent()->get_parent()->get_parent()->get_gameObject());
+    auto container = CreateContentView(get_transform());
+    currentView = container;
     auto titleText = QuestUI::BeatSaberUI::CreateText(container->get_transform(), title);
     titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
     titleText->set_fontSize(6.0f);
@@ -232,7 +138,7 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
     for (auto fieldConfig : configMetadata) {
         UnityEngine::GameObject* gameObject;
         auto label = fieldConfig->displayName == "" ? fieldConfig->field : fieldConfig->displayName;
-        auto fieldInfo = il2cpp_utils::FindField(namespaze, klass, fieldConfig->field);
+        auto fieldInfo = il2cpp_utils::FindField(fieldConfig->parentClass.first, fieldConfig->parentClass.second, fieldConfig->field);
         auto fieldTypeName = std::string(il2cpp_utils::TypeGetSimpleName(fieldInfo->type));
         // nasty hack to access field data inside delegates
         auto csptr = il2cpp_utils::New<System::Reflection::Pointer*>().value();

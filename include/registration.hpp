@@ -4,6 +4,8 @@
 #include "questui/shared/QuestUI.hpp"
 #include "QounterRegistry.hpp"
 #include "components/InjectedComponents.hpp"
+#include "components/SettingsFlowCoordinator.hpp"
+#include "components/SettingsButtonsViewController.hpp"
 #include "components/QounterSettingsViewController.hpp"
 #include "components/Qounter.hpp"
 #include "components/Qounters/CutQounter.hpp"
@@ -25,6 +27,8 @@ namespace QountersMinus {
         custom_types::Register::RegisterTypes<
             InjectedComponents,
             Qounter,
+            SettingsFlowCoordinator,
+            SettingsButtonsViewController,
             QounterSettingsViewController
         >();
         custom_types::Register::RegisterTypes<
@@ -113,8 +117,6 @@ namespace QountersMinus {
         Qounters::SpeedQounter::Register();
         Qounters::Spinometer::Register();
 
-        QuestUI::Register::RegisterModSettingsViewController<QountersMinus::QounterSettingsViewController*>(
-            (ModInfo){"Qounters-", VERSION}, "Qounters-"
-        );
+        QuestUI::Register::RegisterModSettingsFlowCoordinator<QountersMinus::SettingsFlowCoordinator*>((ModInfo){"Qounters-", VERSION});
     }
 }
