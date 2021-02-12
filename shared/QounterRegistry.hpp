@@ -15,6 +15,13 @@
 #include "GlobalNamespace/MultiplayerLocalActivePlayerFacade.hpp"
 #include "TMPro/FontStyles.hpp"
 
+struct pair_hash {
+    template <class T1, class T2>
+    std::size_t operator() (const std::pair<T1, T2> &pair) const {
+        return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+    }
+};
+
 namespace QountersMinus {
     class QounterRegistry {
         public:
@@ -25,13 +32,13 @@ namespace QountersMinus {
                 MaxScoreUpdated,
                 SwingRatingFinished,
             };
-            typedef struct _EventHandlerSignature {
+            struct EventHandlerSignature {
                 Event event;
                 const char* methodName;
                 int numArgs;
-            } EventHandlerSignature;
+            };
             static const std::vector<EventHandlerSignature> eventHandlerSignatures;
-            typedef struct _ConfigMetadata {
+            struct ConfigMetadata {
                 void* ptr;
                 std::string field;
                 std::string jsonKey;
@@ -45,21 +52,21 @@ namespace QountersMinus {
                 int intMax = 1024;
                 int intStep = 1;
                 int enumNumElements = 0;
-                std::map<int, std::string> enumDisplayNames;
-                std::map<std::string, int> enumSerializedNames;
+                std::unordered_map<int, std::string> enumDisplayNames;
+                std::unordered_map<std::string, int> enumSerializedNames;
                 void* uiElementPtr; // yuck yuck ew yuck
-            } ConfigMetadata;
-            typedef struct _RegistryEntry {
-                QountersMinus::Qounter* instance;
-                std::map<Event, const MethodInfo*> eventHandlers;
+            };
+            struct RegistryEntry {
+                QountersMinus::Qounter* instance = nullptr;
+                std::unordered_map<Event, const MethodInfo*> eventHandlers;
                 std::string shortName;
                 std::string longName;
                 std::string configKey;
                 std::vector<std::shared_ptr<ConfigMetadata>> configMetadata;
-                std::map<std::string, void*> staticFieldRefs;
+                std::unordered_map<std::string, void*> staticFieldRefs;
                 bool isBaseQounter = false;
-            } RegistryEntry;
-            static std::map<std::pair<std::string, std::string>, RegistryEntry> registry;
+            };
+            static std::unordered_map<std::pair<std::string, std::string>, RegistryEntry, pair_hash> registry;
             static std::vector<std::pair<std::string, std::string>> registryInsertionOrder;
             template <typename T>
             static void Register(std::string shortName, std::string longName, std::string configKey, bool isBaseQounter) {
@@ -73,11 +80,11 @@ namespace QountersMinus {
                     }
                 }
                 CRASH_UNLESS(klass);
-                std::map<Event, const MethodInfo*> eventHandlers;
+                std::unordered_map<Event, const MethodInfo*> eventHandlers;
                 for (auto sig : eventHandlerSignatures) {
                     eventHandlers[sig.event] = il2cpp_functions::class_get_method_from_name(klass, sig.methodName, sig.numArgs);
                 }
-                std::map<std::string, void*> staticFieldRefs;
+                std::unordered_map<std::string, void*> staticFieldRefs;
                 if constexpr (!std::is_same_v<T, QountersMinus::Qounter>) {
                     staticFieldRefs = {
                         {"Enabled", &T::Enabled},
@@ -86,7 +93,6 @@ namespace QountersMinus {
                     };
                 }
                 registry[{typeInfo->getNamespace(), typeInfo->getName()}] = {
-                    .instance = (Qounter*)nullptr,
                     .eventHandlers = eventHandlers,
                     .shortName = shortName,
                     .longName = longName,
@@ -123,7 +129,7 @@ namespace QountersMinus {
             static void RegisterConfig(ConfigMetadata config) {
                 auto typeInfo = custom_types::name_registry<T>::get();
                 auto ptr = std::make_shared<ConfigMetadata>(config);
-                registry[{typeInfo->getNamespace(), typeInfo->getName()}].configMetadata.push_back(ptr);
+                registry[{typeInfo->getNamespace(), typeInfo->getName()}].configMetadata.emplace_back(ptr);
             }
 
             static void Initialize();

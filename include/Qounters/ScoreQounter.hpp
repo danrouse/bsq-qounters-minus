@@ -23,13 +23,13 @@ namespace QountersMinus {
         RemoveScore
     };
     static int ScoreQounterModeCount = 4;
-    static std::map<int, std::string> ScoreQounterModeNames = {
+    static std::unordered_map<int, std::string> ScoreQounterModeNames = {
         {static_cast<int>(ScoreQounterMode::Original), "Original"},
         {static_cast<int>(ScoreQounterMode::ScoreOnly), "Remove Rank"},
         {static_cast<int>(ScoreQounterMode::RankOnly), "Remove Percentage"},
         {static_cast<int>(ScoreQounterMode::RemoveScore), "Remove Score"},
     };
-    static std::map<std::string, int> ScoreQounterModeLookup = {
+    static std::unordered_map<std::string, int> ScoreQounterModeLookup = {
         {"Original", static_cast<int>(ScoreQounterMode::Original)},
         {"LeavePoints", static_cast<int>(ScoreQounterMode::Original)}, // leave reference to convert from pc config
         {"ScoreOnly", static_cast<int>(ScoreQounterMode::ScoreOnly)},

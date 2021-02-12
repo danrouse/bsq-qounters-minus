@@ -21,12 +21,12 @@ namespace QountersMinus {
         Highest
     };
     static int SpinometerModeCount = 3;
-    static std::map<int, std::string> SpinometerModeNames = {
+    static std::unordered_map<int, std::string> SpinometerModeNames = {
         {static_cast<int>(SpinometerMode::Average), "Average"},
         {static_cast<int>(SpinometerMode::SplitAverage), "Split Average"},
         {static_cast<int>(SpinometerMode::Highest), "Highest"}
     };
-    static std::map<std::string, int> SpinometerModeLookup = {
+    static std::unordered_map<std::string, int> SpinometerModeLookup = {
         {"Average", static_cast<int>(SpinometerMode::Average)},
         {"SplitAverage", static_cast<int>(SpinometerMode::SplitAverage)},
         {"Highest", static_cast<int>(SpinometerMode::Highest)}

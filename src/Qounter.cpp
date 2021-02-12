@@ -21,7 +21,7 @@ struct QounterPositionData {
     bool distanceIsDown;
 };
 
-std::map<QountersMinus::QounterPosition, QounterPositionData> QounterPositionData = {
+std::unordered_map<QountersMinus::QounterPosition, QounterPositionData> QounterPositionData = {
     {QountersMinus::QounterPosition::BelowCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 12.0f), true}},
     {QountersMinus::QounterPosition::AboveCombo, {"ComboPanel", UnityEngine::Vector2(-4.0f, 40.0f), false}},
     {QountersMinus::QounterPosition::BelowMultiplier, {"MultiplierCanvas", UnityEngine::Vector2(0.0f, 12.0f), true}},

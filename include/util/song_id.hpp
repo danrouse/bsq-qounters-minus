@@ -5,9 +5,9 @@
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
 #include "GlobalNamespace/BeatmapDifficulty.hpp"
 
-typedef struct _SongID {
+struct SongID {
     std::string hash;
     GlobalNamespace::BeatmapDifficulty difficulty;
-} SongID;
+};
 
 SongID GetSongID(GlobalNamespace::IDifficultyBeatmap* beatmap);

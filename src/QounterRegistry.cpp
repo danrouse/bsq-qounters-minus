@@ -9,7 +9,7 @@ const std::vector<QounterRegistry::EventHandlerSignature> QounterRegistry::event
     {QounterRegistry::Event::MaxScoreUpdated, "OnMaxScoreUpdated", 1},
     {QounterRegistry::Event::SwingRatingFinished, "OnSwingRatingFinished", 2},
 };
-std::map<std::pair<std::string, std::string>, QounterRegistry::RegistryEntry> QounterRegistry::registry;
+std::unordered_map<std::pair<std::string, std::string>, QounterRegistry::RegistryEntry, pair_hash> QounterRegistry::registry;
 std::vector<std::pair<std::string, std::string>> QounterRegistry::registryInsertionOrder;
 
 void _DeactivateChildren(UnityEngine::GameObject* gameObject) {

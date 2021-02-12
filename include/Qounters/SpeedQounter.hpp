@@ -22,14 +22,14 @@ namespace QountersMinus {
         SplitBoth
     };
     static int SpeedQounterModeCount = 5;
-    static std::map<int, std::string> SpeedQounterModeNames = {
+    static std::unordered_map<int, std::string> SpeedQounterModeNames = {
         {static_cast<int>(SpeedQounterMode::Average), "Average"},
         {static_cast<int>(SpeedQounterMode::Top5Sec), "Top from 5 Seconds"},
         {static_cast<int>(SpeedQounterMode::Both), "Both Metrics"},
         {static_cast<int>(SpeedQounterMode::SplitAverage), "Split Average"},
         {static_cast<int>(SpeedQounterMode::SplitBoth), "Split Both Metrics"}
     };
-    static std::map<std::string, int> SpeedQounterModeLookup = {
+    static std::unordered_map<std::string, int> SpeedQounterModeLookup = {
         {"Average", static_cast<int>(SpeedQounterMode::Average)},
         {"Top5Sec", static_cast<int>(SpeedQounterMode::Top5Sec)},
         {"Both", static_cast<int>(SpeedQounterMode::Both)},

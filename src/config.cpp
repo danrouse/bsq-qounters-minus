@@ -7,7 +7,7 @@ Configuration& getConfig() {
 }
 
 template<typename T>
-std::string LookupEnumString(T value, std::map<std::string, T> lookupTable) {
+std::string LookupEnumString(T value, std::unordered_map<std::string, T> lookupTable) {
     for (auto kv : lookupTable) {
         if (kv.second == value) return kv.first;
     }

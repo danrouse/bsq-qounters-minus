@@ -25,13 +25,13 @@ namespace QountersMinus {
         Percent
     };
     static int ProgressQounterModeCount = 4;
-    static std::map<int, std::string> ProgressQounterModeNames = {
+    static std::unordered_map<int, std::string> ProgressQounterModeNames = {
         {static_cast<int>(ProgressQounterMode::Original), "Original"},
         {static_cast<int>(ProgressQounterMode::BaseGame), "Base Game"},
         {static_cast<int>(ProgressQounterMode::TimeInBeats), "Time in Beats"},
         {static_cast<int>(ProgressQounterMode::Percent), "Percentage"}
     };
-    static std::map<std::string, int> ProgressQounterModeLookup = {
+    static std::unordered_map<std::string, int> ProgressQounterModeLookup = {
         {"Original", static_cast<int>(ProgressQounterMode::Original)},
         {"BaseGame", static_cast<int>(ProgressQounterMode::BaseGame)},
         {"TimeInBeats", static_cast<int>(ProgressQounterMode::TimeInBeats)},

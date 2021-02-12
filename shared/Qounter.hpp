@@ -28,7 +28,7 @@ namespace QountersMinus {
         AboveHighway
     };
     static int QounterPositionCount = 6;
-    static std::map<int, std::string> QounterPositionNames = {
+    static std::unordered_map<int, std::string> QounterPositionNames = {
         {static_cast<int>(QounterPosition::BelowCombo), "Below Combo"},
         {static_cast<int>(QounterPosition::AboveCombo), "Above Combo"},
         {static_cast<int>(QounterPosition::BelowMultiplier), "Below Multiplier"},
@@ -36,7 +36,7 @@ namespace QountersMinus {
         {static_cast<int>(QounterPosition::BelowEnergy), "Below Energy"},
         {static_cast<int>(QounterPosition::AboveHighway), "Over Highway"}
     };
-    static std::map<std::string, int> QounterPositionLookup = {
+    static std::unordered_map<std::string, int> QounterPositionLookup = {
         {"BelowCombo", static_cast<int>(QounterPosition::BelowCombo)},
         {"AboveCombo", static_cast<int>(QounterPosition::AboveCombo)},
         {"BelowMultiplier", static_cast<int>(QounterPosition::BelowMultiplier)},

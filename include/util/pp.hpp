@@ -11,19 +11,19 @@
 #include "UnityEngine/AsyncOperation.hpp"
 #include "System/Action_1.hpp"
 
-typedef struct _RawPPData {
+struct RawPPData {
     float _Easy_SoloStandard = 0.0f;
     float _Normal_SoloStandard = 0.0f;
     float _Hard_SoloStandard = 0.0f;
     float _Expert_SoloStandard = 0.0f;
     float _ExpertPlus_SoloStandard = 0.0f;
-} RawPPData;
+};
 
 typedef System::Action_1<UnityEngine::AsyncOperation*>* DownloadCompleteDelegate;
 
 namespace QountersMinus {
     namespace PP {
-        static std::map<std::string, RawPPData> index;
+        static std::unordered_map<std::string, RawPPData> index;
         static UnityEngine::Networking::UnityWebRequest* request;
 
         void Initialize();

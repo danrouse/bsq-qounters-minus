@@ -23,11 +23,11 @@ namespace QountersMinus {
         Relative
     };
     static int PBQounterModeCount = 2;
-    static std::map<int, std::string> PBQounterModeNames = {
+    static std::unordered_map<int, std::string> PBQounterModeNames = {
         {static_cast<int>(PBQounterMode::Absolute), "Absolute"},
         {static_cast<int>(PBQounterMode::Relative), "Relative"}
     };
-    static std::map<std::string, int> PBQounterModeLookup = {
+    static std::unordered_map<std::string, int> PBQounterModeLookup = {
         {"Absolute", static_cast<int>(PBQounterMode::Absolute)},
         {"Relative", static_cast<int>(PBQounterMode::Relative)}
     };
