@@ -5,4 +5,4 @@ while ($bspid -eq "") {
     $bspid = adb shell pidof com.beatgames.beatsaber
 }
 adb logcat VrApi:S OVRPlatform:S -T "$timestamp" --pid $bspid
-# adb logcat -T "$timestamp" main-modloader:W QuestHook[qounters-minus`|v1.0.1]:* AndroidRuntime:E *:S
+# adb logcat -T "$timestamp" main-modloader:W QuestHook[qounters-minus`|v1.0.2]:* AndroidRuntime:E *:S
