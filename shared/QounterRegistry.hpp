@@ -127,7 +127,9 @@ namespace QountersMinus {
 
             template <typename T>
             static void RegisterConfig(ConfigMetadata config) {
+                custom_types::_logger().disable(); // please forgive me
                 auto typeInfo = custom_types::name_registry<T>::get();
+                custom_types::_logger().enable(); // i am very sorry
                 auto ptr = std::make_shared<ConfigMetadata>(config);
                 registry[{typeInfo->getNamespace(), typeInfo->getName()}].configMetadata.emplace_back(ptr);
             }

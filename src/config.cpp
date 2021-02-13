@@ -47,7 +47,9 @@ bool QountersMinus::LoadConfig() {
                 foundEverything = false;
                 continue;
             }
+            custom_types::_logger().disable();
             auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, fieldConfig->field);
+            custom_types::_logger().enable();
             auto fieldTypeName = std::string(il2cpp_utils::TypeGetSimpleName(fieldInfo->type));
             if (fieldTypeName == "bool") {
                 if (jsonConfigObj[jsonKey].IsBool()) {
