@@ -15,33 +15,18 @@
 #include "UnityEngine/Time.hpp"
 #include "System/Action.hpp"
 
-DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, FailQounter, QountersMinus::Qounter,
-    DECLARE_STATIC_FIELD(bool, Enabled);
-    DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(float, Distance);
-    DECLARE_STATIC_FIELD(bool, ShowRestartsInstead);
+DECLARE_CLASS_CUSTOM(QountersMinus::Qounters, FailQounter, QountersMinus::Qounter,
+    static bool Enabled;
+    static int Position;
+    static float Distance;
+    static bool ShowRestartsInstead;
 
-    DECLARE_STATIC_FIELD(Il2CppString*, prevBeatmapHash);
-    DECLARE_STATIC_FIELD(int, restarts);
+    static Il2CppString* prevBeatmapHash;
+    static int restarts;
     DECLARE_INSTANCE_FIELD_DEFAULT(int, count, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, animationTimer, 10.0f);
 
-    DECLARE_METHOD(static void, Register);
-    DECLARE_METHOD(void, Start);
-    DECLARE_METHOD(void, Update);
-
-    REGISTER_FUNCTION(FailQounter,
-        REGISTER_FIELD(Enabled);
-        REGISTER_FIELD(Position);
-        REGISTER_FIELD(Distance);
-        REGISTER_FIELD(ShowRestartsInstead);
-
-        REGISTER_FIELD(prevBeatmapHash);
-        REGISTER_FIELD(restarts);
-        REGISTER_FIELD(count);
-
-        REGISTER_METHOD(Register);
-        REGISTER_METHOD(Start);
-        REGISTER_METHOD(Update);
-    )
+    DECLARE_STATIC_METHOD(void, Register);
+    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, Update);
 )

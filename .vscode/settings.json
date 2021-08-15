@@ -114,6 +114,7 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "*.inc": "cpp",
-        "__functional_base_03": "cpp"
+        "__functional_base_03": "cpp",
+        "__functional_03": "cpp"
     }
 }

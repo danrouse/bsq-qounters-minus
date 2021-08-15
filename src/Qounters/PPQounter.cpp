@@ -1,6 +1,6 @@
 #include "Qounters/PPQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::PPQounter);
+DEFINE_TYPE(QountersMinus::Qounters,PPQounter);
 
 bool QountersMinus::Qounters::PPQounter::Enabled = false;
 int QountersMinus::Qounters::PPQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveHighway);
@@ -36,18 +36,27 @@ GlobalNamespace::GameplayModifiers* RemovePositiveModifiers(GlobalNamespace::Gam
         modifiers->noBombs,
         modifiers->fastNotes,
         modifiers->strictAngles,
-        false,
-        modifiers->songSpeed == GlobalNamespace::GameplayModifiers::SongSpeed::Faster ?
-            (GlobalNamespace::GameplayModifiers::SongSpeed)GlobalNamespace::GameplayModifiers::SongSpeed::Normal : modifiers->songSpeed,
+        false, // disappearingArrows
+        (modifiers->songSpeed == GlobalNamespace::GameplayModifiers::SongSpeed::Faster)
+            ? (GlobalNamespace::GameplayModifiers::SongSpeed)GlobalNamespace::GameplayModifiers::SongSpeed::Normal
+            : modifiers->songSpeed,
         modifiers->noArrows,
-        false
+        false, // ghostNotes
+        false, // proMode
+        modifiers->zenMode,
+        false // smallCubes
     );
 }
 
 float CalculateMultiplier(std::string songID, GlobalNamespace::ScoreController* scoreController) {
     auto modifiers = QountersMinus::PP::SongAllowsPositiveModifiers(songID) ?
         scoreController->gameplayModifiers : RemovePositiveModifiers(scoreController->gameplayModifiers);
-    auto multiplier = scoreController->gameplayModifiersModel->GetTotalMultiplier(modifiers, scoreController->gameEnergyCounter->energy);
+
+    auto multiplier = scoreController->gameplayModifiersModel->GetTotalMultiplier(
+        scoreController->gameplayModifierParams, // TODO: call RemovePositiveModifiers here
+        scoreController->gameEnergyCounter->get_energy()
+    );
+    // auto multiplier = scoreController->gameplayModifiersModel->GetTotalMultiplier(modifiers, scoreController->gameEnergyCounter->energy);
 
     // ScoreSaber weights these multipliers differently
     if (modifiers->get_disappearingArrows())

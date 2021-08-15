@@ -22,24 +22,7 @@ using namespace QountersMinus;
 
 namespace QountersMinus {
     inline void RegisterEverything() {
-        custom_types::Register::RegisterTypes<
-            InjectedComponents,
-            Qounter,
-            QounterSettingsViewController
-        >();
-        custom_types::Register::RegisterTypes<
-            Qounters::CutQounter,
-            Qounters::FailQounter,
-            Qounters::MissedQounter,
-            Qounters::NotesLeftQounter,
-            Qounters::NotesQounter,
-            Qounters::PBQounter,
-            Qounters::PPQounter,
-            Qounters::ProgressQounter,
-            Qounters::ScoreQounter,
-            Qounters::SpeedQounter,
-            Qounters::Spinometer
-        >();
+        custom_types::Register::AutoRegister();
 
         QounterRegistry::Register<Qounter>("Main", "Qounters-", "", true);
         QounterRegistry::RegisterConfig<Qounter>({

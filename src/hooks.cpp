@@ -2,16 +2,16 @@
 
 using namespace QountersMinus;
 
-MAKE_HOOK_OFFSETLESS(CoreGameHUDController_Start, void, GlobalNamespace::CoreGameHUDController* self) {
+MAKE_HOOK_MATCH(CoreGameHUDController_Start, &GlobalNamespace::CoreGameHUDController::Start, void, GlobalNamespace::CoreGameHUDController* self) {
     LOG_CALLER;
     CoreGameHUDController_Start(self);
     QounterRegistry::Initialize();
 }
 
-MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreController* self) {
+MAKE_HOOK_MATCH(ScoreController_Start, &GlobalNamespace::ScoreController::Start, void, GlobalNamespace::ScoreController* self) {
     LOG_CALLER;
     ScoreController_Start(self);
-    self->add_noteWasCutEvent(il2cpp_utils::MakeDelegate<NoteCutDelegate>(
+    self->add_noteWasCutEvent(il2cpp_utils::MakeDelegate<NoteWasCutDelegate*>(
         classof(NoteCutDelegate), self, +[](GlobalNamespace::ScoreController* self, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info, int unused) {
             QounterRegistry::BroadcastEvent(QounterRegistry::Event::NoteCut, data, info);
         }
@@ -33,13 +33,45 @@ MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, GlobalNamespace::ScoreControll
     ));
 }
 
-MAKE_HOOK_OFFSETLESS(CutScoreHandler_HandleSwingRatingCounterDidFinish, void, GlobalNamespace::BeatmapObjectExecutionRatingsRecorder::CutScoreHandler* self, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
-    CutScoreHandler_HandleSwingRatingCounterDidFinish(self, swingRatingCounter);
-    QounterRegistry::BroadcastEvent(QounterRegistry::Event::SwingRatingFinished, self->noteCutInfo, swingRatingCounter);
+std::map<GlobalNamespace::ISaberSwingRatingCounter*, GlobalNamespace::NoteCutInfo> noteCutInfos;
+
+MAKE_HOOK_MATCH(
+    CutScoreHandler_Set,
+    &GlobalNamespace::BeatmapObjectExecutionRatingsRecorder_CutScoreHandler::Set,
+    void,
+    GlobalNamespace::BeatmapObjectExecutionRatingsRecorder_CutScoreHandler* self,
+    ByRef<GlobalNamespace::NoteCutInfo> noteCutInfo,
+    GlobalNamespace::NoteExecutionRating* noteExecutionRating,
+    GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter
+) {
+    noteCutInfos[swingRatingCounter] = noteCutInfo.heldRef;
+    CutScoreHandler_Set(self, noteCutInfo, noteExecutionRating, swingRatingCounter);
 }
 
-MAKE_HOOK_OFFSETLESS(QuestAppInit_AppStart, void, Il2CppObject* self) {
-    QuestAppInit_AppStart(self);
+MAKE_HOOK_MATCH(
+    CutScoreHandler_HandleSaberSwingRatingCounterDidFinish,
+    &GlobalNamespace::BeatmapObjectExecutionRatingsRecorder_CutScoreHandler::HandleSaberSwingRatingCounterDidFinish,
+    void,
+    GlobalNamespace::BeatmapObjectExecutionRatingsRecorder_CutScoreHandler* self,
+    GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter
+) {
+    CutScoreHandler_HandleSaberSwingRatingCounterDidFinish(self, swingRatingCounter);
+    QounterRegistry::BroadcastEvent(
+        QounterRegistry::Event::SwingRatingFinished,
+        noteCutInfos[swingRatingCounter],
+        swingRatingCounter,
+        self->cutDistanceToCenter
+    );
+    noteCutInfos.erase(swingRatingCounter);
+}
+
+MAKE_HOOK_MATCH(
+    QuestAppInit_AppStartAndMultiSceneEditorSetup,
+    &GlobalNamespace::QuestAppInit::AppStartAndMultiSceneEditorSetup,
+    void,
+    GlobalNamespace::QuestAppInit* self
+) {
+    QuestAppInit_AppStartAndMultiSceneEditorSetup(self);
 
     // Defer config loading to this point to give Custom Qounters a chance to register
     LOG_DEBUG("Loading config");
@@ -49,8 +81,9 @@ MAKE_HOOK_OFFSETLESS(QuestAppInit_AppStart, void, Il2CppObject* self) {
 }
 
 void QountersMinus::InstallHooks() {
-    INSTALL_HOOK_OFFSETLESS(getLogger(), CoreGameHUDController_Start, il2cpp_utils::FindMethodUnsafe("", "CoreGameHUDController", "Start", 0));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), ScoreController_Start, il2cpp_utils::FindMethodUnsafe("", "ScoreController", "Start", 0));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), CutScoreHandler_HandleSwingRatingCounterDidFinish, il2cpp_utils::FindMethodUnsafe("", "BeatmapObjectExecutionRatingsRecorder/CutScoreHandler", "HandleSwingRatingCounterDidFinish", 1));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), QuestAppInit_AppStart, il2cpp_utils::FindMethodUnsafe("", "QuestAppInit", "AppStartAndMultiSceneEditorSetup", 0));
+    INSTALL_HOOK(getLogger(), CoreGameHUDController_Start);
+    INSTALL_HOOK(getLogger(), ScoreController_Start);
+    INSTALL_HOOK(getLogger(), CutScoreHandler_Set);
+    INSTALL_HOOK(getLogger(), CutScoreHandler_HandleSaberSwingRatingCounterDidFinish);
+    INSTALL_HOOK(getLogger(), QuestAppInit_AppStartAndMultiSceneEditorSetup);
 }

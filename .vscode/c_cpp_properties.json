@@ -3,7 +3,7 @@
     {
       "defines": [
         "ID=\"qounters-minus\"",
-        "VERSION=\"1.0.2\"",
+        "VERSION=\"1.1.0\"",
         "__GNUC__",
         "__aarch64__"
       ],
@@ -13,7 +13,7 @@
         "${workspaceFolder}/include",
         "${workspaceFolder}/extern/**",
         "${workspaceFolder}/extern/libil2cpp/il2cpp/libil2cpp",
-        "d:/dev/android-ndk-r21d/**"
+        "c:/dev/android-ndk-r22b/**"
       ],
       "name": "Quest",
       "cStandard": "c11",

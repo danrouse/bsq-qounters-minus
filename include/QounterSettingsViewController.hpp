@@ -1,7 +1,6 @@
 #pragma once
 
 #include "util/logger.hpp"
-#include "util/color_picker_button.hpp"
 #include "config.hpp"
 #include "QounterRegistry.hpp"
 #include "custom-types/shared/macros.hpp"
@@ -24,12 +23,8 @@ struct NavigationButtonContext : Il2CppObject {
 DECLARE_CLASS_CODEGEN(QountersMinus, QounterSettingsViewController, HMUI::ViewController,
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
-    REGISTER_FUNCTION(QounterSettingsViewController,
-        REGISTER_METHOD(DidActivate);
-    )
-
     public:
-    static UnityEngine::GameObject* CreateQounterConfigView(
+    static void CreateQounterConfigView(
         UnityEngine::Transform* parent,
         std::string title,
         std::string namespaze,

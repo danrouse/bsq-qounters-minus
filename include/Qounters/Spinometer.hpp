@@ -33,11 +33,11 @@ namespace QountersMinus {
     };
 }
 
-DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounter,
-    DECLARE_STATIC_FIELD(bool, Enabled);
-    DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(float, Distance);
-    DECLARE_STATIC_FIELD(int, Mode);
+DECLARE_CLASS_CUSTOM(QountersMinus::Qounters, Spinometer, QountersMinus::Qounter,
+    static bool Enabled;
+    static int Position;
+    static float Distance;
+    static int Mode;
 
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<UnityEngine::Quaternion>*, leftQuaternions);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<UnityEngine::Quaternion>*, rightQuaternions);
@@ -46,25 +46,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, Spinometer, QountersMinus::Qounte
     DECLARE_INSTANCE_FIELD_DEFAULT(float, timeSinceLastUpdate, 0.0f);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, highestSpin, 0.0f);
 
-    DECLARE_METHOD(static void, Register);
-    DECLARE_METHOD(void, Start);
-    DECLARE_METHOD(void, Update);
-
-    REGISTER_FUNCTION(Spinometer,
-        REGISTER_FIELD(Enabled);
-        REGISTER_FIELD(Position);
-        REGISTER_FIELD(Distance);
-        REGISTER_FIELD(Mode);
-
-        REGISTER_FIELD(leftQuaternions);
-        REGISTER_FIELD(rightQuaternions);
-        REGISTER_FIELD(leftAngles);
-        REGISTER_FIELD(rightAngles);
-        REGISTER_FIELD(timeSinceLastUpdate);
-        REGISTER_FIELD(highestSpin);
-
-        REGISTER_METHOD(Register);
-        REGISTER_METHOD(Start);
-        REGISTER_METHOD(Update);
-    )
+    DECLARE_STATIC_METHOD(void, Register);
+    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, Update);
 )

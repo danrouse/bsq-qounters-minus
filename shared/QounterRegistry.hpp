@@ -70,16 +70,7 @@ namespace QountersMinus {
             static std::vector<std::pair<std::string, std::string>> registryInsertionOrder;
             template <typename T>
             static void Register(std::string shortName, std::string longName, std::string configKey, bool isBaseQounter) {
-                auto typeInfo = custom_types::name_registry<T>::get();
-                const Il2CppClass* klass;
-                for (auto& classWrapper : custom_types::Register::classes) {
-                    auto _klass = classWrapper->get();
-                    if (_klass->namespaze == typeInfo->getNamespace() && _klass->name == typeInfo->getName()) {
-                        klass = _klass;
-                        break;
-                    }
-                }
-                CRASH_UNLESS(klass);
+                auto klass = classof(T*);
                 std::unordered_map<Event, const MethodInfo*> eventHandlers;
                 for (auto sig : eventHandlerSignatures) {
                     eventHandlers[sig.event] = il2cpp_functions::class_get_method_from_name(klass, sig.methodName, sig.numArgs);
@@ -92,13 +83,13 @@ namespace QountersMinus {
                         {"Distance", &T::Distance}
                     };
                 }
-                registry[{typeInfo->getNamespace(), typeInfo->getName()}] = {
+                registry[{klass->namespaze, klass->name}] = {
                     .eventHandlers = eventHandlers,
                     .shortName = shortName,
                     .longName = longName,
                     .configKey = configKey,
-                    .isBaseQounter = isBaseQounter,
-                    .staticFieldRefs = staticFieldRefs
+                    .staticFieldRefs = staticFieldRefs,
+                    .isBaseQounter = isBaseQounter
                 };
                 if constexpr (!std::is_same_v<T, QountersMinus::Qounter>) {
                     RegisterConfig<T>({
@@ -117,7 +108,7 @@ namespace QountersMinus {
                         .field = "Distance",
                     });
                 }
-                registryInsertionOrder.push_back({typeInfo->getNamespace(), typeInfo->getName()});
+                registryInsertionOrder.push_back({klass->namespaze, klass->name});
             }
 
             template <typename T>
@@ -127,11 +118,9 @@ namespace QountersMinus {
 
             template <typename T>
             static void RegisterConfig(ConfigMetadata config) {
-                custom_types::_logger().disable(); // please forgive me
-                auto typeInfo = custom_types::name_registry<T>::get();
-                custom_types::_logger().enable(); // i am very sorry
+                auto klass = classof(T*);
                 auto ptr = std::make_shared<ConfigMetadata>(config);
-                registry[{typeInfo->getNamespace(), typeInfo->getName()}].configMetadata.emplace_back(ptr);
+                registry[{klass->namespaze, klass->name}].configMetadata.emplace_back(ptr);
             }
 
             static void Initialize();

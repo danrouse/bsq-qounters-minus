@@ -33,46 +33,24 @@ namespace QountersMinus {
     };
 }
 
-DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter,
-    DECLARE_STATIC_FIELD(bool, Enabled);
-    DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(float, Distance);
-    DECLARE_STATIC_FIELD(int, Mode);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, BetterColor);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, DefaultColor);
-    DECLARE_STATIC_FIELD(int, DecimalPrecision);
-    DECLARE_STATIC_FIELD(int, TextSize);
-    DECLARE_STATIC_FIELD(bool, UnderScore);
-    DECLARE_STATIC_FIELD(bool, HideFirstScore);
+DECLARE_CLASS_CUSTOM(QountersMinus::Qounters, PBQounter, QountersMinus::Qounter,
+    static bool Enabled;
+    static int Position;
+    static float Distance;
+    static int Mode;
+    static UnityEngine::Color BetterColor;
+    static UnityEngine::Color DefaultColor;
+    static int DecimalPrecision;
+    static int TextSize;
+    static bool UnderScore;
+    static bool HideFirstScore;
 
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, pbText);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, maxPossibleScore, 0);
     DECLARE_INSTANCE_FIELD_DEFAULT(int, highScore, 0);
 
-    DECLARE_METHOD(static void, Register);
-    DECLARE_METHOD(void, Start);
-    DECLARE_METHOD(void, OnScoreUpdated, int modifiedScore);
-    DECLARE_METHOD(void, SetPersonalBest, float ratioOfMaxScore);
-
-    REGISTER_FUNCTION(PBQounter,
-        REGISTER_FIELD(Enabled);
-        REGISTER_FIELD(Position);
-        REGISTER_FIELD(Distance);
-        REGISTER_FIELD(Mode);
-        REGISTER_FIELD(BetterColor);
-        REGISTER_FIELD(DefaultColor);
-        REGISTER_FIELD(DecimalPrecision);
-        REGISTER_FIELD(TextSize);
-        REGISTER_FIELD(UnderScore);
-        REGISTER_FIELD(HideFirstScore);
-
-        REGISTER_FIELD(pbText);
-        REGISTER_FIELD(maxPossibleScore);
-        REGISTER_FIELD(highScore);
-
-        REGISTER_METHOD(Register);
-        REGISTER_METHOD(Start);
-        REGISTER_METHOD(OnScoreUpdated);
-        REGISTER_METHOD(SetPersonalBest);
-    )
+    DECLARE_STATIC_METHOD(void, Register);
+    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, OnScoreUpdated, int modifiedScore);
+    DECLARE_INSTANCE_METHOD(void, SetPersonalBest, float ratioOfMaxScore);
 )

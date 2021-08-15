@@ -38,54 +38,28 @@ namespace QountersMinus {
     };
 }
 
-DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qounter,
-    DECLARE_STATIC_FIELD(bool, Enabled);
-    DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(float, Distance);
-    DECLARE_STATIC_FIELD(int, Mode);
-    DECLARE_STATIC_FIELD(int, DecimalPrecision);
-    DECLARE_STATIC_FIELD(bool, DisplayRank); // unused?
-    DECLARE_STATIC_FIELD(bool, CustomRankColors);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, SSColor);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, SColor);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, AColor);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, BColor);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, CColor);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, DColor);
-    DECLARE_STATIC_FIELD(UnityEngine::Color, EColor);
+DECLARE_CLASS_CUSTOM(QountersMinus::Qounters, ScoreQounter, QountersMinus::Qounter,
+    static bool Enabled;
+    static int Position;
+    static float Distance;
+    static int Mode;
+    static int DecimalPrecision;
+    static bool DisplayRank; // unused?
+    static bool CustomRankColors;
+    static UnityEngine::Color SSColor;
+    static UnityEngine::Color SColor;
+    static UnityEngine::Color AColor;
+    static UnityEngine::Color BColor;
+    static UnityEngine::Color CColor;
+    static UnityEngine::Color DColor;
+    static UnityEngine::Color EColor;
 
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, rankText);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, relativeScoreText);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::RankModel::Rank, prevImmediateRank);
 
-    DECLARE_METHOD(static void, Register);
-    DECLARE_METHOD(void, Start);
-    DECLARE_METHOD(void, UpdateText);
-    DECLARE_METHOD(UnityEngine::Color, GetRankColor, GlobalNamespace::RankModel::Rank);
-
-    REGISTER_FUNCTION(ScoreQounter,
-        REGISTER_FIELD(Enabled);
-        REGISTER_FIELD(Position);
-        REGISTER_FIELD(Distance);
-        REGISTER_FIELD(Mode);
-        REGISTER_FIELD(DecimalPrecision);
-        REGISTER_FIELD(DisplayRank);
-        REGISTER_FIELD(CustomRankColors);
-        REGISTER_FIELD(SSColor);
-        REGISTER_FIELD(SColor);
-        REGISTER_FIELD(AColor);
-        REGISTER_FIELD(BColor);
-        REGISTER_FIELD(CColor);
-        REGISTER_FIELD(DColor);
-        REGISTER_FIELD(EColor);
-
-        REGISTER_FIELD(rankText);
-        REGISTER_FIELD(relativeScoreText);
-        REGISTER_FIELD(prevImmediateRank);
-
-        REGISTER_METHOD(Register);
-        REGISTER_METHOD(Start);
-        REGISTER_METHOD(UpdateText);
-        REGISTER_METHOD(GetRankColor);
-    )
+    DECLARE_STATIC_METHOD(void, Register);
+    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, UpdateText);
+    DECLARE_INSTANCE_METHOD(UnityEngine::Color, GetRankColor, GlobalNamespace::RankModel::Rank);
 )

@@ -1,6 +1,6 @@
 #include "Qounters/Spinometer.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::Spinometer);
+DEFINE_TYPE(QountersMinus::Qounters,Spinometer);
 
 bool QountersMinus::Qounters::Spinometer::Enabled = false;
 int QountersMinus::Qounters::Spinometer::Position = static_cast<int>(QountersMinus::QounterPosition::AboveMultiplier);
@@ -12,10 +12,10 @@ void QountersMinus::Qounters::Spinometer::Register() {
     QounterRegistry::RegisterConfig<Spinometer>({
         .ptr = &Mode,
         .field = "Mode",
+        .helpText = "How should this Qounter display data?",
         .enumNumElements = SpinometerModeCount,
         .enumDisplayNames = SpinometerModeNames,
         .enumSerializedNames = SpinometerModeLookup,
-        .helpText = "How should this Qounter display data?",
     });
 }
 

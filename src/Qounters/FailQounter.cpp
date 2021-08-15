@@ -1,6 +1,6 @@
 #include "Qounters/FailQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::FailQounter);
+DEFINE_TYPE(QountersMinus::Qounters,FailQounter);
 
 bool QountersMinus::Qounters::FailQounter::Enabled = false;
 int QountersMinus::Qounters::FailQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveCombo);

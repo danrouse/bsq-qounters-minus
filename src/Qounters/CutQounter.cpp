@@ -1,6 +1,6 @@
 #include "Qounters/CutQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::CutQounter);
+DEFINE_TYPE(QountersMinus::Qounters,CutQounter);
 
 bool QountersMinus::Qounters::CutQounter::Enabled = false;
 int QountersMinus::Qounters::CutQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveHighway);
@@ -115,9 +115,13 @@ void QountersMinus::Qounters::CutQounter::UpdateCutScores() {
     }
 }
 
-void QountersMinus::Qounters::CutQounter::OnSwingRatingFinished(GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter) {
+void QountersMinus::Qounters::CutQounter::OnSwingRatingFinished(
+    GlobalNamespace::NoteCutInfo* info,
+    GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter,
+    float cutDistanceToCenter
+) {
     int beforeCutScore = 0, afterCutScore = 0, cutDistanceScore = 0;
-    GlobalNamespace::ScoreModel::RawScoreWithoutMultiplier(info, beforeCutScore, afterCutScore, cutDistanceScore);
+    GlobalNamespace::ScoreModel::RawScoreWithoutMultiplier(swingRatingCounter, cutDistanceToCenter, beforeCutScore, afterCutScore, cutDistanceScore);
     cutScores->Add((int)info->saberType);
     cutScores->Add(beforeCutScore);
     cutScores->Add(afterCutScore);

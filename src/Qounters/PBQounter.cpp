@@ -1,6 +1,6 @@
 #include "Qounters/PBQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::PBQounter);
+DEFINE_TYPE(QountersMinus::Qounters,PBQounter);
 
 bool QountersMinus::Qounters::PBQounter::Enabled = true;
 int QountersMinus::Qounters::PBQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
@@ -18,10 +18,10 @@ void QountersMinus::Qounters::PBQounter::Register() {
     QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &Mode,
         .field = "Mode",
+        .helpText = "Change color based on absolute (song maximum) or relative (current maximum) score.",
         .enumNumElements = PBQounterModeCount,
         .enumDisplayNames = PBQounterModeNames,
         .enumSerializedNames = PBQounterModeLookup,
-        .helpText = "Change color based on absolute (song maximum) or relative (current maximum) score.",
     });
     QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &BetterColor,
@@ -69,7 +69,10 @@ void QountersMinus::Qounters::PBQounter::Start() {
 
     maxPossibleScore = GlobalNamespace::ScoreModel::GetModifiedScoreForGameplayModifiersScoreMultiplier(
         maxRawScore,
-        refs->scoreController->gameplayModifiersModel->GetTotalMultiplier(refs->scoreController->gameplayModifiers, refs->scoreController->gameEnergyCounter->energy)
+        refs->scoreController->gameplayModifiersModel->GetTotalMultiplier(
+            refs->scoreController->gameplayModifierParams,
+            refs->scoreController->gameEnergyCounter->get_energy()
+        )
     );
     auto playerLevelStats = refs->playerData->GetPlayerLevelStatsData(refs->difficultyBeatmap);
     highScore = playerLevelStats->highScore;

@@ -7,7 +7,7 @@ const std::vector<QounterRegistry::EventHandlerSignature> QounterRegistry::event
     {QounterRegistry::Event::NoteMiss, "OnNoteMiss", 1},
     {QounterRegistry::Event::ScoreUpdated, "OnScoreUpdated", 1},
     {QounterRegistry::Event::MaxScoreUpdated, "OnMaxScoreUpdated", 1},
-    {QounterRegistry::Event::SwingRatingFinished, "OnSwingRatingFinished", 2},
+    {QounterRegistry::Event::SwingRatingFinished, "OnSwingRatingFinished", 3},
 };
 std::unordered_map<std::pair<std::string, std::string>, QounterRegistry::RegistryEntry, pair_hash> QounterRegistry::registry;
 std::vector<std::pair<std::string, std::string>> QounterRegistry::registryInsertionOrder;

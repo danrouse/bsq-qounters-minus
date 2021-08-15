@@ -1,6 +1,6 @@
 #include "Qounters/SpeedQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::SpeedQounter);
+DEFINE_TYPE(QountersMinus::Qounters,SpeedQounter);
 
 bool QountersMinus::Qounters::SpeedQounter::Enabled = false;
 int QountersMinus::Qounters::SpeedQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
@@ -22,10 +22,10 @@ void QountersMinus::Qounters::SpeedQounter::Register() {
     QounterRegistry::RegisterConfig<SpeedQounter>({
         .ptr = &Mode,
         .field = "Mode",
+        .helpText = "How should this Qounter display data?",
         .enumNumElements = SpeedQounterModeCount,
         .enumDisplayNames = SpeedQounterModeNames,
         .enumSerializedNames = SpeedQounterModeLookup,
-        .helpText = "How should this Qounter display data?",
     });
 }
 

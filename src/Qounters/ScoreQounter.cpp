@@ -1,6 +1,6 @@
 #include "Qounters/ScoreQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::ScoreQounter);
+DEFINE_TYPE(QountersMinus::Qounters,ScoreQounter);
 
 bool QountersMinus::Qounters::ScoreQounter::Enabled = true;
 int QountersMinus::Qounters::ScoreQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowMultiplier);
@@ -22,10 +22,10 @@ void QountersMinus::Qounters::ScoreQounter::Register() {
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &Mode,
         .field = "Mode",
+        .helpText = "How should this Qounter display data?",
         .enumNumElements = ScoreQounterModeCount,
         .enumDisplayNames = ScoreQounterModeNames,
         .enumSerializedNames = ScoreQounterModeLookup,
-        .helpText = "How should this Qounter display data?",
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &DecimalPrecision,

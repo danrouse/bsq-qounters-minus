@@ -38,13 +38,13 @@ namespace QountersMinus {
     };
 }
 
-DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qounter,
-    DECLARE_STATIC_FIELD(bool, Enabled);
-    DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(float, Distance);
-    DECLARE_STATIC_FIELD(int, Mode);
-    DECLARE_STATIC_FIELD(bool, SeparateCutValues);
-    DECLARE_STATIC_FIELD(int, DecimalPrecision);
+DECLARE_CLASS_CUSTOM(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qounter,
+    static bool Enabled;
+    static int Position;
+    static float Distance;
+    static int Mode;
+    static bool SeparateCutValues;
+    static int DecimalPrecision;
 
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, averageText);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, fastestText);
@@ -54,28 +54,7 @@ DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, SpeedQounter, QountersMinus::Qoun
     DECLARE_INSTANCE_FIELD_DEFAULT(float, lastUpdated, 0.0f);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, lastUpdatedFastest, 0.0f);
 
-    DECLARE_METHOD(static void, Register);
-    DECLARE_METHOD(void, Start);
-    DECLARE_METHOD(void, Update);
-
-    REGISTER_FUNCTION(SpeedQounter,
-        REGISTER_FIELD(Enabled);
-        REGISTER_FIELD(Position);
-        REGISTER_FIELD(Distance);
-        REGISTER_FIELD(Mode);
-        REGISTER_FIELD(SeparateCutValues);
-        REGISTER_FIELD(DecimalPrecision);
-
-        REGISTER_FIELD(averageText);
-        REGISTER_FIELD(fastestText);
-        REGISTER_FIELD(leftSpeeds);
-        REGISTER_FIELD(rightSpeeds);
-        REGISTER_FIELD(fastestSpeeds);
-        REGISTER_FIELD(lastUpdated);
-        REGISTER_FIELD(lastUpdatedFastest);
-
-        REGISTER_METHOD(Register);
-        REGISTER_METHOD(Start);
-        REGISTER_METHOD(Update);
-    )
+    DECLARE_STATIC_METHOD(void, Register);
+    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, Update);
 )

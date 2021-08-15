@@ -1,6 +1,6 @@
 #include "Qounters/ProgressQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::ProgressQounter);
+DEFINE_TYPE(QountersMinus::Qounters,ProgressQounter);
 
 bool QountersMinus::Qounters::ProgressQounter::Enabled = true;
 int QountersMinus::Qounters::ProgressQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowEnergy);
@@ -20,10 +20,10 @@ void QountersMinus::Qounters::ProgressQounter::Register() {
     QounterRegistry::RegisterConfig<ProgressQounter>({
         .ptr = &Mode,
         .field = "Mode",
+        .helpText = "How should this Qounter display data?",
         .enumNumElements = ProgressQounterModeCount,
         .enumDisplayNames = ProgressQounterModeNames,
         .enumSerializedNames = ProgressQounterModeLookup,
-        .helpText = "How should this Qounter display data?",
     });
     QounterRegistry::RegisterConfig<ProgressQounter>({
         .ptr = &IncludeRing,

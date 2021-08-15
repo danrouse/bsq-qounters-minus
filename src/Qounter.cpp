@@ -1,6 +1,6 @@
 #include "Qounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounter);
+DEFINE_TYPE(QountersMinus, Qounter);
 
 bool QountersMinus::Qounter::Enabled = true;
 bool QountersMinus::Qounter::HideCombo = false;

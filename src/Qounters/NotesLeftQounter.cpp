@@ -1,6 +1,6 @@
 #include "Qounters/NotesLeftQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::NotesLeftQounter);
+DEFINE_TYPE(QountersMinus::Qounters,NotesLeftQounter);
 
 bool QountersMinus::Qounters::NotesLeftQounter::Enabled = false;
 int QountersMinus::Qounters::NotesLeftQounter::Position = static_cast<int>(QountersMinus::QounterPosition::AboveHighway);

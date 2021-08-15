@@ -1,6 +1,6 @@
 #include "QounterSettingsViewController.hpp"
 
-DEFINE_CLASS(QountersMinus::QounterSettingsViewController);
+DEFINE_TYPE(QountersMinus, QounterSettingsViewController);
 
 using namespace QountersMinus;
 
@@ -38,21 +38,11 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 
     for (auto key : QountersMinus::QounterRegistry::registryInsertionOrder) {
         auto def = QountersMinus::QounterRegistry::registry[key];
-        auto context = new NavigationButtonContext({
-            .parent = get_transform(),
-            .title = def.longName,
-            ._namespace = key.first,
-            ._class = key.second,
-            .configMetadata = def.configMetadata,
+        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.shortName, [=]() {
+            auto existingContainer = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("QountersMinusSettingsContainer"));
+            if (existingContainer) UnityEngine::Object::Destroy(existingContainer);
+            CreateQounterConfigView(get_transform(), def.longName, key.first, key.second, def.configMetadata);
         });
-        context->klass = classof(System::Object*);
-        QuestUI::BeatSaberUI::CreateUIButton(navigationContainer->get_transform(), def.shortName, il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
-            classof(UnityEngine::Events::UnityAction*), context, +[](NavigationButtonContext* context) {
-                auto existingContainer = UnityEngine::GameObject::Find(il2cpp_utils::createcsstr("QountersMinusSettingsContainer"));
-                if (existingContainer) UnityEngine::Object::Destroy(existingContainer);
-                CreateQounterConfigView(context->parent, context->title, context->_namespace, context->_class, context->configMetadata);
-            }
-        ));
     }
 
     // Select "Main" by default
@@ -63,30 +53,28 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
         QountersMinus::QounterRegistry::registry[{"QountersMinus", "Qounter"}].configMetadata
     );
 
-    auto testButton = QuestUI::BeatSaberUI::CreateUIButton(get_transform(), "Test", "PlayButton", il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(
-        classof(UnityEngine::Events::UnityAction*), this, StartTestLevel
-    ));
+    auto testButton = QuestUI::BeatSaberUI::CreateUIButton(get_transform(), "Test", "PlayButton", [&]() { StartTestLevel(this); });
     testButton->GetComponent<UnityEngine::RectTransform*>()->set_anchoredPosition(UnityEngine::Vector2(-52.0f, -27.5f));
     testButton->GetComponent<UnityEngine::RectTransform*>()->set_sizeDelta(UnityEngine::Vector2(27.0f, 10.0f));
 }
 
-void HandleBoolSettingChanged(System::Reflection::Pointer* csptr, bool val) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+void HandleBoolSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, bool val) {
+    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
     *(bool*)field->ptr = val;
     QountersMinus::SaveConfig();
 }
-void HandleFloatSettingChanged(System::Reflection::Pointer* csptr, float val) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+void HandleFloatSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, float val) {
+    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
     *(float*)field->ptr = val;
     QountersMinus::SaveConfig();
 }
-void HandleIntSettingChanged(System::Reflection::Pointer* csptr, float val) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+void HandleIntSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, float val) {
+    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
     *(int*)field->ptr = static_cast<int>(val);
     QountersMinus::SaveConfig();
 }
-void HandleEnumSettingChanged(System::Reflection::Pointer* csptr, float rawVal) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+void HandleEnumSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, float rawVal) {
+    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
     auto intVal = static_cast<int>(rawVal) % field->enumNumElements;
     if (intVal < 0) intVal = field->enumNumElements - (intVal * -1);
     *(int*)field->ptr = intVal;
@@ -95,13 +83,13 @@ void HandleEnumSettingChanged(System::Reflection::Pointer* csptr, float rawVal) 
         il2cpp_utils::createcsstr(field->enumDisplayNames[intVal])
     );
 }
-void HandleColorSettingChanged(System::Reflection::Pointer* csptr, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(csptr->ptr);
+void HandleColorSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
+    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
     *(UnityEngine::Color*)field->ptr = val;
     QountersMinus::SaveConfig();
 }
 
-UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
+void QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
     UnityEngine::Transform* parent,
     std::string title,
     std::string namespaze,
@@ -112,22 +100,23 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
     auto titleText = QuestUI::BeatSaberUI::CreateText(container->get_transform(), title);
     titleText->set_alignment(TMPro::TextAlignmentOptions::Center);
     titleText->set_fontSize(6.0f);
-
+    
     for (auto fieldConfig : configMetadata) {
         UnityEngine::GameObject* gameObject;
         auto label = fieldConfig->displayName == "" ? fieldConfig->field : fieldConfig->displayName;
         auto fieldInfo = il2cpp_utils::FindField(namespaze, klass, fieldConfig->field);
+        if (!fieldInfo) {
+            // TODO: remove or adjust this when static fields are fixed
+            LOG_DEBUG("no fieldInfo for " + namespaze + "::" + klass + "::" + fieldConfig->field);
+            continue;
+        }
         auto fieldTypeName = std::string(il2cpp_utils::TypeGetSimpleName(fieldInfo->type));
-        // nasty hack to access field data inside delegates
-        auto csptr = il2cpp_utils::New<System::Reflection::Pointer*>().value();
-        csptr->ptr = fieldConfig.get();
-
         if (fieldTypeName == "bool") {
             auto toggle = QuestUI::BeatSaberUI::CreateToggle(
                 container->get_transform(),
                 label,
                 *(bool*)fieldConfig->ptr,
-                il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(classof(UnityEngine::Events::UnityAction_1<bool>*), csptr, HandleBoolSettingChanged)
+                [=](bool val) { HandleBoolSettingChanged(fieldConfig.get(), val); }
             );
             gameObject = toggle->get_gameObject();
         } else if (fieldTypeName == "float") {
@@ -142,7 +131,7 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
                 fieldConfig->floatMin,
                 fieldConfig->floatMax,
                 UnityEngine::Vector2(0.0f, 0.0f),
-                il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(classof(UnityEngine::Events::UnityAction_1<float>*), csptr, HandleFloatSettingChanged)
+                [=](float val) { HandleFloatSettingChanged(fieldConfig.get(), val); }
             );
             gameObject = increment->get_gameObject();
         } else if (fieldTypeName == "int") {
@@ -158,7 +147,7 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
                     static_cast<float>(fieldConfig->intMin),
                     static_cast<float>(fieldConfig->intMax),
                     UnityEngine::Vector2(0.0f, 0.0f),
-                    il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(classof(UnityEngine::Events::UnityAction_1<float>*), csptr, HandleIntSettingChanged)
+                    [=](int val) { HandleIntSettingChanged(fieldConfig.get(), val); }
                 );
                 gameObject = increment->get_gameObject();
             } else {
@@ -171,17 +160,17 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
                     UnityEngine::Vector2(0.0f, 0.0f),
                     nullptr
                 );
-                increment->OnValueChange = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<float>*>(classof(UnityEngine::Events::UnityAction_1<float>*), csptr, HandleEnumSettingChanged);
+                increment->OnValueChange = [=](float val) { HandleEnumSettingChanged(fieldConfig.get(), val); };
                 fieldConfig->uiElementPtr = increment;
                 increment->Text->SetText(il2cpp_utils::createcsstr(fieldConfig->enumDisplayNames[*(int*)fieldConfig->ptr]));
                 gameObject = increment->get_gameObject();
             }
         } else if (fieldTypeName == "UnityEngine.Color") {
-            gameObject = CreateColorPickerButton(
+            gameObject = QuestUI::BeatSaberUI::CreateColorPicker(
                 container->get_transform(),
                 label,
                 *(UnityEngine::Color*)fieldConfig->ptr,
-                il2cpp_utils::MakeDelegate<ColorChangeDelegate>(classof(ColorChangeDelegate), csptr, HandleColorSettingChanged)
+                [=](UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType type) { HandleColorSettingChanged(fieldConfig.get(), val, type); }
             );
         } else {
             LOG_DEBUG("Cannot create setting UI for unknown type \"" + fieldTypeName + "\"");
@@ -190,6 +179,4 @@ UnityEngine::GameObject* QountersMinus::QounterSettingsViewController::CreateQou
             QuestUI::BeatSaberUI::AddHoverHint(gameObject, fieldConfig->helpText);
         }
     }
-
-    return container;
 }

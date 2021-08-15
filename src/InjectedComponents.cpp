@@ -3,7 +3,7 @@
 using namespace QountersMinus;
 using namespace GlobalNamespace;
 
-DEFINE_CLASS(QountersMinus::InjectedComponents);
+DEFINE_TYPE(QountersMinus, InjectedComponents);
 
 int InjectedComponents::numInstances = 0;
 SaberManager* InjectedComponents::saberManager;

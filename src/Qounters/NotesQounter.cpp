@@ -1,6 +1,6 @@
 #include "Qounters/NotesQounter.hpp"
 
-DEFINE_CLASS(QountersMinus::Qounters::NotesQounter);
+DEFINE_TYPE(QountersMinus::Qounters,NotesQounter);
 
 bool QountersMinus::Qounters::NotesQounter::Enabled = false;
 int QountersMinus::Qounters::NotesQounter::Position = static_cast<int>(QountersMinus::QounterPosition::BelowCombo);

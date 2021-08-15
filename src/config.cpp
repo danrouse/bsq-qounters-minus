@@ -49,6 +49,11 @@ bool QountersMinus::LoadConfig() {
             }
             custom_types::_logger().disable();
             auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, fieldConfig->field);
+            if (!fieldInfo) {
+                // TODO: remove or adjust this when static fields are fixed
+                LOG_DEBUG("Config key doesn't have corresponding static field: " + def.second.configKey);
+                continue;
+            }
             custom_types::_logger().enable();
             auto fieldTypeName = std::string(il2cpp_utils::TypeGetSimpleName(fieldInfo->type));
             if (fieldTypeName == "bool") {
@@ -101,6 +106,7 @@ bool QountersMinus::LoadConfig() {
             }
         }
     }
+    
     LOG_DEBUG("Config found all: %d", foundEverything);
     return foundEverything;
 }

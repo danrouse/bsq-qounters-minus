@@ -12,38 +12,20 @@
 #include "GlobalNamespace/ISaberSwingRatingCounter.hpp"
 #include "System/Collections/Generic/List_1.hpp"
 
-DECLARE_CLASS_CODEGEN(QountersMinus::Qounters, CutQounter, QountersMinus::Qounter,
-    DECLARE_STATIC_FIELD(bool, Enabled);
-    DECLARE_STATIC_FIELD(int, Position);
-    DECLARE_STATIC_FIELD(float, Distance);
-    DECLARE_STATIC_FIELD(bool, SeparateSaberCounts);
-    DECLARE_STATIC_FIELD(bool, SeparateCutValues);
-    DECLARE_STATIC_FIELD(int, AveragePrecision);
+DECLARE_CLASS_CUSTOM(QountersMinus::Qounters, CutQounter, QountersMinus::Qounter,
+    static bool Enabled;
+    static int Position;
+    static float Distance;
+    static bool SeparateSaberCounts;
+    static bool SeparateCutValues;
+    static int AveragePrecision;
 
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, leftCutText);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, rightCutText);
     DECLARE_INSTANCE_FIELD(System::Collections::Generic::List_1<int>*, cutScores);
 
-    DECLARE_METHOD(static void, Register);
-    DECLARE_METHOD(void, Start);
-    DECLARE_METHOD(void, OnSwingRatingFinished, GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter);
-    DECLARE_METHOD(void, UpdateCutScores);
-
-    REGISTER_FUNCTION(CutQounter,
-        REGISTER_FIELD(Enabled);
-        REGISTER_FIELD(Position);
-        REGISTER_FIELD(Distance);
-        REGISTER_FIELD(SeparateSaberCounts);
-        REGISTER_FIELD(SeparateCutValues);
-        REGISTER_FIELD(AveragePrecision);
-
-        REGISTER_FIELD(leftCutText);
-        REGISTER_FIELD(rightCutText);
-        REGISTER_FIELD(cutScores);
-
-        REGISTER_METHOD(Register);
-        REGISTER_METHOD(Start);
-        REGISTER_METHOD(OnSwingRatingFinished);
-        REGISTER_METHOD(UpdateCutScores);
-    )
+    DECLARE_STATIC_METHOD(void, Register);
+    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, OnSwingRatingFinished, GlobalNamespace::NoteCutInfo* info, GlobalNamespace::ISaberSwingRatingCounter* swingRatingCounter, float cutDistanceToCenter);
+    DECLARE_INSTANCE_METHOD(void, UpdateCutScores);
 )
