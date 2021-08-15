@@ -23,6 +23,7 @@ void QountersMinus::Qounters::ScoreQounter::Register() {
         .ptr = &Mode,
         .field = "Mode",
         .helpText = "How should this Qounter display data?",
+        .type = QounterRegistry::ConfigType::Enum,
         .enumNumElements = ScoreQounterModeCount,
         .enumDisplayNames = ScoreQounterModeNames,
         .enumSerializedNames = ScoreQounterModeLookup,
@@ -32,6 +33,7 @@ void QountersMinus::Qounters::ScoreQounter::Register() {
         .field = "DecimalPrecision",
         .displayName = "Percentage Precision",
         .helpText = "How precise should the percentage be?",
+        .type = QounterRegistry::ConfigType::Int,
         .intMin = 0,
         .intMax = 5,
     });
@@ -40,48 +42,56 @@ void QountersMinus::Qounters::ScoreQounter::Register() {
         .field = "CustomRankColors",
         .displayName = "Custom Rank Colors",
         .helpText = "Colors your Score Qounter depending on the rank you have in a song.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &SSColor,
         .field = "SSColor",
         .displayName = "SS Color",
         .helpText = "Change the rank color for the SS rank.",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &SColor,
         .field = "SColor",
         .displayName = "S Color",
         .helpText = "Change the rank color for the S rank.",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &AColor,
         .field = "AColor",
         .displayName = "A Color",
         .helpText = "Change the rank color for the A rank.",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &BColor,
         .field = "BColor",
         .displayName = "B Color",
         .helpText = "Change the rank color for the B rank.",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &CColor,
         .field = "CColor",
         .displayName = "C Color",
         .helpText = "Change the rank color for the C rank.",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &DColor,
         .field = "DColor",
         .displayName = "D Color",
         .helpText = "Change the rank color for the D rank.",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<ScoreQounter>({
         .ptr = &EColor,
         .field = "EColor",
         .displayName = "E Color",
         .helpText = "Change the rank color for the E rank.",
+        .type = QounterRegistry::ConfigType::Color,
     });
 }
 

@@ -13,6 +13,7 @@ void QountersMinus::Qounters::Spinometer::Register() {
         .ptr = &Mode,
         .field = "Mode",
         .helpText = "How should this Qounter display data?",
+        .type = QounterRegistry::ConfigType::Enum,
         .enumNumElements = SpinometerModeCount,
         .enumDisplayNames = SpinometerModeNames,
         .enumSerializedNames = SpinometerModeLookup,

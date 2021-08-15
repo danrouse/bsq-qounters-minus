@@ -21,6 +21,7 @@ void QountersMinus::Qounters::PPQounter::Register() {
         .field = "HideWhenUnranked",
         .displayName = "Hide When Unranked",
         .helpText = "Whether the Qounter should be shown at all in unranked songs.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
 }
 

@@ -38,12 +38,20 @@ namespace QountersMinus {
                 int numArgs;
             };
             static const std::vector<EventHandlerSignature> eventHandlerSignatures;
+            enum ConfigType {
+                Int,
+                Float,
+                Bool,
+                Color,
+                Enum,
+            };
             struct ConfigMetadata {
                 void* ptr;
                 std::string field;
                 std::string jsonKey;
                 std::string displayName;
                 std::string helpText;
+                ConfigType type;
                 // hahaha unions you say? nay, i want the memory all for myself
                 float floatMin = -100.0f;
                 float floatMax = 100.0f;
@@ -95,10 +103,12 @@ namespace QountersMinus {
                     RegisterConfig<T>({
                         .ptr = staticFieldRefs["Enabled"],
                         .field = "Enabled",
+                        .type = ConfigType::Bool,
                     });
                     RegisterConfig<T>({
                         .ptr = staticFieldRefs["Position"],
                         .field = "Position",
+                        .type = ConfigType::Enum,
                         .enumNumElements = QounterPositionCount,
                         .enumDisplayNames = QounterPositionNames,
                         .enumSerializedNames = QounterPositionLookup,
@@ -106,6 +116,7 @@ namespace QountersMinus {
                     RegisterConfig<T>({
                         .ptr = staticFieldRefs["Distance"],
                         .field = "Distance",
+                        .type = ConfigType::Float,
                     });
                 }
                 registryInsertionOrder.push_back({klass->namespaze, klass->name});

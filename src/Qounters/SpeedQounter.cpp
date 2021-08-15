@@ -16,6 +16,7 @@ void QountersMinus::Qounters::SpeedQounter::Register() {
         .field = "DecimalPrecision",
         .displayName = "Percentage Precision",
         .helpText = "How precise should the percentage be?",
+        .type = QounterRegistry::ConfigType::Int,
         .intMin = 0,
         .intMax = 5,
     });
@@ -23,6 +24,7 @@ void QountersMinus::Qounters::SpeedQounter::Register() {
         .ptr = &Mode,
         .field = "Mode",
         .helpText = "How should this Qounter display data?",
+        .type = QounterRegistry::ConfigType::Enum,
         .enumNumElements = SpeedQounterModeCount,
         .enumDisplayNames = SpeedQounterModeNames,
         .enumSerializedNames = SpeedQounterModeLookup,

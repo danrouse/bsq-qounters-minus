@@ -14,6 +14,7 @@ void QountersMinus::Qounters::NotesLeftQounter::Register() {
         .field = "LabelAboveCount",
         .displayName = "Label Above Qounter",
         .helpText = "Put the label above the number, similar to a usual Qounters- qounter.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
 }
 

@@ -29,36 +29,42 @@ namespace QountersMinus {
             .ptr = &QountersMinus::Qounter::Enabled,
             .field = "Enabled",
             .helpText = "Toggles Qounters-.",
+            .type = QounterRegistry::ConfigType::Bool,
         });
         QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::HideCombo,
             .field = "HideCombo",
             .displayName = "Hide Combo",
             .helpText = "Hides the Combo counter.",
+            .type = QounterRegistry::ConfigType::Bool,
         });
         QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::HideMultiplier,
             .field = "HideMultiplier",
             .displayName = "Hide Multiplier",
             .helpText = "Hides the Multiplier.",
+            .type = QounterRegistry::ConfigType::Bool,
         });
         QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::UprightInMultiplayer,
             .field = "UprightInMultiplayer",
             .displayName = "Upright HUD in Multiplayer",
             .helpText = "In multiplayer, the game HUD and Qounters will be vertical as in solo mode.",
+            .type = QounterRegistry::ConfigType::Bool,
         });
         QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::ItalicText,
             .field = "ItalicText",
             .displayName = "Use Italic Text",
             .helpText = "Text elements will be italicized to match the base game.",
+            .type = QounterRegistry::ConfigType::Bool,
         });
         QounterRegistry::RegisterConfig<Qounter>({
             .ptr = &QountersMinus::Qounter::ComboOffset,
             .field = "ComboOffset",
             .displayName = "Combo Offset",
             .helpText = "Applies additional offset to Qounters situated above or below the Combo.",
+            .type = QounterRegistry::ConfigType::Float,
             .floatStep = 0.1f,
         });
         QounterRegistry::RegisterConfig<Qounter>({
@@ -66,6 +72,7 @@ namespace QountersMinus {
             .field = "MultiplierOffset",
             .displayName = "Multiplier Offset",
             .helpText = "Applies additional offset to Qounters situated above or below the Multiplier.",
+            .type = QounterRegistry::ConfigType::Float,
             .floatStep = 0.1f,
         });
         QounterRegistry::RegisterConfig<Qounter>({
@@ -73,6 +80,7 @@ namespace QountersMinus {
             .field = "DisableIn90Degree",
             .displayName = "Disable In 90/360-Degree Maps",
             .helpText = "Disables Qounters- when playing a beatmap in 90- or 360-degree mode.",
+            .type = QounterRegistry::ConfigType::Float,
             .floatStep = 0.1f,
         });
         QounterRegistry::RegisterConfig<Qounter>({
@@ -80,6 +88,7 @@ namespace QountersMinus {
             .field = "DistanceStep",
             .displayName = "Distance Increment",
             .helpText = "How much to adjust Distance settings per click. Lower means finer tuning.",
+            .type = QounterRegistry::ConfigType::Float,
             .floatMin = 0.1f,
             .floatStep = 0.1f,
         });

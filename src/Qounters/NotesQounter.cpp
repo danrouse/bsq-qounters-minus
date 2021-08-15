@@ -15,12 +15,14 @@ void QountersMinus::Qounters::NotesQounter::Register() {
         .field = "ShowPercentage",
         .displayName = "Show Percentage",
         .helpText = "Toggles the percentage of notes hit over total notes.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
     QounterRegistry::RegisterConfig<NotesQounter>({
         .ptr = &DecimalPrecision,
         .field = "DecimalPrecision",
         .displayName = "Percentage Precision",
         .helpText = "How precise should the percentage be?",
+        .type = QounterRegistry::ConfigType::Int,
         .intMin = 0,
         .intMax = 5,
     });

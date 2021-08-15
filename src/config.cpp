@@ -47,30 +47,21 @@ bool QountersMinus::LoadConfig() {
                 foundEverything = false;
                 continue;
             }
-            custom_types::_logger().disable();
-            auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, fieldConfig->field);
-            if (!fieldInfo) {
-                // TODO: remove or adjust this when static fields are fixed
-                LOG_DEBUG("Config key doesn't have corresponding static field: " + def.second.configKey);
-                continue;
-            }
-            custom_types::_logger().enable();
-            auto fieldTypeName = std::string(il2cpp_utils::TypeGetSimpleName(fieldInfo->type));
-            if (fieldTypeName == "bool") {
+            if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Bool) {
                 if (jsonConfigObj[jsonKey].IsBool()) {
                     *(bool*)fieldConfig->ptr = jsonConfigObj[jsonKey].GetBool();
                 } else {
                     LOG_DEBUG("Config key is wrong type (expected bool): " + def.second.configKey + "." + jsonKey);
                     foundEverything = false;
                 }
-            } else if (fieldTypeName == "float") {
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Float) {
                 if (jsonConfigObj[jsonKey].IsFloat()) {
                     *(float*)fieldConfig->ptr = jsonConfigObj[jsonKey].GetFloat();
                 } else {
                     LOG_DEBUG("Config key is wrong type (expected float): " + def.second.configKey + "." + jsonKey);
                     foundEverything = false;
                 }
-            } else if (fieldTypeName == "int") {
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Int) {
                 if (fieldConfig->enumNumElements == 0) {
                     // actual int
                     if (jsonConfigObj[jsonKey].IsInt()) {
@@ -93,7 +84,7 @@ bool QountersMinus::LoadConfig() {
                         foundEverything = false;
                     }
                 }
-            } else if (fieldTypeName == "UnityEngine.Color") {
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Color) {
                 if (jsonConfigObj[jsonKey].IsString()) {
                     *(UnityEngine::Color*)fieldConfig->ptr = ParseHexColor(jsonConfigObj[jsonKey].GetString());
                 } else {
@@ -101,7 +92,8 @@ bool QountersMinus::LoadConfig() {
                     foundEverything = false;
                 }
             } else {
-                LOG_DEBUG("JSON field " + def.second.configKey + "." + jsonKey + " has unknown type \"" + fieldTypeName + "\"");
+                // TODO (minor)
+                // LOG_DEBUG("JSON field " + def.second.configKey + "." + jsonKey + " has unknown type \"" + (int)fieldConfig->type + "\"");
                 foundEverything = false;
             }
         }
@@ -126,13 +118,11 @@ void QountersMinus::SaveConfig() {
         for (auto fieldConfig : def.second.configMetadata) {
             auto _jsonKey = fieldConfig->jsonKey == "" ? fieldConfig->field : fieldConfig->jsonKey;
             rapidjson::Value jsonKey(_jsonKey, allocator);
-            auto fieldInfo = il2cpp_utils::FindField(def.first.first, def.first.second, fieldConfig->field);
-            auto fieldTypeName = std::string(il2cpp_utils::TypeGetSimpleName(fieldInfo->type));
-            if (fieldTypeName == "bool") {
+            if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Bool) {
                 childConfig.AddMember(jsonKey, *(bool*)fieldConfig->ptr, allocator);
-            } else if (fieldTypeName == "float") {
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Float) {
                 childConfig.AddMember(jsonKey, *(float*)fieldConfig->ptr, allocator);
-            } else if (fieldTypeName == "int") {
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Int) {
                 if (fieldConfig->enumNumElements == 0) {
                     childConfig.AddMember(jsonKey, *(int*)fieldConfig->ptr, allocator);
                 } else {
@@ -149,11 +139,12 @@ void QountersMinus::SaveConfig() {
                         childConfig.AddMember(jsonKey, serializedEnumVal, allocator);
                     }
                 }
-            } else if (fieldTypeName == "UnityEngine.Color") {
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Color) {
                 std::string hex = FormatColorToHex(*(UnityEngine::Color*)fieldConfig->ptr);
                 childConfig.AddMember(jsonKey, hex, allocator);
             } else {
-                LOG_DEBUG("JSON field " + def.second.configKey + "." + _jsonKey + " has unknown type \"" + fieldTypeName + "\"");
+                // TODO (minor)
+                // LOG_DEBUG("JSON field " + def.second.configKey + "." + _jsonKey + " has unknown type \"" + (int)fieldConfig->type + "\"");
             }
         }
         if (def.second.configKey != "") {

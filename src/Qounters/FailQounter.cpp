@@ -17,6 +17,7 @@ void QountersMinus::Qounters::FailQounter::Register() {
         .field = "ShowRestartsInstead",
         .displayName = "Track Restarts",
         .helpText = "Instead of showing global fail count, show the amount of times you have restarted the same song.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
 }
 

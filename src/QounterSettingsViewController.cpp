@@ -59,33 +59,28 @@ void QountersMinus::QounterSettingsViewController::DidActivate(bool firstActivat
 }
 
 void HandleBoolSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, bool val) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
-    *(bool*)field->ptr = val;
+    *(bool*)meta->ptr = val;
     QountersMinus::SaveConfig();
 }
 void HandleFloatSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, float val) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
-    *(float*)field->ptr = val;
+    *(float*)meta->ptr = val;
     QountersMinus::SaveConfig();
 }
 void HandleIntSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, float val) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
-    *(int*)field->ptr = static_cast<int>(val);
+    *(int*)meta->ptr = static_cast<int>(val);
     QountersMinus::SaveConfig();
 }
 void HandleEnumSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, float rawVal) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
-    auto intVal = static_cast<int>(rawVal) % field->enumNumElements;
-    if (intVal < 0) intVal = field->enumNumElements - (intVal * -1);
-    *(int*)field->ptr = intVal;
+    auto intVal = static_cast<int>(rawVal) % meta->enumNumElements;
+    if (intVal < 0) intVal = meta->enumNumElements - (intVal * -1);
+    *(int*)meta->ptr = intVal;
     QountersMinus::SaveConfig();
-    reinterpret_cast<QuestUI::IncrementSetting*>(field->uiElementPtr)->Text->SetText(
-        il2cpp_utils::createcsstr(field->enumDisplayNames[intVal])
+    reinterpret_cast<QuestUI::IncrementSetting*>(meta->uiElementPtr)->Text->SetText(
+        il2cpp_utils::createcsstr(meta->enumDisplayNames[intVal])
     );
 }
 void HandleColorSettingChanged(QountersMinus::QounterRegistry::ConfigMetadata* meta, UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType eventType) {
-    auto field = reinterpret_cast<QountersMinus::QounterRegistry::ConfigMetadata*>(meta->ptr);
-    *(UnityEngine::Color*)field->ptr = val;
+    *(UnityEngine::Color*)meta->ptr = val;
     QountersMinus::SaveConfig();
 }
 
@@ -104,14 +99,7 @@ void QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
     for (auto fieldConfig : configMetadata) {
         UnityEngine::GameObject* gameObject;
         auto label = fieldConfig->displayName == "" ? fieldConfig->field : fieldConfig->displayName;
-        auto fieldInfo = il2cpp_utils::FindField(namespaze, klass, fieldConfig->field);
-        if (!fieldInfo) {
-            // TODO: remove or adjust this when static fields are fixed
-            LOG_DEBUG("no fieldInfo for " + namespaze + "::" + klass + "::" + fieldConfig->field);
-            continue;
-        }
-        auto fieldTypeName = std::string(il2cpp_utils::TypeGetSimpleName(fieldInfo->type));
-        if (fieldTypeName == "bool") {
+        if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Bool) {
             auto toggle = QuestUI::BeatSaberUI::CreateToggle(
                 container->get_transform(),
                 label,
@@ -119,7 +107,7 @@ void QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
                 [=](bool val) { HandleBoolSettingChanged(fieldConfig.get(), val); }
             );
             gameObject = toggle->get_gameObject();
-        } else if (fieldTypeName == "float") {
+        } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Float) {
             auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
                 container->get_transform(),
                 label,
@@ -134,7 +122,7 @@ void QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
                 [=](float val) { HandleFloatSettingChanged(fieldConfig.get(), val); }
             );
             gameObject = increment->get_gameObject();
-        } else if (fieldTypeName == "int") {
+        } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Int) {
             if (fieldConfig->enumNumElements == 0) {
                 auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
                     container->get_transform(),
@@ -165,7 +153,7 @@ void QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
                 increment->Text->SetText(il2cpp_utils::createcsstr(fieldConfig->enumDisplayNames[*(int*)fieldConfig->ptr]));
                 gameObject = increment->get_gameObject();
             }
-        } else if (fieldTypeName == "UnityEngine.Color") {
+        } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Color) {
             gameObject = QuestUI::BeatSaberUI::CreateColorPicker(
                 container->get_transform(),
                 label,
@@ -173,7 +161,8 @@ void QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
                 [=](UnityEngine::Color val, GlobalNamespace::ColorChangeUIEventType type) { HandleColorSettingChanged(fieldConfig.get(), val, type); }
             );
         } else {
-            LOG_DEBUG("Cannot create setting UI for unknown type \"" + fieldTypeName + "\"");
+            // TODO (minor)
+            // LOG_DEBUG("Cannot create setting UI for unknown type \"" + (int)fieldConfig->type + "\"");
         }
         if (fieldConfig->helpText != "" && gameObject != nullptr) {
             QuestUI::BeatSaberUI::AddHoverHint(gameObject, fieldConfig->helpText);

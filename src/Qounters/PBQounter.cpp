@@ -19,6 +19,7 @@ void QountersMinus::Qounters::PBQounter::Register() {
         .ptr = &Mode,
         .field = "Mode",
         .helpText = "Change color based on absolute (song maximum) or relative (current maximum) score.",
+        .type = QounterRegistry::ConfigType::Enum,
         .enumNumElements = PBQounterModeCount,
         .enumDisplayNames = PBQounterModeNames,
         .enumSerializedNames = PBQounterModeLookup,
@@ -27,17 +28,20 @@ void QountersMinus::Qounters::PBQounter::Register() {
         .ptr = &BetterColor,
         .field = "BetterColor",
         .displayName = "Better Color",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &DefaultColor,
         .field = "DefaultColor",
         .displayName = "Default Color",
+        .type = QounterRegistry::ConfigType::Color,
     });
     QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &DecimalPrecision,
         .field = "DecimalPrecision",
         .displayName = "Percentage Precision",
         .helpText = "How precise should the percentage be?",
+        .type = QounterRegistry::ConfigType::Int,
         .intMin = 0,
         .intMax = 5,
     });
@@ -46,6 +50,7 @@ void QountersMinus::Qounters::PBQounter::Register() {
         .field = "TextSize",
         .displayName = "Text Size",
         .helpText = "How large should the text be?",
+        .type = QounterRegistry::ConfigType::Int,
         .intMin = 1,
         .intMax = 10,
     });
@@ -54,12 +59,14 @@ void QountersMinus::Qounters::PBQounter::Register() {
         .field = "UnderScore",
         .displayName = "Below Score Qounter",
         .helpText = "Will the Personal Best counter instead be positioned below the Score Qounter?",
+        .type = QounterRegistry::ConfigType::Bool,
     });
     QounterRegistry::RegisterConfig<PBQounter>({
         .ptr = &HideFirstScore,
         .field = "HideFirstScore",
         .displayName = "Hide First Score",
         .helpText = "Hides Personal Best if you play a map that doesnt yet have a personal best set.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
 }
 

@@ -16,18 +16,21 @@ void QountersMinus::Qounters::CutQounter::Register() {
         .field = "SeparateSaberCounts",
         .displayName = "Separate Saber Cuts",
         .helpText = "Shows the average cut for the left and right sabers separately.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
     QounterRegistry::RegisterConfig<CutQounter>({
         .ptr = &SeparateCutValues,
         .field = "SeparateCutValues",
         .displayName = "Separate Cut Values",
         .helpText = "Show separate averages for angle before cut (0-70), angle after cut (0-30) and distance to center (0-15).",
+        .type = QounterRegistry::ConfigType::Bool,
     });
     QounterRegistry::RegisterConfig<CutQounter>({
         .ptr = &AveragePrecision,
         .field = "AveragePrecision",
         .displayName = "Average Cut Precision",
         .helpText = "How many decimals should be shown on the average cuts?",
+        .type = QounterRegistry::ConfigType::Int,
         .intMin = 0,
         .intMax = 4,
     });

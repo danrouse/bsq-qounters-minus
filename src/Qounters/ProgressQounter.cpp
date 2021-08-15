@@ -16,11 +16,13 @@ void QountersMinus::Qounters::ProgressQounter::Register() {
         .field = "ProgressTimeLeft",
         .displayName = "Show Time Left",
         .helpText = "Starts the counter from the end of the song and decreases while the song is played.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
     QounterRegistry::RegisterConfig<ProgressQounter>({
         .ptr = &Mode,
         .field = "Mode",
         .helpText = "How should this Qounter display data?",
+        .type = QounterRegistry::ConfigType::Enum,
         .enumNumElements = ProgressQounterModeCount,
         .enumDisplayNames = ProgressQounterModeNames,
         .enumSerializedNames = ProgressQounterModeLookup,
@@ -30,6 +32,7 @@ void QountersMinus::Qounters::ProgressQounter::Register() {
         .field = "IncludeRing",
         .displayName = "Include Progress Ring",
         .helpText = "Whether or not the Progress Ring will also be affected by the \"Show Time Left\" setting. Only active in \"Original\" mode.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
 }
 

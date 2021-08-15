@@ -14,6 +14,7 @@ void QountersMinus::Qounters::MissedQounter::Register() {
         .field = "CountBadCuts",
         .displayName = "Include Bad Cuts",
         .helpText = "Bad cuts count towards the Missed counter.",
+        .type = QounterRegistry::ConfigType::Bool,
     });
 }
 
