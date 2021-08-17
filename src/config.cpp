@@ -62,27 +62,24 @@ bool QountersMinus::LoadConfig() {
                     foundEverything = false;
                 }
             } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Int) {
-                if (fieldConfig->enumNumElements == 0) {
-                    // actual int
-                    if (jsonConfigObj[jsonKey].IsInt()) {
-                        *(int*)fieldConfig->ptr = jsonConfigObj[jsonKey].GetInt();
+                if (jsonConfigObj[jsonKey].IsInt()) {
+                    *(int*)fieldConfig->ptr = jsonConfigObj[jsonKey].GetInt();
+                } else {
+                    LOG_DEBUG("Config key is wrong type (expected int): " + def.second.configKey + "." + jsonKey);
+                    foundEverything = false;
+                }
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Enum) {
+                if (jsonConfigObj[jsonKey].IsString()) {
+                    auto val = jsonConfigObj[jsonKey].GetString();
+                    if (fieldConfig->enumSerializedNames.contains(val)) {
+                        *(int*)fieldConfig->ptr = fieldConfig->enumSerializedNames[val];
                     } else {
-                        LOG_DEBUG("Config key is wrong type (expected int): " + def.second.configKey + "." + jsonKey);
+                        LOG_DEBUG("Config key is unknown for enum: \"" + val + "\", " + def.second.configKey + "." + jsonKey);
                         foundEverything = false;
                     }
                 } else {
-                    if (jsonConfigObj[jsonKey].IsString()) {
-                        auto val = jsonConfigObj[jsonKey].GetString();
-                        if (fieldConfig->enumSerializedNames.contains(val)) {
-                            *(int*)fieldConfig->ptr = fieldConfig->enumSerializedNames[val];
-                        } else {
-                            LOG_DEBUG("Config key is unknown for enum: \"" + val + "\", " + def.second.configKey + "." + jsonKey);
-                            foundEverything = false;
-                        }
-                    } else {
-                        LOG_DEBUG("Config key is wrong type (expected string): " + def.second.configKey + "." + jsonKey);
-                        foundEverything = false;
-                    }
+                    LOG_DEBUG("Config key is wrong type (expected string): " + def.second.configKey + "." + jsonKey);
+                    foundEverything = false;
                 }
             } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Color) {
                 if (jsonConfigObj[jsonKey].IsString()) {
@@ -123,21 +120,19 @@ void QountersMinus::SaveConfig() {
             } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Float) {
                 childConfig.AddMember(jsonKey, *(float*)fieldConfig->ptr, allocator);
             } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Int) {
-                if (fieldConfig->enumNumElements == 0) {
-                    childConfig.AddMember(jsonKey, *(int*)fieldConfig->ptr, allocator);
+                childConfig.AddMember(jsonKey, *(int*)fieldConfig->ptr, allocator);
+            } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Enum) {
+                std::string serializedEnumVal;
+                for (auto pair : fieldConfig->enumSerializedNames) {
+                    if (pair.second == *(int*)fieldConfig->ptr) {
+                        serializedEnumVal = pair.first;
+                        break;
+                    }
+                }
+                if (serializedEnumVal == "") {
+                    LOG_DEBUG("Config could not find string for enum val %d (" + def.second.configKey + "." + _jsonKey + ")", *(int*)fieldConfig->ptr);
                 } else {
-                    std::string serializedEnumVal;
-                    for (auto pair : fieldConfig->enumSerializedNames) {
-                        if (pair.second == *(int*)fieldConfig->ptr) {
-                            serializedEnumVal = pair.first;
-                            break;
-                        }
-                    }
-                    if (serializedEnumVal == "") {
-                        LOG_DEBUG("Config could not find string for enum val %d (" + def.second.configKey + "." + _jsonKey + ")", *(int*)fieldConfig->ptr);
-                    } else {
-                        childConfig.AddMember(jsonKey, serializedEnumVal, allocator);
-                    }
+                    childConfig.AddMember(jsonKey, serializedEnumVal, allocator);
                 }
             } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Color) {
                 std::string hex = FormatColorToHex(*(UnityEngine::Color*)fieldConfig->ptr);

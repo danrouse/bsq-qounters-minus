@@ -80,7 +80,7 @@ void QountersMinus::Qounters::Spinometer::Update() {
     } else if (Mode == static_cast<int>(QountersMinus::SpinometerMode::Highest)) {
         nextText = "<color=" + SpeedToColor(highestSpin) + ">" + std::to_string((int)roundf(highestSpin)) + "</color>";
     } else if (Mode == static_cast<int>(QountersMinus::SpinometerMode::SplitAverage)) {
-        nextText = "<color=" + SpeedToColor(leftSpeed) + ">" + std::to_string((int)roundf(leftSpeed)) + "</color> | " +
+        nextText = "<color=" + SpeedToColor(leftSpeed) + ">" + std::to_string((int)roundf(leftSpeed)) + "</color> - " +
                    "<color=" + SpeedToColor(rightSpeed) + ">" + std::to_string((int)roundf(rightSpeed)) + "</color>";
     }
     basicText->set_text(il2cpp_utils::createcsstr(nextText));

@@ -123,36 +123,34 @@ void QountersMinus::QounterSettingsViewController::CreateQounterConfigView(
             );
             gameObject = increment->get_gameObject();
         } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Int) {
-            if (fieldConfig->enumNumElements == 0) {
-                auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
-                    container->get_transform(),
-                    label,
-                    0,
-                    static_cast<float>(fieldConfig->intStep),
-                    static_cast<float>(*(int*)fieldConfig->ptr),
-                    true,
-                    true,
-                    static_cast<float>(fieldConfig->intMin),
-                    static_cast<float>(fieldConfig->intMax),
-                    UnityEngine::Vector2(0.0f, 0.0f),
-                    [=](int val) { HandleIntSettingChanged(fieldConfig.get(), val); }
-                );
-                gameObject = increment->get_gameObject();
-            } else {
-                auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
-                    container->get_transform(),
-                    label,
-                    0,
-                    1.0f,
-                    static_cast<float>(*(int*)fieldConfig->ptr),
-                    UnityEngine::Vector2(0.0f, 0.0f),
-                    nullptr
-                );
-                increment->OnValueChange = [=](float val) { HandleEnumSettingChanged(fieldConfig.get(), val); };
-                fieldConfig->uiElementPtr = increment;
-                increment->Text->SetText(il2cpp_utils::createcsstr(fieldConfig->enumDisplayNames[*(int*)fieldConfig->ptr]));
-                gameObject = increment->get_gameObject();
-            }
+            auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
+                container->get_transform(),
+                label,
+                0,
+                static_cast<float>(fieldConfig->intStep),
+                static_cast<float>(*(int*)fieldConfig->ptr),
+                true,
+                true,
+                static_cast<float>(fieldConfig->intMin),
+                static_cast<float>(fieldConfig->intMax),
+                UnityEngine::Vector2(0.0f, 0.0f),
+                [=](int val) { HandleIntSettingChanged(fieldConfig.get(), val); }
+            );
+            gameObject = increment->get_gameObject();
+        } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Enum) {
+            auto increment = QuestUI::BeatSaberUI::CreateIncrementSetting(
+                container->get_transform(),
+                label,
+                0,
+                1.0f,
+                static_cast<float>(*(int*)fieldConfig->ptr),
+                UnityEngine::Vector2(0.0f, 0.0f),
+                nullptr
+            );
+            increment->OnValueChange = [=](float val) { HandleEnumSettingChanged(fieldConfig.get(), val); };
+            fieldConfig->uiElementPtr = increment;
+            increment->Text->SetText(il2cpp_utils::createcsstr(fieldConfig->enumDisplayNames[*(int*)fieldConfig->ptr]));
+            gameObject = increment->get_gameObject();
         } else if (fieldConfig->type == QountersMinus::QounterRegistry::ConfigType::Color) {
             gameObject = QuestUI::BeatSaberUI::CreateColorPicker(
                 container->get_transform(),

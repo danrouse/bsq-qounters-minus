@@ -11,8 +11,8 @@ MAKE_HOOK_MATCH(CoreGameHUDController_Start, &GlobalNamespace::CoreGameHUDContro
 MAKE_HOOK_MATCH(ScoreController_Start, &GlobalNamespace::ScoreController::Start, void, GlobalNamespace::ScoreController* self) {
     LOG_CALLER;
     ScoreController_Start(self);
-    self->add_noteWasCutEvent(il2cpp_utils::MakeDelegate<NoteWasCutDelegate*>(
-        classof(NoteCutDelegate), self, +[](GlobalNamespace::ScoreController* self, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info, int unused) {
+    self->add_noteWasCutEvent(il2cpp_utils::MakeDelegate<GlobalNamespace::NoteWasCutDelegate*>(
+        classof(GlobalNamespace::NoteWasCutDelegate*), self, +[](GlobalNamespace::ScoreController* self, GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info, int unused) {
             QounterRegistry::BroadcastEvent(QounterRegistry::Event::NoteCut, data, info);
         }
     ));
