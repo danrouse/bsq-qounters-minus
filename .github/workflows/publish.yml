@@ -1,7 +1,4 @@
-name: Publish QPM Package
-
-env:
-    mod_id: qounters-minus
+name: Build mod and create release
 
 on:
   push:
@@ -16,7 +13,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        submodules: true
         lfs: true
 
     - name: Install PowerShell
@@ -48,49 +44,35 @@ jobs:
 
     - name: List restored QPM modules
       run: ls -la ${GITHUB_WORKSPACE}/extern/ && ls -la QPM_Temp
-        
-    - name: Get Tag Version
-      id: get_tag_version
-      run: |
-        echo ${GITHUB_REF#refs/tags/}
-        echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
-        echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
 
     - name: Build
       run: cd ${GITHUB_WORKSPACE} && pwsh -Command ./buildQMOD.ps1
 
-    - name: Get Library Name
-      id: libname
-      run: |
-        cd ./libs/arm64-v8a/
-        pattern="lib${module_id}*.so"
-        files=( $pattern )
-        echo ::set-output name=NAME::"${files[0]}"
-
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ steps.libname.outputs.NAME }}
-        path: ./libs/arm64-v8a/${{ steps.libname.outputs.NAME }}
+        name: libqounters-minus.so
+        path: ./libs/arm64-v8a/libqounters-minus.so
         if-no-files-found: error
 
     - name: Upload debug artifact
       uses: actions/upload-artifact@v2
       with:
-        name: debug_${{ steps.libname.outputs.NAME }}
-        path: ./obj/local/arm64-v8a/${{ steps.libname.outputs.NAME }}
+        name: debug_libqounters-minus.so
+        path: ./obj/local/arm64-v8a/libqounters-minus.so
         if-no-files-found: error
 
-   - name: Upload .qmod artifact
-     uses: actions/upload-artifact@v2
-     with:
-       name: ${{ env.mod_id }}.qmod
-       path: ./${{ env.mod_id }}.qmod
-       if-no-files-found: error
+    - name: Upload .qmod artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: "qounters-minus.qmod"
+        path: "./*.qmod"
+        if-no-files-found: error
 
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "*.so,*.qmod"
-        body: "Version update"
+        artifacts: "./libs/arm64-v8a/libqounters-minus.so,./obj/local/arm64-v8a/debug_libqounters-minus.so,*.qmod"
+        body: "Automatically created release from new version tag"
         token: ${{ secrets.GITHUB_TOKEN }}
+        artifactErrorsFailBuild: true
