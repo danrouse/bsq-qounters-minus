@@ -1,8 +1,15 @@
 $timestamp = Get-Date -Format "MM-dd HH:mm:ss.fff"
 $bspid = adb shell pidof com.beatgames.beatsaber
-while ($bspid -eq "") {
-    Start-Sleep -ms 100
+while ([string]::IsNullOrEmpty($bspid)) {
+    Start-Sleep -Milliseconds 100
     $bspid = adb shell pidof com.beatgames.beatsaber
 }
-adb logcat VrApi:S OVRPlatform:S -T "$timestamp" --pid $bspid
-# adb logcat -T "$timestamp" main-modloader:W QuestHook[qounters-minus`|v1.0.2]:* AndroidRuntime:E *:S
+if ($args.Count -eq 0) {
+    echo "Start logging!"
+    # adb logcat -T "$timestamp" --pid $bspid | Select-String -pattern "(QuestHook|modloader|AndroidRuntime)"
+    adb logcat -T "$timestamp" --pid $bspid VrApi:S OVRPlatform:S Telemetry:S
+}
+if ($args[0] -eq "--file") {
+     echo "Logging and saving to file!"
+     (adb logcat -T "$timestamp" --pid $bspid | Select-String -pattern "(QuestHook|modloader|AndroidRuntime)") | Tee-Object -FilePath $PSScriptRoot/logcat.log
+}
