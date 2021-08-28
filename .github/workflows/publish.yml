@@ -68,11 +68,14 @@ jobs:
         name: "qounters-minus.qmod"
         path: "./*.qmod"
         if-no-files-found: error
+    
+    - name: Move release artifacts
+      run: mkdir artifacts && mv *.qmod artifacts && mv ./libs/arm64-v8a/libqounters-minus.so artifacts/libqounters-minus.so && mv ./obj/local/arm64-v8a/libqounters-minus.so artifacts/debug_libqounters-minus.so
 
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "./libs/arm64-v8a/libqounters-minus.so,./obj/local/arm64-v8a/debug_libqounters-minus.so,*.qmod"
+        artifacts: "artifacts/*"
         body: "Automatically created release from new version tag"
         token: ${{ secrets.GITHUB_TOKEN }}
         artifactErrorsFailBuild: true
