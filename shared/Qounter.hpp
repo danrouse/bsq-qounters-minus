@@ -16,7 +16,7 @@
 #include "TMPro/TextMeshProUGUI.hpp"
 
 // define version for external consumers
-#define QOUNTERS_MINUS_VERSION "1.1.1"
+#define QOUNTERS_MINUS_VERSION "1.1.2"
 
 namespace QountersMinus {
     enum class QounterPosition {
