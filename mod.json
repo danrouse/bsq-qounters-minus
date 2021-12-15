@@ -2,8 +2,8 @@
   "_QPVersion": "0.1.1",
   "id": "qounters-minus",
   "name": "Qounters-",
-  "version": "1.1.3-r1",
-  "author": "danrouse#0214",
+  "version": "1.1.4-r1",
+  "author": "danrouse#0214, rxzz0#6982",
   "description": "Store brand version of Counters+ for the Quest version of Beat Saber. Adds a variety of configurable Qounters to display statistics in-game.",
 	"coverImage": "cover.png",
   "packageId": "com.beatgames.beatsaber",
@@ -12,6 +12,6 @@
     "libqounters-minus.so"
   ],
   "libraryFiles": [
-    "libbeatsaber-hook_2_3_0.so"
+    "libbeatsaber-hook_2_3_2.so"
   ]
 }

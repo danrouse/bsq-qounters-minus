@@ -1,25 +1,28 @@
 #include "util/pp.hpp"
 
-const int PP_CURVE_SIZE = 16;
+const int PP_CURVE_SIZE = 19;
 float ppCurve[PP_CURVE_SIZE][2] = {
     {0, 0},
     {.45f, .015f},
     {.50f, .03f},
     {.55f, .06f},
     {.60f, .105f},
-    {.65f, .16f},
-    {.68f, .24f},
-    {.70f, .285f},
-    {.80f, .563f},
-    {.84f, .695f},
-    {.88f, .826f},
+    {.65f, .15f},
+    {.70f, .22f},
+    {.75f, .35f},
+    {.80f, .42f},
+    {.86f, .6f},
+    {.9f, .78f},
+    {.925f, .905f},
     {.945f, 1.015f},
     {.95f, 1.046f},
-    {1.00f, 1.12f},
-    {1.10f, 1.18f},
-    {1.14f, 1.25f}
+    {.96f, 1.115f},
+    {.97f, 1.2f},
+    {.98f, 1.29f},
+    {.99f, 1.39f},
+    {1, 1.5f}
 };
-float ppCurveSlopes[15];
+float ppCurveSlopes[18];
 static std::unordered_set<std::string> songsAllowingPositiveModifiers = {
     "2FDDB136BDA7F9E29B4CB6621D6D8E0F8A43B126", // Overkill Nuketime
     "27FCBAB3FB731B16EABA14A5D039EEFFD7BD44C9" // Overkill Kry
