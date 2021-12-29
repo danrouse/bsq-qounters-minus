@@ -40,8 +40,9 @@ void QountersMinus::Qounters::NotesQounter::UpdateValue() {
     auto text = std::to_string(goodCuts) + "/" + std::to_string(allCuts);
     if (ShowPercentage) {
         text += " - " + FormatNumber((100.0f * goodCuts) / allCuts, DecimalPrecision) + "%";
-    }
+    } if (basicText) {
     basicText->set_text(il2cpp_utils::createcsstr(text));
+    }
 }
 
 void QountersMinus::Qounters::NotesQounter::OnNoteCut(GlobalNamespace::NoteData* data, GlobalNamespace::NoteCutInfo* info) {

@@ -101,9 +101,9 @@ void QountersMinus::Qounters::PBQounter::Start() {
 
 void QountersMinus::Qounters::PBQounter::SetPersonalBest(float ratioOfMaxScore) {
     if (HideFirstScore && highScore == 0) {
-        pbText->set_text(il2cpp_utils::createcsstr("PB: --"));
+        pbText->set_text(il2cpp_utils::newcsstr("PB: --"));
     } else {
-        pbText->set_text(il2cpp_utils::createcsstr("PB: " + FormatNumber(ratioOfMaxScore * 100.0f, DecimalPrecision) + "%"));
+        pbText->set_text(il2cpp_utils::newcsstr("PB: " + FormatNumber(ratioOfMaxScore * 100.0f, DecimalPrecision) + "%"));
     }
 }
 

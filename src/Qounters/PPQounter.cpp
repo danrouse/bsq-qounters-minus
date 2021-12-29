@@ -79,7 +79,9 @@ void QountersMinus::Qounters::PPQounter::Start() {
     if (isRanked) maxPP = ppData.has_value() ? ppData.value() : 0.0f;
     multiplier = CalculateMultiplier(songID.hash, refs->scoreController);
     CreateBasicText("PP: --");
+    if (basicText) {
     basicText->get_rectTransform()->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
+     }
 }
 
 void QountersMinus::Qounters::PPQounter::OnScoreUpdated(int modifiedScore) {

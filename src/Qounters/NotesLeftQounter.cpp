@@ -31,8 +31,10 @@ void QountersMinus::Qounters::NotesLeftQounter::Start() {
 }
 
 void QountersMinus::Qounters::NotesLeftQounter::UpdateValue() {
-    basicText->set_text(il2cpp_utils::createcsstr(
+    if (basicText) {
+    basicText->set_text(il2cpp_utils::newcsstr(
         (LabelAboveCount ? "" : "Notes Remaining: ") + std::to_string(notesLeft)
+        }
     ));
 }
 
